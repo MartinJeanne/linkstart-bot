@@ -1,6 +1,16 @@
-const { prefix, token } = require('./config.json');
+const fs = require('fs');
 const Discord = require('discord.js');
+const { prefix, token } = require('./config.json');
+
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 //Toutes les actions à faire quand le bot se connecte
 client.once("ready", ()=>{
@@ -13,50 +23,14 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
-    if (command === 'cookie') {
+    if (!client.commands.has(command)) return;
 
-        if (args[0] === 'give') {
-
-            if (!message.mentions.users.size) {
-                return message.reply('you need to tag a user in order to give a cookie to them !');
-            }
-
-            if (args[1] != null) {
-                const amount = parseInt(args[1]);
-            
-                if (isNaN(amount)) {
-                    return message.reply('that doesn\'t seem to be a valid number.');
-                }
-
-                else if (amount < 2 || amount > 100) {
-                    message.reply('the number of cookie given must be between 2 and 100 !')
-                }
-
-                else {
-                    message.channel.send(message.mentions.users.first().username + ' you received ' + amount + ' cookie from ' + message.author.username + ' !')
-                }
-            }
-            else {
-                message.channel.send(message.mentions.users.first().username + ' you received a cookie from ' + message.author.username + ' !')
-            }
-
-        }
-        else {
-            message.channel.send('i give you a cookie ' + message.author.username);
-        }
+    try {
+        client.commands.get(command).execute(message, args);
+    } catch (error) {
+        console.error(error);
+        message.reply('There was an error trying to execute that command !');
     }
-
-
-
-    else if (command === 'ping') {
-        message.channel.send('pong !');
-    }
-    else if (command === 'args-info') {
-            if (!args.length) {
-                return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-            }
-            message.channel.send(`Command name: ${command}\nArguments: ${args}`);
-        }
 })
 
 client.login(token)
