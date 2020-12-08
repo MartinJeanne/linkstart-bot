@@ -14,7 +14,6 @@ Discord bot to train JS and discord API !
 ```
 #### Execute main file
     node .
-    (If the previous command doesn't work, try : node main.js)
     
 ## Invite my bot : 
 - Invite it on your server by this link : 
