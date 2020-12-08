@@ -27,11 +27,23 @@ client.on('message', message => {
 
     const command = client.commands.get(commandName);
 
+    if (command.args && !args.length) {
+        let reply = `You didn't provide any arguments ${message.author} !`;
+        if (command.usage) {
+            reply += `\nThe proper usage would be : \`${prefix + command.name} ${command.usage}\``;
+        }
+        if (command.help) {
+            reply += `\nGet some help by doing : \`${prefix + command.name} help\``;
+        }
+        return message.channel.send(reply);
+    }
+    
     try {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply('There was an error trying to execute that command !');
+        let reply = 'there was an error trying to execute that command !';
+        message.channel.reply(reply);
     }
 })
 
