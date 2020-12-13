@@ -1,37 +1,34 @@
+// JSON data file
+
 module.exports = {
     name: 'cookie',
     description: 'Cookie !',
     args: true,
-    //usage: '<user> <amount>',
-    help: true,
     execute(message, args) {
         switch (args[0]) {
-            case 'help':
-                message.reply('there is a list of the differents arguments for \`/cookie\`'
-                    + '\n\`/cookie me\`  give you a beautifull cookie !'
-                    + '\n\`/cookie give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user !'
-                    + '\n\`/cookie help\`  to show this help message.'
-                )
-                break
 
             case 'me':
                 //give cookie to user
-                message.channel.send(`There you, one cookie for you ${message.author.username} !`);
+                message.channel.send(`There you go, one cookie for you ${message.author} !`);
                 break;
 
             case 'give':
                 if (!message.mentions.users.size) {
                     return message.reply('you need to mention an user in order to give a cookie to them !');
                 }
-
-                // TODO : revoir le code pour le mentionned user, utiliser son id pour la vérification ou autre ? (voir doc)
+                
                 mentionnedUser = message.mentions.users.first();
+
+                if (mentionnedUser === message.author) {
+                    return message.reply('you cannot give cookie to yourself ! ' + len)
+                }
+
                 const argMentionId = getIdFromMention(args[1]);
                 const argAmount = parseInt(args[1])
 
                 // The user give a cookie
                 if (argMentionId === mentionnedUser.id || argAmount === 1) {
-                    return message.channel.send(`${mentionnedUser} you received a cookie from ${message.author.username} !`)
+                    return message.channel.send(`${mentionnedUser} you received a cookie from ${message.author} !`)
                 }
 
                 else if (isNaN(argAmount)) {
@@ -43,7 +40,7 @@ module.exports = {
                 }
 
                 else {
-                    message.channel.send(`${mentionnedUser} you received ${argAmount} cookies from ${message.author.username} !`);
+                    message.channel.send(`${mentionnedUser} you received ${argAmount} cookies from ${message.author} !`);
                 }
         }
 

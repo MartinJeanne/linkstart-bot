@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Garwalle/bot_discord#readme",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "mysql2": "^2.2.5"
   }
 }
