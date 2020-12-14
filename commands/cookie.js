@@ -1,4 +1,4 @@
-// JSON data file
+const cookie = require('./query/cookie');
 
 module.exports = {
     name: 'cookie',
@@ -8,15 +8,27 @@ module.exports = {
         switch (args[0]) {
 
             case 'me':
-                //give cookie to user
+                // Give cookie to user
+                cookie.me(message);
                 message.channel.send(`There you go, one cookie for you ${message.author} !`);
+                break;
+
+            case 'amount':
+                // Say the number of cookies user have
+                var amount;
+                // Compliqué, pour comprendre : https://stackoverflow.com/questions/31875621/how-to-properly-return-a-result-from-mysql-with-node
+                cookie.amount(message, function (result) { 
+                    amount = result;
+                    message.reply(`you have ${amount} cookie(s) !`);
+                    if (amount == 0) { message.channel.send('Wtf are you doing ?\n Execute this command : `/cookie me`') }
+                });
                 break;
 
             case 'give':
                 if (!message.mentions.users.size) {
                     return message.reply('you need to mention an user in order to give a cookie to them !');
                 }
-                
+
                 mentionnedUser = message.mentions.users.first();
 
                 if (mentionnedUser === message.author) {
