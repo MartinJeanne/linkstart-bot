@@ -26,10 +26,11 @@ module.exports = {
                 });
         }
         switch (args[0]) {
-            case 'cookie' :
+            case 'cookie':
                 message.channel.send(`${message.author}, this is the list of the differents arguments for \`/cookie\``
                     + '\n\`/cookie me\`  give you a beautifull cookie !'
                     + '\n\`/cookie give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.'
+                    + '\n\`/cookie amount\`  allow you to see how many cookies you have.'
                 );
                 break;
         }

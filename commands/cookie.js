@@ -17,7 +17,7 @@ module.exports = {
                 // Say the number of cookies user have
                 var amount;
                 // Compliqué, pour comprendre : https://stackoverflow.com/questions/31875621/how-to-properly-return-a-result-from-mysql-with-node
-                cookie.amount(message, function (result) { 
+                cookie.amount(message.author, function (result) {
                     amount = result;
                     message.reply(`you have ${amount} cookie(s) !`);
                     if (amount == 0) { message.channel.send('Wtf are you doing ?\n Execute this command : `/cookie me`') }
@@ -32,42 +32,46 @@ module.exports = {
                 mentionnedUser = message.mentions.users.first();
 
                 if (mentionnedUser === message.author) {
-                    return message.reply('you cannot give cookie to yourself ! ' + len)
+                    return message.reply('you cannot give cookies to yourself ! ')
                 }
 
-                const argMentionId = getIdFromMention(args[1]);
-                const argAmount = parseInt(args[1])
-
-                // The user give a cookie
-                if (argMentionId === mentionnedUser.id || argAmount === 1) {
-                    return message.channel.send(`${mentionnedUser} you received a cookie from ${message.author} !`)
+                // If user doesn't specifie number, he give 1 cookie
+                if (args[1] == "<@"+mentionnedUser+">" || args[1] == "<@!"+mentionnedUser+">") {
+                    args[1] = 1;
                 }
 
-                else if (isNaN(argAmount)) {
+                var amountArg = parseInt(args[1]);
+
+                if (isNaN(amountArg)) {
                     return message.reply('that doesn\'t seem to be a valid number.');
                 }
 
-                else if (argAmount < 1 || argAmount > 100) {
+                else if (amountArg < 1 || amountArg > 100) {
                     message.reply('the number of cookie given must be between 1 and 100 !');
                 }
 
                 else {
-                    message.channel.send(`${mentionnedUser} you received ${argAmount} cookies from ${message.author} !`);
+                    // Giver amount
+                    cookie.amount(message.author, function (result) {
+                        var giverAmount = result;
+                        // If giver don't have enough cookies
+                        if (giverAmount < amountArg) { message.reply(`you only have ${giverAmount} cookies !`); }
+                        else {
+                            // Receiver amount
+                            var numberToSubtract = giverAmount - amountArg;
+                            cookie.amount(mentionnedUser, function (result) {
+                                let numberToGive = result + amountArg;
+                                cookie.give(message.author, numberToSubtract, mentionnedUser, numberToGive);
+                                if (amountArg === 1) { message.channel.send(`${mentionnedUser} you received a cookie from ${message.author} !`); }
+                                else { message.channel.send(`${mentionnedUser} you received ${amountArg} cookies from ${message.author} !`); }
+                            });
+                        }
+                    });
                 }
-        }
+                break;
 
-        function getIdFromMention(mention) {
-            if (!mention) return;
-
-            if (mention.startsWith('<@') && mention.endsWith('>')) {
-                mention = mention.slice(2, -1);
-
-                if (mention.startsWith('!')) {
-                    mention = mention.slice(1);
-                }
-
-                return mention;
-            }
+            default:
+                message.reply('undefined argument for `/cookie`.\n If you need help do : `/help cookie`');
         }
     },
 };
