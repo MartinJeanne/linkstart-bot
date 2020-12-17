@@ -23,7 +23,7 @@ client.once("ready", () => {
 });
 
 client.on('message', message => {
-    // Si le message ne commence pas par le prefix ou est un message du bot lui même, on return
+    // Si le message ne commence pas par le prefix ou est un message d'un bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     // args : les agurments après la commande (tableau)
@@ -56,4 +56,4 @@ client.on('message', message => {
     }
 })
 
-client.login(token)
+client.login(process.env.BOT_TOKEN); //BOT_TOKEN is the Client Secret
