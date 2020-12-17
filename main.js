@@ -20,6 +20,8 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
+// TODO : Expot the bot online and make it replace the mee6 bot !!!
+
 //Toutes les actions à faire quand le bot se connecte
 client.once("ready", () => {
     console.log("En marche !");
