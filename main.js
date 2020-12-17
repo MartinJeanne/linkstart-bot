@@ -1,11 +1,17 @@
+// Allow JS to navigate into files
 const fs = require('fs');
+// The discord API
 const Discord = require('discord.js');
+// Get token and prefix from config.js
 const { prefix, token } = require('./config.json');
 
 const client = new Discord.Client();
+
 client.commands = new Discord.Collection();
+
 // To add cooldown on certain command
-const cooldowns = new Discord.Collection()
+const cooldowns = new Discord.Collection();
+
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -35,7 +41,8 @@ client.on('guildMemberRemove', member => {
 
 
 client.on('message', message => {
-    // If message do not strat with the bot prefix, or if message if from a bot
+
+    // If message do not start with the bot prefix, or if message if from a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     // The argument(s) of the command, saved in a array
@@ -43,6 +50,7 @@ client.on('message', message => {
     // The command
     const commandName = args.shift().toLowerCase();
 
+    // Si la commande ne correspond à aucun fichier, on return
     if (!client.commands.has(commandName)) return;
 
     const command = client.commands.get(commandName);
