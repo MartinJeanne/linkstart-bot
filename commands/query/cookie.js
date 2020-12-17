@@ -7,11 +7,6 @@ var bdd = mysql.createPool({
     database: 'heroku_584b0ee0edf98c7'
 });
 
-bdd.connect(function (err) {
-    if (err) throw err;
-    console.log("Connecté à la base de données MySQL !");
-});
-
 module.exports = {
     me: function (message) {
         bdd.query(`SELECT userId,amount FROM cookies WHERE userId = '${message.author}';`, function (err, result) {
