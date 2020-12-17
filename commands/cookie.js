@@ -3,7 +3,12 @@ const cookie = require('./query/cookie');
 module.exports = {
     name: 'cookie',
     description: 'Cookie !',
+    guildOnly: true,
     args: true,
+    cooldown: 10,
+    //usage: '<user> <amount>',
+    help: true,
+
     execute(message, args) {
         switch (args[0]) {
 
@@ -30,13 +35,22 @@ module.exports = {
                 }
 
                 mentionnedUser = message.mentions.users.first();
+                if (mentionnedUser === message.author) {
+                    return message.reply(`you cannot give cookie to yourself !`)
+                }
+
+                // If the first argument is a mention, we got the id out of it
+                const argMentionId = getIdFromMention(args[1]);
+                // If the first argument is a number, we save it
+                const argAmount = parseInt(args[1])
+
 
                 if (mentionnedUser === message.author) {
                     return message.reply('you cannot give cookies to yourself ! ')
                 }
 
                 // If user doesn't specifie number, he give 1 cookie
-                if (args[1] == "<@"+mentionnedUser+">" || args[1] == "<@!"+mentionnedUser+">") {
+                if (args[1] == "<@" + mentionnedUser + ">" || args[1] == "<@!" + mentionnedUser + ">") {
                     args[1] = 1;
                 }
 
@@ -50,6 +64,7 @@ module.exports = {
                     message.reply('the number of cookie given must be between 1 and 100 !');
                 }
 
+                // The user give some cookies
                 else {
                     // Giver amount
                     cookie.amount(message.author, function (result) {
