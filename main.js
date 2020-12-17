@@ -2,8 +2,10 @@
 const fs = require('fs');
 // The discord API
 const Discord = require('discord.js');
-// Get token and prefix from config.js
-const { prefix, token } = require('./config.json');
+
+// Get token and prefix from config.js CANCELED because we try to deploy the bot online
+//const { prefix, token } = require('./config.json');
+const prefix = '/';
 
 const client = new Discord.Client();
 
