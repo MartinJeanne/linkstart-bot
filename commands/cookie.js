@@ -1,7 +1,9 @@
 module.exports = {
     name: 'cookie',
     description: 'Cookie !',
+    guildOnly: true,
     args: true,
+    cooldown: 10,
     //usage: '<user> <amount>',
     help: true,
     execute(message, args) {
@@ -24,9 +26,14 @@ module.exports = {
                     return message.reply('you need to mention an user in order to give a cookie to them !');
                 }
 
-                // TODO : revoir le code pour le mentionned user, utiliser son id pour la vérification ou autre ? (voir doc)
                 mentionnedUser = message.mentions.users.first();
+                if (mentionnedUser === message.author) {
+                    return message.reply(`you cannot give cookie to yourself !`)
+                }
+
+                // If the first argument is a mention, we got the id out of it
                 const argMentionId = getIdFromMention(args[1]);
+                // If the first argument is a number, we save it
                 const argAmount = parseInt(args[1])
 
                 // The user give a cookie
@@ -42,6 +49,7 @@ module.exports = {
                     message.reply('the number of cookie given must be between 1 and 100 !');
                 }
 
+                // The user give some cookies
                 else {
                     message.channel.send(`${mentionnedUser} you received ${argAmount} cookies from ${message.author.username} !`);
                 }
@@ -56,7 +64,6 @@ module.exports = {
                 if (mention.startsWith('!')) {
                     mention = mention.slice(1);
                 }
-
                 return mention;
             }
         }
