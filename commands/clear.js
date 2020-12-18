@@ -1,5 +1,3 @@
-const cookie = require('./query/cookie');
-
 module.exports = {
     name: 'clear',
     description: 'Clear message(s)',
