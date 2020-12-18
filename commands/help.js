@@ -25,15 +25,15 @@ module.exports = {
         }
         switch (args[0]) {
             case 'cookie':
-                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/cookie\``
-                    + '\n\`/cookie me\`  give you a beautifull cookie !'
-                    + '\n\`/cookie give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.'
-                    + '\n\`/cookie amount\`  allow you to see how many cookies you have.'
+                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/${args[0]}\``
+                    + `\n\`/${args[0]} me\`  give you a beautifull cookie !`
+                    + `\n\`/${args[0]} give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.`
+                    + `\n\`/${args[0]} amount\`  allow you to see how many cookies you have.`
                 );
                 break;
             case 'clear':
-                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/cookie\``
-                    + '\n\`/cookie me\`  give you a beautifull cookie !'
+                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/${args[0]}\``
+                    + `\n\`/${args[0]} <amount>\`  remove a certain amount of message(s).`
                 );
                 break;
         }
