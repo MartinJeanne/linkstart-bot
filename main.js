@@ -1,18 +1,12 @@
-// Allow JS to navigate into files
-const fs = require('fs');
-// The discord API
-const Discord = require('discord.js');
 
-// Get token and prefix from config.js CANCELED because we try to deploy the bot online
-//const { prefix, token } = require('./config.json');
+const fs = require('fs'); // Allow JS to navigate into files
+const Discord = require('discord.js'); // The discord API
+const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
 const prefix = '/';
 
 const client = new Discord.Client();
-
 client.commands = new Discord.Collection();
-
-// To add cooldown on certain command
-const cooldowns = new Discord.Collection();
+const cooldowns = new Discord.Collection(); // To add cooldown on certain command
 
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -22,22 +16,17 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
-// TODO : Expot the bot online and make it replace the mee6 bot !!!
-
-//Toutes les actions à faire quand le bot se connecte
 client.once("ready", () => {
     console.log("En marche !");
 });
 
 client.on('guildMemberAdd', member => {
-    // Send the message to a designated channel on a server:
     const channel = member.guild.channels.cache.find(ch => ch.name === 'crash-test');
     if (!channel) return;
     channel.send(`Welcome to the server, ${member}`);
 });
 
 client.on('guildMemberRemove', member => {
-    // Send the message to a designated channel on a server:
     const channel = member.guild.channels.cache.find(ch => ch.name === 'crash-test');
     if (!channel) return;
     channel.send(`Bye, ${member}`);
@@ -45,16 +34,13 @@ client.on('guildMemberRemove', member => {
 
 
 client.on('message', message => {
-    // If message do not start with the bot prefix, or if message if from a bot
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message if from a bot
 
-    // The argument(s) of the command, saved in a array
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    // The command
-    const commandName = args.shift().toLowerCase();
 
-    // Si la commande ne correspond à aucun fichier, on return
-    if (!client.commands.has(commandName)) return;
+    const args = message.content.slice(prefix.length).trim().split(/ +/); // The argument(s) of the command, saved in a array
+    const commandName = args.shift().toLowerCase(); // The command
+
+    if (!client.commands.has(commandName)) return; // Si la commande ne correspond à aucun fichier, on return
 
     const command = client.commands.get(commandName);
 
@@ -70,19 +56,18 @@ client.on('message', message => {
             reply += `\nThe proper usage would be : \`${prefix + command.name} ${command.usage}\``;
         }
         if (command.help) {
-            reply += `\nGet some help by doing : \`${prefix + command.name} help\``;
+            reply += `\nGet some help by doing : \`${prefix}help ${command.name}\``;
         }
         return message.channel.send(reply);
     }
 
+    // Manage command cooldown, if it has
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());
     }
-
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
     const cooldownAmount = (command.cooldown || 3) * 1000;
-
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
@@ -91,17 +76,21 @@ client.on('message', message => {
             return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
         }
     }
-
     timestamps.set(message.author.id, now);
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
+    // Try to execute the command
     try {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply('there was an error trying to execute that command !');
+        let reply = 'there was an error with that command !';
+        if (command.help) {
+            reply += `\nGet some help by doing : \`${prefix}help ${command.name}\``;
+        }
+        message.reply(reply);
     }
 })
 
-client.login(process.env.BOT_TOKEN); // BOT_TOKEN is the Client Secret
-
+client.login(token); // LOCAL
+//client.login(process.env.BOT_TOKEN); // ONLINE : process.env.BOT_TOKEN is a heroku variable

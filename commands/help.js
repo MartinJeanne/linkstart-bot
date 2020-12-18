@@ -2,7 +2,7 @@ module.exports = {
     name: 'help',
     description: 'List all of my commands or info about a specific command.',
     aliases: ['commands'],
-    usage: '[command]',
+    usage: '<command>',
     cooldown: 5,
     execute(message, args) {
         const data = [];
@@ -29,6 +29,11 @@ module.exports = {
                     + '\n\`/cookie me\`  give you a beautifull cookie !'
                     + '\n\`/cookie give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.'
                     + '\n\`/cookie amount\`  allow you to see how many cookies you have.'
+                );
+                break;
+            case 'clear':
+                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/cookie\``
+                    + '\n\`/cookie me\`  give you a beautifull cookie !'
                 );
                 break;
         }
