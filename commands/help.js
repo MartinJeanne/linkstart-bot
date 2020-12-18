@@ -2,40 +2,52 @@ module.exports = {
     name: 'help',
     description: 'List all of my commands or info about a specific command.',
     aliases: ['commands'],
-    usage: '<command>',
-    cooldown: 5,
+    usage: '<command name>',
     execute(message, args) {
-        const data = [];
-        const { commands } = message.client;
+        switch (args.length) {
+            case 0:
+                const data = [];
+                const { commands } = message.client;
 
-        if (!args.length) {
-            data.push('Here\'s a list of all my commands :');
-            data.push(commands.map(command => command.name).join(', '));
-            data.push(`\nYou can send \`/help [command]\` to get info on a specific command !`);
+                if (!args.length) {
+                    data.push('Here\'s a list of all my commands :');
+                    data.push(commands.map(command => command.name).join(', '));
+                    data.push(`\nYou can send \`/help <command name>\` to get info on a specific command !`);
 
-            return message.author.send(data, { split: true })
-                .then(() => {
-                    if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands !');
-                })
-                .catch(error => {
-                    console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you !');
-                });
-        }
-        switch (args[0]) {
-            case 'cookie':
-                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/${args[0]}\``
-                    + `\n\`/${args[0]} me\`  give you a beautifull cookie !`
-                    + `\n\`/${args[0]} give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.`
-                    + `\n\`/${args[0]} amount\`  allow you to see how many cookies you have.`
-                );
+                    return message.channel.send(data, { split: true });
+                }
                 break;
-            case 'clear':
-                message.channel.send(`${message.author}, this is the list of the differents arguments for \`/${args[0]}\``
-                    + `\n\`/${args[0]} <amount>\`  remove a certain amount of message(s).`
-                );
+
+            case 1:
+                let reply = `this is the list of the differents arguments for \`/${args[0]}\``;
+                let commandName = `\n\`/${args[0]}`;
+                switch (args[0]) {
+                    case 'cookie':
+                        message.reply(reply
+                            + commandName + ' me`  give you a beautifull cookie !'
+                            + commandName + ' give <amount> <user>\`  give a certain amount of cookie(s) to the mentionned user.'
+                            + commandName + ' amount`  allow you to see how many cookies you have.'
+                        );
+                        break;
+
+                    case 'tg':
+                        message.reply(reply
+                            + commandName + ' <mention>`  say something kind to the mentionned user.'
+                        );
+                        break;
+
+                    case 'clear':
+                        message.reply(reply
+                            + commandName + ' <amount>`  remove the amount of message(s) in the channel where this command is called.'
+                        );
+                        break;
+                    default:
+                        message.reply('I don\'t know this command !\nTo see all my commands, do `/help`');
+                }
                 break;
+
+            default:
+                message.reply('To many arguments. Just do `/help`, or `/help <command name>`');
         }
     },
 };

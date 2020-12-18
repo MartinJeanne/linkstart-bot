@@ -6,7 +6,6 @@ module.exports = {
     guildOnly: true,
     args: true,
     cooldown: 5,
-    help: true,
 
     execute(message, args) {
         switch (args.length) {
