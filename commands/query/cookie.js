@@ -1,10 +1,10 @@
 var mysql = require('mysql');
-//const { bdd_password } = require('../../config.json'); // LOCAL
+const { bdd_password } = require('../../ressources/config.json'); // LOCAL
 
 var bdd = mysql.createPool({
     host: 'eu-cdbr-west-03.cleardb.net',
     user: 'bde9cf4f063788',
-    password: process.env.BDD_PASSWORD, //bdd_password (LOCAL)
+    password: bdd_password, //process.env.BDD_PASSWORD (REMOTE)
     database: 'heroku_584b0ee0edf98c7'
 });
 

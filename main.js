@@ -1,7 +1,7 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
-//const { token } = require('./config.json'); // LOCAL
-const prefix = '!';
+const { token } = require('./ressources/config.json'); // LOCAL
+const prefix = '/';
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -59,7 +59,7 @@ client.on('guildMemberRemove', member => {
     channel.send(`Bye, ${member}`);
 });
 
-client.login(process.env.TOKEN); // token (LOCAL)
+client.login(token); // process.env.TOKEN (REMOTE)
 
 function onCooldown(cooldowns, command, message) {
     if (!cooldowns.has(command.name)) {
