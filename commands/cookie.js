@@ -21,7 +21,7 @@ module.exports = {
                         // Say the number of cookies user have
                         var amount;
                         // Compliqué, pour comprendre : https://stackoverflow.com/questions/31875621/how-to-properly-return-a-result-from-mysql-with-node
-                        cookie.amount(message, function (result) {
+                        cookie.amount(message.author, message.guild.id ,function (result) {
                             amount = result;
                             message.reply(`you have ${amount} cookie(s) !`);
                             if (amount == 0) { message.channel.send('Wtf are you doing ?\n Execute this command : `/cookie me`') }
