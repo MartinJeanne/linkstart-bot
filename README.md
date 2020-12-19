@@ -8,8 +8,8 @@ Discord bot to train JS and discord API !
 ### Make a "config.json" on directory base :
 ```json
 {
-    "prefix":"/",
-    "TOKEN":"YouReallyThinkIWillGiveYouMyPrivateToken?Hahah"
+    "TOKEN":"HereGoesYourDiscordBotToken",
+    "bdd_password": "The pasword of the database"
 }
 ```
 #### Execute main file
