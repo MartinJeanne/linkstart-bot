@@ -21,7 +21,7 @@ module.exports = {
                         // Say the number of cookies user have
                         var amount;
                         // Compliqué, pour comprendre : https://stackoverflow.com/questions/31875621/how-to-properly-return-a-result-from-mysql-with-node
-                        cookie.amount(message.author, function (result) {
+                        cookie.amount(message, function (result) {
                             amount = result;
                             message.reply(`you have ${amount} cookie(s) !`);
                             if (amount == 0) { message.channel.send('Wtf are you doing ?\n Execute this command : `/cookie me`') }
@@ -44,7 +44,7 @@ module.exports = {
                         if (mentionnedUser === message.author) {
                             return message.reply(`you cannot give cookie to yourself !`)
                         }
-
+                        
                         else { giveCookies(1); }
                         break;
 
@@ -87,16 +87,16 @@ module.exports = {
 
         function giveCookies(amountToGive) {
             // Giver amount
-            cookie.amount(message.author, function (result) {
+            cookie.amount(message.author, message.guild.id, function (result) {
                 let giverAmount = result;
                 // If giver don't have enough cookies
                 if (giverAmount < amountToGive) { message.reply(`you only have ${giverAmount} cookies !`); }
                 else {
                     // Receiver amount
                     let newGiverAmount = giverAmount - amountToGive;
-                    cookie.amount(mentionnedUser, function (result) {
+                    cookie.amount(mentionnedUser, message.guild.id, function (result) {
                         let newReceiverAmount = result + amountToGive;
-                        cookie.give(message.author, newGiverAmount, mentionnedUser, newReceiverAmount);
+                        cookie.give(message.author, newGiverAmount, mentionnedUser, newReceiverAmount, message.guild.id);
                         if (amountToGive === 1) { message.channel.send(`${mentionnedUser} you received a cookie from ${message.author} !`); }
                         else { message.channel.send(`${mentionnedUser} you received ${amountToGive} cookies from ${message.author} !`); }
                     });

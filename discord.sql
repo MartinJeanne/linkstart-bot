@@ -28,8 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cookies` (
-  `userId` varchar(255) NOT NULL,
-  `userTag` varchar(255) NOT NULL,
+  `userId` varchar(45) NOT NULL,
+  `guildId` varchar(45) NOT NULL,
+  `userTag` varchar(32) NOT NULL,
   `amount` int(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -37,8 +38,8 @@ CREATE TABLE `cookies` (
 -- Déchargement des données de la table `cookies`
 --
 
-INSERT INTO `cookies` (`userId`, `userTag`, `amount`) VALUES
-('<@306129521990565888>', 'Garwalle#2417', 1);
+INSERT INTO `cookies` (`userId`, `guildId`, `userTag`, `amount`) VALUES
+('<@306129521990565888>', '485000880114892821','Garwalle#2417', 1000);
 
 --
 -- Index pour les tables déchargées
