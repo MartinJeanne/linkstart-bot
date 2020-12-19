@@ -1,7 +1,7 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
 //const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
-const prefix = '/';
+const prefix = '!';
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
