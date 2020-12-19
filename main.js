@@ -47,13 +47,11 @@ client.on('message', message => {
 });
 
 client.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'crash-test');
-    if (!channel) return;
-    channel.send(`Welcome to the server, ${member}`);
+    member.roles.add('485021407529664526');
 });
 
 client.on('guildMemberRemove', member => {
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'crash-test');
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
     if (!channel) return;
     channel.send(`Bye, ${member}`);
 });

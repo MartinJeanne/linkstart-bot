@@ -42,7 +42,7 @@ module.exports = {
                         );
                         break;
                     default:
-                        message.reply('I don\'t know this command !\nTo see all my commands, do `/help`');
+                        message.reply('I don\'t know this command !\nTo view all my commands, do `/help`');
                 }
                 break;
 
