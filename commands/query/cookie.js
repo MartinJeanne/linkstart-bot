@@ -33,24 +33,24 @@ module.exports = {
         });
     },
 
-    give: function (giver, numberToSubtract, receiver, numberToGive, ) {
+    give: function (giver, newGiverAmount, receiver, newReceiverAmount,) {
         bdd.query(`SELECT amount FROM cookies WHERE userId = '${receiver}';`, function (err, result) {
             if (err) throw err;
             // If user to give is albready in BDD
             if (typeof result !== 'undefined' && result.length > 0) {
-                bdd.query(`UPDATE cookies SET amount = ${numberToGive} WHERE userId = '${receiver}';`, function (err, result) {
+                bdd.query(`UPDATE cookies SET amount = ${newReceiverAmount} WHERE userId = '${receiver}';`, function (err, result) {
                     if (err) throw err;
                 });
             }
             else {
-                bdd.query(`INSERT INTO cookies (userId, userTag, amount) VALUES ('${receiver}', '${receiver.tag}', ${numberToGive});`, function (err, result) {
+                bdd.query(`INSERT INTO cookies (userId, userTag, amount) VALUES ('${receiver}', '${receiver.tag}', ${newReceiverAmount});`, function (err, result) {
                     if (err) throw err;
                 });
             }
         });
 
         // Subtract the amount of cookies of the giver
-        bdd.query(`UPDATE cookies SET amount = ${numberToSubtract} WHERE userId = '${giver}';`, function (err, result) {
+        bdd.query(`UPDATE cookies SET amount = ${newGiverAmount} WHERE userId = '${giver}';`, function (err, result) {
             if (err) throw err;
         });
     }

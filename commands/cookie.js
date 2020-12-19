@@ -88,15 +88,15 @@ module.exports = {
         function giveCookies(amountToGive) {
             // Giver amount
             cookie.amount(message.author, function (result) {
-                var giverAmount = result;
+                let giverAmount = result;
                 // If giver don't have enough cookies
                 if (giverAmount < amountToGive) { message.reply(`you only have ${giverAmount} cookies !`); }
                 else {
                     // Receiver amount
-                    var numberToSubtract = giverAmount - amountToGive;
+                    let newGiverAmount = giverAmount - amountToGive;
                     cookie.amount(mentionnedUser, function (result) {
-                        let numberToGive = result + amountToGive;
-                        cookie.give(message.author, numberToSubtract, mentionnedUser, numberToGive);
+                        let newReceiverAmount = result + amountToGive;
+                        cookie.give(message.author, newGiverAmount, mentionnedUser, newReceiverAmount);
                         if (amountToGive === 1) { message.channel.send(`${mentionnedUser} you received a cookie from ${message.author} !`); }
                         else { message.channel.send(`${mentionnedUser} you received ${amountToGive} cookies from ${message.author} !`); }
                     });

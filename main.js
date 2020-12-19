@@ -1,4 +1,3 @@
-
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
 const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
@@ -24,32 +23,27 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message if from a bot
 
     const args = message.content.slice(prefix.length).trim().split(/ +/); // The argument(s) of the command, saved in an array
-    const commandCalled = args.shift().toLowerCase(); // The command
+    const commandCalled = args.shift().toLowerCase(); // The name of command
 
-    if (!client.commands.has(commandCalled)) return; // Si la commande ne correspond à aucun fichier, on return
-    const command = client.commands.get(commandCalled); // si elle existe, on return le fichier js portant le nom de la commande
+    if (!client.commands.has(commandCalled)) return; // Check if the name of the command correspond to a js file
+    const command = client.commands.get(commandCalled);
 
     // Check if command only usable in server (guild)
-    if (command.guildOnly && message.channel.type === 'dm') {
-        return message.reply('I can\'t execute that command inside DMs !');
-    }
+    if (command.guildOnly && message.channel.type === 'dm') return message.reply('I can\'t execute that command inside DMs !');
 
     // Check if command need argument(s)
-    if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments ${message.author} ! ${helpAndUsage(command)}`;
-        return message.channel.send(reply);
+    if (command.args && !args.length) return message.channel.send(`You didn't provide any arguments ${message.author} ! ${helpAndUsage(command)}`);
+
+    if (onCooldown(cooldowns, command, message)) return; // Check if command is on cooldown
+
+    try {
+        command.execute(message, args);
+    } catch (error) {
+        console.error(error);
+        let reply = `there was an error with that command ! ${helpAndUsage(command)}`;
+        message.reply(reply);
     }
 
-    // Check if comment is on cooldown
-    if (!onCooldown(cooldowns, command, message)) {
-        try {
-            command.execute(message, args);
-        } catch (error) {
-            console.error(error);
-            let reply = `there was an error with that command ! ${helpAndUsage(command)}`;
-            message.reply(reply);
-        }
-    }
 });
 
 client.on('guildMemberAdd', member => {

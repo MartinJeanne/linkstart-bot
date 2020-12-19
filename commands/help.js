@@ -47,7 +47,7 @@ module.exports = {
                 break;
 
             default:
-                message.reply('To many arguments. Just do `/help`, or `/help <command name>`');
+                message.reply('too many arguments. Just do `/help`, or `/help <command name>`');
         }
     },
 };
