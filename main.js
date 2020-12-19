@@ -1,6 +1,6 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
-const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
+//const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
 const prefix = '/';
 
 const client = new Discord.Client();
@@ -56,8 +56,8 @@ client.on('guildMemberRemove', member => {
     channel.send(`Bye, ${member}`);
 });
 
-client.login(token); // LOCAL
-//client.login(process.env.BOT_TOKEN); // ONLINE : process.env.BOT_TOKEN is a heroku variable
+//client.login(token); // LOCAL
+client.login(process.env.BOT_TOKEN); // ONLINE : process.env.BOT_TOKEN is a heroku variable
 
 
 function onCooldown(cooldowns, command, message) {
