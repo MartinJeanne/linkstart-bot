@@ -2,6 +2,7 @@ module.exports = {
     name: 'clear',
     description: 'Clear message(s)',
     guildOnly: true,
+    admin: true,
     args: true,
     usage: '<amount>',
 

@@ -1,6 +1,6 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
-//const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
+const { token } = require('./config.json'); // LOCAL ONLY : Get token from config.js
 const prefix = '/';
 
 const client = new Discord.Client();
@@ -31,6 +31,9 @@ client.on('message', message => {
     // Check if command only usable in server (guild)
     if (command.guildOnly && message.channel.type === 'dm') return message.reply('I can\'t execute that command inside DMs !');
 
+    // Check if command need admin permission
+    if(command.admin && !message.member.hasPermission('ADMINISTRATOR')) return message.reply('you need to be admin to use this command !');
+    
     // Check if command need argument(s)
     if (command.args && !args.length) return message.channel.send(`You didn't provide any arguments ${message.author} ! ${helpAndUsage(command)}`);
 
@@ -56,8 +59,8 @@ client.on('guildMemberRemove', member => {
     channel.send(`Bye, ${member}`);
 });
 
-//client.login(token); // LOCAL
-client.login(process.env.BOT_TOKEN); // ONLINE : process.env.BOT_TOKEN is a heroku variable
+client.login(token); // LOCAL
+//client.login(process.env.BOT_TOKEN); // ONLINE : process.env.BOT_TOKEN is a heroku variable
 
 
 function onCooldown(cooldowns, command, message) {
