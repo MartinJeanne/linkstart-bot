@@ -19,13 +19,16 @@ client.once("ready", () => {
 });
 
 client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message if from a bot
+
+    if (message.content == `<@!${client.user.id}>`) return botMentionned(message);
+
+    if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
 
     const args = message.content.slice(prefix.length).trim().split(/ +/); // The argument(s) of the command, saved in an array
     const commandCalled = args.shift().toLowerCase(); // The name of command
 
     if (!client.commands.has(commandCalled)) return; // Check if the name of the command correspond to a js file
-    const command = client.commands.get(commandCalled);
+    const command = client.commands.get(commandCalled); // if yes, declare command as the file in question
 
     // Check if command only usable in server (guild)
     if (command.guildOnly && message.channel.type === 'dm') return message.reply('I can\'t execute that command inside DMs !');
@@ -60,6 +63,22 @@ client.on('guildMemberRemove', member => {
 
 client.login(token); // process.env.TOKEN (REMOTE)
 
+
+function botMentionned(message) {
+    message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
+    let filter = m => m.author.id === message.author.id;
+    message.channel.awaitMessages(filter, { max: 1, time: 10000 }).then((collected) => {
+        let response = collected.first().content.toLowerCase();
+        if (response == 'yes' || response == 'y') {
+            message.channel.send(`Ok, look at this then !`);
+            client.commands.get('help').execute(message, []);
+        }
+        else if (response == 'no' || response == 'n') {
+            message.channel.send(`Alright !`);
+        }
+    })
+}
+
 function onCooldown(cooldowns, command, message) {
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());
@@ -81,7 +100,7 @@ function onCooldown(cooldowns, command, message) {
 }
 
 function helpAndUsage(command) {
-    let reply
+    let reply;
     if (command.usage) {
         reply = `\nThe proper usage would be : \`${prefix + command.name} ${command.usage}\``;
     }
