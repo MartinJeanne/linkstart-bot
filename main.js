@@ -1,7 +1,7 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
 const { token } = require('./ressources/config.json'); // LOCAL
-const prefix = '/';
+var prefix = 'g/'; //require('./query/prefix').get();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -18,12 +18,14 @@ client.once("ready", () => {
     console.log("En marche !");
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 
     // When bot is mentionned, he offer some help to user
     if (message.content == `<@!${client.user.id}>`) return botMentionned(message);
 
-    if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
+    if (message.author.bot) return;
+
+    if (!message.content.startsWith(prefix)) return; // If message do not start with the bot prefix, or if message is from a bot
 
     const args = message.content.slice(prefix.length).trim().split(/ +/); // The argument(s) of the command, saved in an array
     const commandCalled = args.shift().toLowerCase(); // The name of command
@@ -43,7 +45,7 @@ client.on('message', message => {
     if (onCooldown(cooldowns, command, message)) return; // Check if command is on cooldown
 
     try {
-        command.execute(message, args);
+        command.execute(message, args, prefix);
     } catch (error) {
         console.error(error);
         let reply = `there was an error with that command ! ${helpAndUsage(command)}`;
@@ -64,15 +66,15 @@ client.on('guildMemberRemove', member => {
 
 client.login(token); // process.env.TOKEN (REMOTE)
 
-function botMentionned(message) {
+async function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
     let filter = m => m.author.id === message.author.id;
-    message.channel.awaitMessages(filter, { max: 1, time: 10000 })
+    await message.channel.awaitMessages(filter, { max: 1, time: 10000 })
         .then((collected) => {
             let userReply = collected.first().content.toLowerCase();
             if (userReply == 'yes' || userReply == 'y') {
                 message.channel.send(`Ok, look at this then !`);
-                client.commands.get('help').execute(message, []);
+                client.commands.get('help').execute(message, [], prefix);
             }
             else if (userReply == 'no' || userReply == 'n') {
                 message.channel.send(`Alright !`);

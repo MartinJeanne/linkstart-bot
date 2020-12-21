@@ -3,7 +3,7 @@ module.exports = {
     description: 'List all of my commands or info about a specific command.',
     aliases: ['commands'],
     usage: '<command name>',
-    execute(message, args) {
+    execute(message, args, prefix) {
         switch (args.length) {
             case 0:
                 const data = [];
@@ -12,7 +12,7 @@ module.exports = {
                 if (!args.length) {
                     data.push('Here\'s a list of all my commands : **');
                     data.push(commands.map(command => command.name).join(', '));
-                    data.push(`**\nYou can send \`/help <command name>\` to get info on a specific command !`);
+                    data.push(`**\nYou can send \`${prefix}help <command name>\` to get info on a specific command !`);
 
                     return message.channel.send(data, { split: true });
                 }
@@ -47,7 +47,7 @@ module.exports = {
                 break;
 
             default:
-                message.reply('too many arguments. Just do `/help`, or `/help <command name>`');
+                message.reply(`too many arguments. Just do \`${prefix}help\`, or \`${prefix}help <command name>\``);
         }
     },
 };
