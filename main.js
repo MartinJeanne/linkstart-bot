@@ -20,6 +20,7 @@ client.once("ready", () => {
 
 client.on('message', message => {
 
+    // When bot is mentionned, he offer some help to user
     if (message.content == `<@!${client.user.id}>`) return botMentionned(message);
 
     if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
@@ -63,20 +64,20 @@ client.on('guildMemberRemove', member => {
 
 client.login(token); // process.env.TOKEN (REMOTE)
 
-
 function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
     let filter = m => m.author.id === message.author.id;
-    message.channel.awaitMessages(filter, { max: 1, time: 10000 }).then((collected) => {
-        let response = collected.first().content.toLowerCase();
-        if (response == 'yes' || response == 'y') {
-            message.channel.send(`Ok, look at this then !`);
-            client.commands.get('help').execute(message, []);
-        }
-        else if (response == 'no' || response == 'n') {
-            message.channel.send(`Alright !`);
-        }
-    })
+    message.channel.awaitMessages(filter, { max: 1, time: 10000 })
+        .then((collected) => {
+            let userReply = collected.first().content.toLowerCase();
+            if (userReply == 'yes' || userReply == 'y') {
+                message.channel.send(`Ok, look at this then !`);
+                client.commands.get('help').execute(message, []);
+            }
+            else if (userReply == 'no' || userReply == 'n') {
+                message.channel.send(`Alright !`);
+            }
+        });
 }
 
 function onCooldown(cooldowns, command, message) {
