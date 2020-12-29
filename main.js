@@ -1,6 +1,6 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
-const { token } = require('./ressources/config.json'); // LOCAL
+//const { token } = require('./ressources/config.json'); // LOCAL
 var prefix = 'g/'; //require('./query/prefix').get();
 
 const client = new Discord.Client();
@@ -20,12 +20,13 @@ client.once("ready", () => {
 
 client.on('message', async message => {
 
-    // When bot is mentionned, he offer some help to user
-    if (message.content == `<@!${client.user.id}>`) return botMentionned(message);
+    if (message.content == `<@!${client.user.id}>`) return botMentionned(message); // When bot is mentionned, he offer some help to user
 
-    if (message.author.bot) return;
+    if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
 
-    if (!message.content.startsWith(prefix)) return; // If message do not start with the bot prefix, or if message is from a bot
+    /*message.guild.roles.fetch()
+        .then(roles => console.log(roles))
+        .catch(console.error);*/
 
     const args = message.content.slice(prefix.length).trim().split(/ +/); // The argument(s) of the command, saved in an array
     const commandCalled = args.shift().toLowerCase(); // The name of command
@@ -56,6 +57,11 @@ client.on('message', async message => {
 
 client.on('guildMemberAdd', member => {
     member.roles.add('485021407529664526');
+    /*
+    TODO : command qui permet de donner un rôle au user qui entre dans le serveur
+    let role = message.guild.roles.cache.find(role => role.name === 'Nouveau');
+    console.log(role.name);
+    */
 });
 
 client.on('guildMemberRemove', member => {
@@ -64,7 +70,7 @@ client.on('guildMemberRemove', member => {
     channel.send(`Bye, ${member}`);
 });
 
-client.login(token); // process.env.TOKEN (REMOTE)
+client.login(process.env.TOKEN); //token (LOCAL)
 
 async function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
