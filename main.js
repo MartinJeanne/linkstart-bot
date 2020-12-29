@@ -20,7 +20,7 @@ client.once("ready", () => {
 
 client.on('message', async message => {
 
-    if (message.content == `<@!${client.user.id}>`) return botMentionned(message); // When bot is mentionned, he offer some help to user
+    if (message.content == `<@!${client.user.id}>` || message == prefix) return botMentionned(message); // When bot is mentionned, he offer some help to user
 
     if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
 
