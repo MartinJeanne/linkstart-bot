@@ -57,11 +57,6 @@ client.on('message', async message => {
 
 client.on('guildMemberAdd', member => {
     member.roles.add('485021407529664526');
-    /*
-    TODO : command qui permet de donner un rôle au user qui entre dans le serveur
-    let role = message.guild.roles.cache.find(role => role.name === 'Nouveau');
-    console.log(role.name);
-    */
 });
 
 client.on('guildMemberRemove', member => {
@@ -70,7 +65,8 @@ client.on('guildMemberRemove', member => {
     channel.send(`Bye, ${member}`);
 });
 
-client.login(process.env.TOKEN); //token (LOCAL)
+ client.login(process.env.TOKEN); // (REMOTE)
+//client.login(token); //(LOCAL)
 
 async function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
