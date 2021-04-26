@@ -15,15 +15,19 @@ module.exports = {
 				mentionnedUser = message.mentions.users.first();
 
 				if (mentionnedUser === message.author) {
-					return message.reply('heuu, t\'es chelou en vrai fréro.')
+					return message.reply('heuu, t\'es chelou en vrai fréro.');
 				}
 
 				else if (mentionnedUser == '784536536459771925') {
 					return message.reply('tu t\'es pris pour qui ? J\'vais te goumer.');
 				}
 
+				else if (mentionnedUser == '306129521990565888') {
+					return message.reply('tu es sûr de vouloir faire ça ?');
+				}
+				
 				else {
-					message.channel.send(`${mentionnedUser}, je crois qu'il faut que tu te taises.`)
+					message.channel.send(`${mentionnedUser}, je crois qu'il faut que tu te taises.`);
 				}
 				break;
 
