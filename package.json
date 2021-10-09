@@ -18,8 +18,13 @@
   },
   "homepage": "https://github.com/Garwalle/bot_discord#readme",
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "@discordjs/opus": "^0.5.3",
+    "discord.js": "^12.5.3",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.0",
+    "fluent-ffmpeg": "^2.1.2",
     "mysql": "^2.18.1",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "ytdl-core": "^4.9.1"
   }
 }
