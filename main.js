@@ -1,7 +1,7 @@
 const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
 const { token } = require('./ressources/config.json'); // LOCAL
-var prefix = '/'; //require('./query/prefix').get();
+var prefix = '!'; //require('./query/prefix').get();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -66,7 +66,7 @@ client.on('guildMemberRemove', member => {
 });
 
 //client.login(process.env.TOKEN); // (REMOTE)
-client.login(token); //(LOCAL)
+client.login(token); // (LOCAL)
 
 async function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
