@@ -1,7 +1,7 @@
-const fs = require('fs'); // Allow JS to navigate into files
 const Discord = require('discord.js'); // The discord API
 const { token } = require('./ressources/config.json'); // LOCAL
 var prefix = '!'; //require('./query/prefix').get();
+const fs = require('fs'); // Allow JS to navigate into files
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -18,10 +18,10 @@ client.once("ready", () => {
     console.log("En marche !");
 });
 
+
 client.on('message', async message => {
 
     if (message.content == `<@!${client.user.id}>` || message == prefix) return botMentionned(message); // When bot is mentionned, he offer some help to user
-
     if (!message.content.startsWith(prefix) || message.author.bot) return; // If message do not start with the bot prefix, or if message is from a bot
 
     /*message.guild.roles.fetch()
@@ -46,7 +46,7 @@ client.on('message', async message => {
     if (onCooldown(cooldowns, command, message)) return; // Check if command is on cooldown
 
     try {
-        command.execute(message, args, prefix);
+        command.execute(message, args, prefix, queue, serverQueue);
     } catch (error) {
         console.error(error);
         let reply = `there was an error with that command ! ${helpAndUsage(command)}`;
