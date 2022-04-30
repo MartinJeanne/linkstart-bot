@@ -46,10 +46,10 @@ client.on('message', async message => {
     if (onCooldown(cooldowns, command, message)) return; // Check if command is on cooldown
 
     try {
-        command.execute(message, args, prefix, queue, serverQueue);
+        command.execute(message, args, prefix);
     } catch (error) {
         console.error(error);
-        let reply = `there was an error with that command ! ${helpAndUsage(command)}`;
+        let reply = `Il y a eu un prolbème avec cette commande ! ${helpAndUsage(command)}`;
         message.reply(reply);
     }
 
@@ -62,11 +62,11 @@ client.on('guildMemberAdd', member => {
 client.on('guildMemberRemove', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
     if (!channel) return;
-    channel.send(`Bye, ${member}`);
+    channel.send(`Bye, ${member}, ${member.nickname}`);
 });
 
-//client.login(process.env.TOKEN); // (REMOTE)
-client.login(token); // (LOCAL)
+//client.login(process.env.TOKEN); // REMOTE
+client.login(token); // LOCAL
 
 async function botMentionned(message) {
     message.channel.send(`Do you need help ?\n\`yes\` / \`no\``);
