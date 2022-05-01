@@ -13,7 +13,8 @@ module.exports = {
 		let requestArg = ''
 		if (name) {
 			let arr = name.split(' ');
-			requestArg = `?firstName=${arr[0]}&lastName=${arr[1]}`
+			if (arr.length == 2) requestArg = `?firstName=${arr[0]}&lastName=${arr[1]}`
+			else return await interaction.reply({ content: 'The fullname you provided is incorrect, it must me like a firstname followed by a lastname with a space between. Example: "Chuck Norris".', ephemeral: true });
 		}
 		
 		let myjoke;
