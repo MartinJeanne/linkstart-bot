@@ -35,4 +35,4 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(process.env.TOKEN2); // Change from locale to remote
+client.login(process.env.TOKEN2); // process.env.TOKEN2
