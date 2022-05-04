@@ -8,12 +8,16 @@ Discord bot to train JS and discord API !
 ### Make a filse "config.json" in a folder called "ressources" with these informaiton :
 ```json
 {
-    "TOKEN":"HereGoesYourDiscordBotToken",
-    "bdd_password": "The pasword of the database"
+    "clientId": "Your_application_id",
+    "guildId": "Your_discord_server_id",
+    "token": "the_token_of_your_bot"
 }
 ```
 #### Execute main file
     node .
+
+#### Build on heroku
+    git push heroku master
     
 ## Invite my bot : 
 - Invite it on your server by this link : 
