@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('tg')
+		.setName('chut')
 		.setDescription('Say something nice to someone')
 		.addUserOption(option => option.setName('user')
 			.setDescription('The user that need to shut his mouth')
@@ -12,15 +12,15 @@ module.exports = {
 		mentionnedUser = interaction.options.getUser('user');
 
 		if (mentionnedUser === interaction.member.user.id) {
-			await interaction.reply('heuu, t\'es chelou en vrai fréro.');
+			await interaction.reply("Heuu, t'es chelou en vrai fréro.");
 		}
 
 		else if (mentionnedUser == '784536536459771925') {
-			await interaction.reply('tu t\'es pris pour qui ? J\'vais te goumer.');
+			await interaction.reply("Tu t'es pris pour qui ? J'vais te goumer.");
 		}
 
 		else if (mentionnedUser == '306129521990565888') {
-			await interaction.reply('tu es sûr de vouloir faire ça ?');
+			await interaction.reply("Es-tu sûr de vouloir faire ça ?");
 		}
 
 		else {
