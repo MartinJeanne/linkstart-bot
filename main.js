@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-//const { token } = require('./ressources/config.json');
+//const { token } = require('./ressources/configDev.json'); // A commenter avant de push sur heroku master
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
-	const channel = client.channels.cache.get('630492112562946048');
+	const channel = client.channels.cache.get('788781047420420137');
     if (!channel) return;
     channel.send("I'm up!");
 });
