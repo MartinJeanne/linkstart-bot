@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./ressources/config.json');
+//const { token } = require('./ressources/config.json');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -51,3 +51,4 @@ client.on('guildMemberRemove', member => {
 });
 
 client.login(process.env.TOKEN); // process.env.TOKEN
+// git push heroku master
