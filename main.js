@@ -18,6 +18,9 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
+	const channel = client.channels.cache.get('630492112562946048');
+    if (!channel) return;
+    channel.send("I'm up!");
 });
 
 client.on('interactionCreate', async interaction => {
@@ -33,6 +36,18 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
+});
+
+
+client.on('guildMemberAdd', member => {
+    member.roles.add('485021407529664526');
+});
+
+
+client.on('guildMemberRemove', member => {
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
+    if (!channel) return;
+    channel.send(`Bye, ${member}`);
 });
 
 client.login(process.env.TOKEN); // process.env.TOKEN
