@@ -19,7 +19,6 @@ for (const file of commandFiles) {
 client.once('ready', () => {
 	console.log('Ready!');
 	const channel = client.channels.cache.get('788781047420420137');
-    if (!channel) return;
     channel.send("I'm up!");
 });
 
@@ -46,7 +45,6 @@ client.on('guildMemberAdd', member => {
 
 client.on('guildMemberRemove', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
-    if (!channel) return;
     channel.send(`Bye, ${member}`);
 });
 
