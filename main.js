@@ -35,4 +35,14 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(process.env.TOKEN); // REMOTE = process.env.TOKEN2
+client.on('guildMemberAdd', member => {
+    member.roles.add('485021407529664526');
+});
+
+
+client.on('guildMemberRemove', member => {
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
+    channel.send(`Bye, ${member}`);
+});
+
+client.login(process.env.TOKEN); // REMOTE = process.env.TOKEN

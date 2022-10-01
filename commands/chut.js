@@ -12,7 +12,7 @@ module.exports = {
 		mentionnedUser = interaction.options.getUser('user');
 
 		if (mentionnedUser === interaction.member.user.id) {
-			await interaction.reply("Heuu, t'es chelou en vrai fréro.");
+			await interaction.reply("Heu, t'es bizarre fréritot..");
 		}
 
 		else if (mentionnedUser == '784536536459771925') {
