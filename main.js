@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./ressources/config.json');
+//const { token } = require('./ressources/config.json');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -35,4 +35,4 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(token); // REMOTE = process.env.TOKEN2
+client.login(process.env.TOKEN); // REMOTE = process.env.TOKEN2
