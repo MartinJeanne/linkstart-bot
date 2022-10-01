@@ -6,7 +6,7 @@ module.exports = {
 		.setDescription('Say something nice to someone')
 		.addUserOption(option => option.setName('user')
 			.setDescription('The user that need to shut his mouth')
-			.setRequired(false)),
+			.setRequired(true)),
 
 	async execute(interaction) {
 		mentionnedUser = interaction.options.getUser('user');
