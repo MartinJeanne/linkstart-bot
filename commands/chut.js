@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chut')
-		.setDescription('Say something nice to someone')
+		.setDescription('Fait comprendre à quelqu\'un qui doit la fermer')
 		.addUserOption(option => option.setName('user')
 			.setDescription('The user that need to shut his mouth')
 			.setRequired(true)),

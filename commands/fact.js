@@ -4,7 +4,7 @@ const { default: axios } = require('axios');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('fact')
-		.setDescription('Tell a Chuck Norris fact!'),
+		.setDescription('Donne une "Chuck Norris fact"'),
 
 	async execute(interaction) {
 		let joke;
