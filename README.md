@@ -8,9 +8,9 @@ Discord bot to train JS and discord API !
 ### Make a file "config.json" in a folder called "ressources" with these informaiton :
 ```json
 {
-    "clientId": "Your_application_id",
-    "guildId": "Your_discord_server_id",
-    "token": "the_token_of_your_bot"
+    "clientId": "your_application_id",
+    "guildId": "your_discord_server_id",
+    "token": "he_token_of_your_bot"
 }
 ```
 #### Execute main file
