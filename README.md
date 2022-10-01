@@ -10,7 +10,7 @@ Discord bot to train JS and discord API !
 {
     "clientId": "your_application_id",
     "guildId": "your_discord_server_id",
-    "token": "he_token_of_your_bot"
+    "token": "the_token_of_your_bot"
 }
 ```
 #### Execute main file
