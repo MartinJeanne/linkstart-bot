@@ -1,11 +1,11 @@
-# bot_discord
+# Linkstart-bot
 Discord bot to train JS and discord API !
 
 ## Execute project :
 #### Install packages
     npm install
 
-### Make a filse "config.json" in a folder called "ressources" with these informaiton :
+### Make a file "config.json" in a folder called "ressources" with these informaiton :
 ```json
 {
     "clientId": "Your_application_id",
@@ -15,9 +15,6 @@ Discord bot to train JS and discord API !
 ```
 #### Execute main file
     node .
-
-#### Build on heroku
-    git push heroku master
     
 ## Invite my bot : 
 - Invite it on your server by this link : 
