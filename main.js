@@ -1,11 +1,10 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const music = require('@koenie06/discord.js-music');
 //const { token } = require('./ressources/config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_VOICE_STATES] });
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -37,6 +36,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('guildMemberAdd', member => {
+	// Adding "Nouveau" to new user when they join the server
     member.roles.add('485021407529664526');
 });
 
