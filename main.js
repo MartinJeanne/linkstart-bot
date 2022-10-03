@@ -45,6 +45,8 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
+//client.player.on("trackStart", (queue, track) => queue.metadata.channel.send('Je joue : **' + track.title + '**'))
+
 client.on('guildMemberAdd', member => {
 	// Adding "Nouveau" to new user when they join the server
 	member.roles.add('485021407529664526');
@@ -55,5 +57,6 @@ client.on('guildMemberRemove', member => {
 	channel.send(`Bye, ${member}`);
 });
 
-//const { token } = require('./ressources/config.json');
-client.login(process.env.TOKEN); // REMOTE = process.env.TOKEN
+//const { token } = require('./ressources/configTest.json'); // Locale
+//client.login(token); // Locale
+client.login(process.env.TOKEN); // Remote
