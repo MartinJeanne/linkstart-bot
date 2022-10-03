@@ -26,6 +26,6 @@ module.exports = {
 
 		if (!queue.playing) await queue.play();
 
-		await interaction.reply('**' + song.title + '** à été ajouté à la queue !');
+		await interaction.reply('**' + song.title + '** à été ajouté à la file !');
 	},
 };
