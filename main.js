@@ -1,12 +1,21 @@
 // Require the necessary discord.js classes
+const { Client, Collection, GatewayIntentBits  } = require('discord.js');
 const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
-//const { token } = require('./ressources/config.json');
+const { Player } = require('discord-player')
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_VOICE_STATES] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
+
+// Player attached to the client, to play music
+client.player = new Player(client, {
+	ytdlOptions: {
+		quality: "highestaudio",
+		highWaterMark: 1 << 25
+	}
+})
 
 client.commands = new Collection();
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -16,8 +25,9 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log(`${client.user.tag} is ready!`)
 });
 
 client.on('interactionCreate', async interaction => {
@@ -28,7 +38,7 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -37,13 +47,13 @@ client.on('interactionCreate', async interaction => {
 
 client.on('guildMemberAdd', member => {
 	// Adding "Nouveau" to new user when they join the server
-    member.roles.add('485021407529664526');
+	member.roles.add('485021407529664526');
 });
-
 
 client.on('guildMemberRemove', member => {
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
-    channel.send(`Bye, ${member}`);
+	const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
+	channel.send(`Bye, ${member}`);
 });
 
+//const { token } = require('./ressources/config.json');
 client.login(process.env.TOKEN); // REMOTE = process.env.TOKEN
