@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { QueryType } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,8 +17,10 @@ module.exports = {
 		if (!queue.connection) await queue.connect(channel);
 
 		const toSearch = interaction.options.getString('musique');
-		const result = await client.player.search(toSearch, { requestedBy: interaction.user });
-
+		const result = await client.player.search(toSearch, {
+			requestedBy: interaction.user,
+			searchEngine: QueryType.AUTO
+		});
 		if (result.tracks.length === 0) return await interaction.reply('Pas de résultat');
 
 		const song = result.tracks[0];
@@ -25,6 +28,6 @@ module.exports = {
 
 		if (!queue.playing) await queue.play();
 
-		await interaction.reply('Musique ajouté à la file : **' + song.title + '**');
+		await interaction.reply('Ajouté à la file : **' + song.title + '**');
 	},
 };
