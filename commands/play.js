@@ -11,8 +11,11 @@ module.exports = {
 
 	async execute(interaction, client) {
 		const channel = interaction.member.voice.channel;
-		if (!channel) return await interaction.reply('Tu dois être dans un salon vocal pour exécuter cette commande !');
-		
+		if (!channel)
+			return await interaction.reply('Tu dois être dans un salon vocal pour exécuter cette commande !');
+		else if (interaction.guild.members.me.voice.channelId && interaction.guild.me.voice.channelId !== interaction.member.voice.channelId)
+			return await interaction.reply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
+
 		const queue = await client.player.createQueue(interaction.guild);
 		if (!queue.connection) await queue.connect(channel);
 
