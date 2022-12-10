@@ -10,11 +10,13 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
+		await interaction.deferReply({ ephemeral: true }); // make Discord wait for reply
+
 		const channel = interaction.member.voice.channel;
 		if (!channel)
-			return await interaction.reply('Tu dois être dans un salon vocal pour exécuter cette commande !');
+			return interaction.editReply('Tu dois être dans un salon vocal pour exécuter cette commande !');
 		else if (interaction.guild.members.me.voice.channelId && interaction.guild.me.voice.channelId !== interaction.member.voice.channelId)
-			return await interaction.reply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
+			return interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
 		const queue = await client.player.createQueue(interaction.guild);
 		if (!queue.connection) await queue.connect(channel);
@@ -24,13 +26,13 @@ module.exports = {
 			requestedBy: interaction.user,
 			searchEngine: QueryType.AUTO
 		});
-		if (result.tracks.length === 0) return await interaction.reply('Pas de résultat');
+		if (result.tracks.length === 0) return interaction.editReply('Pas de résultat');
 
 		const song = result.tracks[0];
 		await queue.addTrack(song);
 
 		if (!queue.playing) await queue.play();
 
-		await interaction.reply('Ajouté à la file : **' + song.title + '**');
+		interaction.editReply('Ajouté à la file : **' + song.title + '**');
 	},
 };
