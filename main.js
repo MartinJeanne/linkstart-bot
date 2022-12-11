@@ -57,5 +57,5 @@ client.on('guildMemberRemove', member => {
 	channel.send(`Bye, ${member}`);
 });
 
-const { token } = require('./ressources/configTest.json');
+const { token } = require('./ressources/config.json');
 client.login(token); 
