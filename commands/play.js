@@ -13,10 +13,12 @@ module.exports = {
 		await interaction.deferReply({ ephemeral: true }); // make Discord wait for reply
 
 		const channel = interaction.member.voice.channel;
-		if (!channel)
-			return interaction.editReply('Tu dois être dans un salon vocal pour exécuter cette commande !');
-		else if (interaction.guild.members.me.voice.channelId && interaction.guild.me.voice.channelId !== interaction.member.voice.channelId)
-			return interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
+		// if user is not in channel
+		if (!channel) 
+			return await interaction.editReply('Tu dois être dans un salon vocal pour exécuter cette commande !');
+		// if i'm in channel AND user is not in my channel
+		else if(interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) 
+			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
 		const queue = await client.player.createQueue(interaction.guild);
 		if (!queue.connection) await queue.connect(channel);
@@ -26,13 +28,13 @@ module.exports = {
 			requestedBy: interaction.user,
 			searchEngine: QueryType.AUTO
 		});
-		if (result.tracks.length === 0) return interaction.editReply('Pas de résultat');
+		if (result.tracks.length === 0) return await interaction.editReply('Pas de résultat');
 
 		const song = result.tracks[0];
 		await queue.addTrack(song);
 
 		if (!queue.playing) await queue.play();
 
-		interaction.editReply('Ajouté à la file : **' + song.title + '**');
+		await interaction.editReply('Ajouté à la file : **' + song.title + '**');
 	},
 };
