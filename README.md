@@ -5,7 +5,7 @@ Discord bot to train JS and discord API !
 #### Install packages
     npm install
 
-### Make a file "config.json" in a folder called "ressources" with these informaiton :
+### Create "ressources/config.json" with these information:
 ```json
 {
     "clientId": "your_application_id",
