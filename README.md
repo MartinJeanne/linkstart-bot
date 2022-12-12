@@ -1,7 +1,8 @@
 # Linkstart-bot
 Discord bot to train JS and discord API !
 
-## Add your bot token
+## Run bot with Docker
+### Add bot information
 Create "ressources/config.json" with these information:
 ```json
 {
@@ -10,23 +11,11 @@ Create "ressources/config.json" with these information:
     "token": "the_token_of_your_bot"
 }
 ```
-## Deploy the commands
-    node deploy-commands.js
-
-## Run bot with Docker
 ### Build Docker image
     docker build -t linkstart-bot .
 
-### Run bot image
+### Run bot
     docker run linkstart-bot
-
-## Run bot manually
-#### Install packages
-    npm install
-
-
-#### Execute main file
-    node main.js
     
 ## Invite my bot : 
 - Invite it on your server by this link : 
