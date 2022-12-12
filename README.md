@@ -1,11 +1,8 @@
 # Linkstart-bot
 Discord bot to train JS and discord API !
 
-## Run with Docker
-
-
-## Run manually
-### Create "ressources/config.json" with these information:
+## Add your bot token
+Create "ressources/config.json" with these information:
 ```json
 {
     "clientId": "your_application_id",
@@ -14,6 +11,14 @@ Discord bot to train JS and discord API !
 }
 ```
 
+## Run with Docker
+### Build Docker image
+    docker build -t linkstart-bot .
+
+### Run bot image
+    docker run linkstart-bot
+
+## Run manually
 #### Install packages
     npm install
 
