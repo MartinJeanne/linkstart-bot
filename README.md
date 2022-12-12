@@ -11,14 +11,14 @@ Create "ressources/config.json" with these information:
 }
 ```
 
-## Run with Docker
+## Run bot with Docker
 ### Build Docker image
     docker build -t linkstart-bot .
 
 ### Run bot image
     docker run linkstart-bot
 
-## Run manually
+## Run bot manually
 #### Install packages
     npm install
 
