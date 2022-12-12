@@ -1,5 +1,5 @@
-# Linkstart-bot
-Discord bot to train JS and discord API !
+# linkstart-bot
+Discord bot i did to train JS, API and Docker !
 
 ## Run bot with Docker
 ### Add bot information
