@@ -10,6 +10,8 @@ Create "ressources/config.json" with these information:
     "token": "the_token_of_your_bot"
 }
 ```
+## Deploy the commands
+    node deploy-commands.js
 
 ## Run bot with Docker
 ### Build Docker image
