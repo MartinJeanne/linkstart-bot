@@ -17,11 +17,13 @@ jobs:
         jq --arg guildId "$DISCORD_GUILD_ID" '.guildId=$guildId' /tmp/config.json > ressources/config.json
         jq --arg token "$DISCORD_TOKEN" '.token=$token' /tmp/config.json > ressources/config.json
     - name: Build Docker Image
-      run: docker build -t linkstart-bot-image .
+      run: |
+        docker build -t linkstart-bot-image .
+        docker tag linkstart-bot-image Garwalle/linkstart-bot-image
     - name: Push Docker Image
       run: |
         docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        docker push linkstart-bot-image
+        docker push Garwalle/linkstart-bot-image
     - name: Deploy to Production
       run: |
         ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
