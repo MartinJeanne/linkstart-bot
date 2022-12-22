@@ -8,29 +8,26 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    - name: Copy config file
+      run: cp ressources/config.json /tmp/config.json
     - name: Update config file
       run: |
-        jq --arg clientId "$DISCORD_CLIENT_ID" '.clientId=$clientId' ressources/config.json
-        jq --arg guildId "$DISCORD_GUILD_ID" '.guildId=$guildId' ressources/config.json
-        jq --arg token "$DISCORD_TOKEN" '.token=$token' ressources/config.json
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Build and push
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
+        jq --arg clientId "$DISCORD_CLIENT_ID" '.clientId=$clientId' /tmp/config.json > ressources/config.json
+        jq --arg guildId "$DISCORD_GUILD_ID" '.guildId=$guildId' /tmp/config.json > ressources/config.json
+        jq --arg token "$DISCORD_TOKEN" '.token=$token' /tmp/config.json > ressources/config.json
+    - name: Build Docker Image
+      run: |
+        docker build -t linkstart-bot-image .
+        docker tag linkstart-bot-image Garwalle/firstimage
+    - name: Push Docker Image
+      run: |
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
         ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Clean up
+      run: rm /tmp/config.json
