@@ -21,7 +21,7 @@ jobs:
     - name: Push Docker Image
       run: |
         docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        docker push my-image
+        docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
         ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
