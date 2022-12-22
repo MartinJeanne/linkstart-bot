@@ -18,3 +18,5 @@ jobs:
     - name: Deploy to Production
       run: |
         ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

@@ -8,7 +8,7 @@ module.exports = {
 
 	async execute(interaction, client) {
 		const queue = client.player.getQueue(interaction.guildId);
-		if (!queue || !queue.playing) return await interaction.reply('Je ne joue pas de musique actuellement !');
+		if (!queue || !queue.playing) return await interaction.reply({ content: 'Je ne joue pas de musique actuellement !', ephemeral: true });
 		queue.destroy();
 		return await interaction.reply({content: 'Tchao !', ephemeral: true });
 	},
