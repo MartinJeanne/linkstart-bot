@@ -19,7 +19,7 @@ jobs:
         docker build -t linkstart-bot-image .
     - name: Push Docker Image
       run: |
-        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.io
         docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
