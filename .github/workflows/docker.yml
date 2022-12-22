@@ -9,12 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Add discord token
+      run: |
+      mkdir ressources
+      echo "{ \"token:\": \"$DISCORD_TOKEN\" }" > ressources/config.json
+
     - name: Build Docker Image
       run: docker build -t linkstart-bot-image .
+
     - name: Push Docker Image
       run: |
         docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         docker push my-image
+
     - name: Deploy to Production
       run: |
         ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
