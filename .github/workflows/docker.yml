@@ -13,9 +13,9 @@ jobs:
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
       run: |
-        jq --arg clientId "$DISCORD_CLIENT_ID" '.clientId=$clientId' /tmp/config.json > resources/config.json
-        jq --arg guildId "$DISCORD_GUILD_ID" '.guildId=$guildId' /tmp/config.json > resources/config.json
-        jq --arg token "$DISCORD_TOKEN" '.token=$token' /tmp/config.json > resources/config.json
+        jq --arg clientId "$DISCORD_CLIENT_ID" '.clientId=$clientId' /tmp/config.json > ressources/config.json
+        jq --arg guildId "$DISCORD_GUILD_ID" '.guildId=$guildId' /tmp/config.json > ressources/config.json
+        jq --arg token "$DISCORD_TOKEN" '.token=$token' /tmp/config.json > ressources/config.json
     - name: Build Docker Image
       run: docker build -t linkstart-bot-image .
     - name: Push Docker Image
