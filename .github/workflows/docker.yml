@@ -21,8 +21,11 @@ jobs:
         docker build -t linkstart-bot-image .
         docker tag linkstart-bot-image garwalle/firstimage:latest
     - name: Push Docker Image
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" -p --password-stdin 
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
         docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
