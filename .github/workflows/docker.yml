@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: ALLO
     - name: Copy config file
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
