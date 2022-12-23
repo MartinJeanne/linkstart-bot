@@ -13,7 +13,7 @@ jobs:
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
       run: |
-        jq --arg clientId " ${{ secrets.DISCORD_CLIENT_ID }}" '.clientId=$clientId' /tmp/config.json > ressources/config.json
+        jq --arg clientId "${{ secrets.DISCORD_CLIENT_ID }}" '.clientId=$clientId' /tmp/config.json > ressources/config.json
         jq --arg guildId "${{ secrets.DISCORD_GUILD_ID }}" '.guildId=$guildId' /tmp/config.json > ressources/config.json
         jq --arg token "${{ secrets.DISCORD_TOKEN }}" '.token=$token' /tmp/config.json > ressources/config.json
     - name: Build Docker Image
@@ -31,6 +31,6 @@ jobs:
         username: martin
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        script: docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image
+        script: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin && docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image
     - name: Clean up
       run: rm /tmp/config.json
