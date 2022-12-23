@@ -22,7 +22,7 @@ jobs:
         docker tag linkstart-bot-image garwalle/firstimage:latest
     - name: Push Docker Image
       run: |
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
