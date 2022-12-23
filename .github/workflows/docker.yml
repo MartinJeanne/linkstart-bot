@@ -12,7 +12,7 @@ jobs:
     - name: ALLO
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: echo "$DOCKER_PASSWORD" | docker login -u "garwalle" -p --password-stdin 
+      run: echo "$DOCKER_PASSWORD" | docker login -u "garwalle" --password-stdin 
     - name: Copy config file
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
