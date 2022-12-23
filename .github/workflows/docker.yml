@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Push Docker Image
+      run: |
+        echo $DOCKER_USERNAME
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker push linkstart-bot-image
     - name: Copy config file
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
@@ -22,7 +27,7 @@ jobs:
         docker tag linkstart-bot-image garwalle/firstimage:latest
     - name: Push Docker Image
       run: |
-        winpty docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push linkstart-bot-image
     - name: Deploy to Production
       run: |
