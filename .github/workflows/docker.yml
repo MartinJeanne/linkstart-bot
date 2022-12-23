@@ -21,15 +21,12 @@ jobs:
         docker build -t linkstart-bot-image .
         docker tag linkstart-bot-image garwalle/linkstart-bot-image:latest
     - name: Push Docker Image
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin 
         docker push garwalle/linkstart-bot-image:latest
     - name: Deploy to Production
       run: |
-        ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
+        ssh -o StrictHostKeyChecking=no martin@martin-jeanne.site -p ${{ secrets.SSH_PORT }} "docker pull linkstart-bot-image && docker stop linkstart-bot && docker rm linkstart-bot && docker run -d --name linkstart-bot linkstart-bot-image"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Clean up
