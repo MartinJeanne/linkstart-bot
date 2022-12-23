@@ -10,9 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Push Docker Image
+      env:
+        DOCKER_PASSWORD: ${{ env.DOCKER_PASSWORD }}
       run: |
         echo $DOCKER_USERNAME
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        echo $DOCKER_PASSWORD | docker login ghcr.io -u $USERNAME --password-stdin 
         docker push linkstart-bot-image
     - name: Copy config file
       run: cp ressources/config.json /tmp/config.json
