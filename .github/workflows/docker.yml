@@ -9,10 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Push Docker Image
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: echo "coucou" | docker login -u garwalle --password-stdin 
+    - name: ALLO
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u garwalle --password-stdin 
     - name: Copy config file
       run: cp ressources/config.json /tmp/config.json
     - name: Update config file
