@@ -12,7 +12,9 @@ Modify "ressources/config.json" and fill these information:
 ```
 
 ### Run bot with Node.js
-```node main.js```
+```
+node main.js
+```
 
 ### Run bot with Docker
 Build Docker image:
