@@ -18,10 +18,14 @@ node main.js
 
 ### Run bot with Docker
 Build Docker image:
-```docker build -t linkstart-bot .```
+```
+docker build -t linkstart-bot .
+```
 
 Run image in a container:
-```docker run linkstart-bot```
+```
+docker run linkstart-bot
+```
     
 ## Invite my bot : 
 Invite it on your server by this link: 
