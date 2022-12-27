@@ -20,6 +20,7 @@ module.exports = {
 		else if(interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) 
 			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
+			
 		const queue = await client.player.createQueue(interaction.guild);
 		if (!queue.connection) await queue.connect(channel);
 

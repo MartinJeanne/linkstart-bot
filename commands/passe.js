@@ -2,8 +2,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('stop')
-		.setDescription('Stop la musique'),
+		.setName('passe')
+		.setDescription('Passe la musique en cours'),
 
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply
@@ -16,10 +16,10 @@ module.exports = {
 		else if(interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) 
 			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
-
+			
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
-		queue.destroy();
-		return await interaction.editReply('Tchao !');
+		queue.skip();
+		return await interaction.editReply('Je passe cette musique !');
 	},
 };
