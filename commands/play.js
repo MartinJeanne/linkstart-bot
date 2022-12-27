@@ -10,7 +10,7 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
-		await interaction.deferReply({ ephemeral: true }); // make Discord wait for reply
+		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply
 
 		const channel = interaction.member.voice.channel;
 		// if user is not in channel
