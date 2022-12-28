@@ -1,5 +1,5 @@
 # linkstart-bot
-French discord bot that can play music and do many things!
+French discord bot that can play music among other things!
 
 ## Run the bot
 Modify "ressources/config.json" and fill these information:
