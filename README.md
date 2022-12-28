@@ -16,6 +16,7 @@ Deploy commands to Discord
 ```
 node deploy-commands.js
 ```
+
 Launch the bot
 ```
 node main.js
