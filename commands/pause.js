@@ -21,11 +21,11 @@ module.exports = {
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 		if (queue.setPaused()) {
 			queue.setPaused(false)
-			return await interaction.editReply('Reprise de la musique');
+			return await interaction.editReply('▶️ Reprise de la musique');
 		}
 		else {
 			queue.setPaused(true);
-			return await interaction.editReply('Pause');
+			return await interaction.editReply('⏸️ Musique en pause');
 		}
 	},
 };

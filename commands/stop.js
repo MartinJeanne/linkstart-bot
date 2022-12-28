@@ -20,6 +20,6 @@ module.exports = {
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 		queue.destroy();
-		return await interaction.editReply('Tchao !');
+		return await interaction.editReply('🛑 Tchao !');
 	},
 };

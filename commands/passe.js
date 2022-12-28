@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,6 +21,6 @@ module.exports = {
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 		queue.skip();
-		return await interaction.editReply('Je passe cette musique !');
+		return await interaction.editReply('⏩ Musique passé');
 	},
 };
