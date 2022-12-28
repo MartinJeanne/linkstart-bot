@@ -13,7 +13,7 @@ Modify "ressources/config.json" and fill these information:
 
 ### Run bot with Node.js
 ```
-deploy-commands.js
+node deploy-commands.js
 ```
 
 ```
