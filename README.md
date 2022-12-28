@@ -1,5 +1,4 @@
 # linkstart-bot
-# linkstart-bot
 French discord bot that can play music and do many things!
 
 ## Run the bot
