@@ -37,4 +37,4 @@ docker run linkstart-bot
 Invite it on your server by this link: 
 >https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot
 
-**Have fun !**
+**Have fun!**
