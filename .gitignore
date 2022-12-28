@@ -1,4 +1,3 @@
 node_modules
-ressources/configTest.json
-commandsOld/
-Procfile
+.env
+deploy-commands-dev.js

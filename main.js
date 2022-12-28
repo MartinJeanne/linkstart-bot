@@ -1,7 +1,12 @@
 // Require the necessary discord.js classes
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+// fs from node to navigate through commands files
 const fs = require('node:fs');
+// Player from discord-player to play music
 const { Player } = require('discord-player')
+// dotenv to use environnement variables in .env file
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
@@ -55,5 +60,4 @@ client.on('guildMemberRemove', member => {
 	channel.send(`Bye, ${member}`);
 });
 
-const { token } = require('./ressources/config.json');
-client.login(token); 
+client.login(process.env.DISCORD_TOKEN); 
