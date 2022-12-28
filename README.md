@@ -1,5 +1,5 @@
 # linkstart-bot
-French discord bot that can play music and do many things!
+French discord bot that can play music among other things!
 
 ## Run the bot
 Modify "ressources/config.json" and fill these information:
@@ -37,4 +37,4 @@ docker run linkstart-bot
 Invite it on your server by this link: 
 >https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot
 
-**Have fun !**
+**Have fun!**
