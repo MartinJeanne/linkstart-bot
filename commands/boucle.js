@@ -1,11 +1,18 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder } = require('discord.js');
 const { QueueRepeatMode } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('file')
-		.setDescription('Affiche la file des musiques'),
+		.setName('boucle')
+		.setDescription('Joue la musique actuelle en boucle')
+		.addIntegerOption(option => option.setName('mode')
+			.setDescription('Sur quoi boucler')
+			.setRequired(false)
+			.addChoices(
+				{ name: 'Aucun', value: QueueRepeatMode.OFF },
+				{ name: 'Musique', value: QueueRepeatMode.TRACK },
+				{ name: 'File', value: QueueRepeatMode.QUEUE },
+			)),
 
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply
@@ -18,22 +25,31 @@ module.exports = {
 		else if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
 			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
+
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 
-		let loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
-
-		let embed = new EmbedBuilder()
-			.setColor(0x6df4d0)
-			.setTitle('File des musiques 🎶')
-			.addFields({ name: 'Actuelle', value: queue.nowPlaying().toString() })
-			.setTimestamp()
-			.setFooter({ text: `Boucle : ${loopEmoji}`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
-
-		for (let i = 0; i < queue.tracks.length; i++) {
-			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].toString() })
+		let loopMode = interaction.options.getInteger('mode');
+		if (loopMode == null) {
+			loopMode = queue.repeatMode == QueueRepeatMode.OFF ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF
 		}
 
-		return await interaction.editReply({ embeds: [embed] });
+		let response;
+		switch (loopMode) {
+			case QueueRepeatMode.OFF:
+				response = '🛑 Boucle annulé';
+				break;
+
+			case QueueRepeatMode.TRACK:
+				response = '🔂 Musique mise en boucle';
+				break; 
+			
+			case QueueRepeatMode.QUEUE:
+				response = '🔁 File mise en boucle';
+				break;
+		}
+		queue.setRepeatMode(loopMode);
+		return await interaction.editReply(response);
+
 	},
 };

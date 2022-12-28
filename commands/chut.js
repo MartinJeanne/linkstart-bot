@@ -10,12 +10,15 @@ module.exports = {
 
 	async execute(interaction, client) {
 		mentionnedUser = interaction.options.getUser('membre');
-		const chutSentence = [
+		const chutSentences = [
 			`TA GUEULE ${mentionnedUser}`,
 			`Ferme ton clapet ${mentionnedUser}.`,
 			`Tais-toi ${mentionnedUser} !`,
 			`Ferme ta boîte à camembert ${mentionnedUser}.`,
-			`${mentionnedUser}, je crois qu'il faut que tu te taises.`
+			`${mentionnedUser}, je crois qu'il faut que tu te taises.`,
+			`${mentionnedUser} shhh`,
+			`Silence please ${mentionnedUser} !`,
+			`Puedes la fermer ${mentionnedUser} ?`
 		];
 
 		if (mentionnedUser === interaction.member.user.id) {
@@ -32,8 +35,8 @@ module.exports = {
 
 		else {
 			await interaction.reply({ content: `Je m'en occupe.`, ephemeral: true });
-			const random = Math.floor(Math.random() * chutSentence.length);
-			await interaction.channel.send(chutSentence[random]);
+			const random = Math.floor(Math.random() * chutSentences.length);
+			await interaction.channel.send(chutSentences[random]);
 		}
 	},
 };

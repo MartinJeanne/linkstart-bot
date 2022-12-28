@@ -35,8 +35,8 @@ module.exports = {
 		await queue.addTrack(song);
 		if (!queue.playing) {
 			await queue.play();
-			await interaction.editReply('▶️ Je joue : **' + song.title + '**');
+			return await interaction.editReply(`▶️ Je joue : **${song.title}**`);
 		}
-		else await interaction.editReply('▶️ Ajouté à la file : **' + song.title + '**');
+		else return await interaction.editReply(`▶️ Ajouté à la file : **${song.title}**`);
 	},
 };

@@ -6,7 +6,7 @@ COPY package-lock.json .
 RUN npm install
 
 COPY commands commands
-COPY ressources/config.json ressources/config.json
+COPY .env .
 
 # Deploy the commands
 COPY deploy-commands.js .
