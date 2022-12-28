@@ -29,28 +29,27 @@ module.exports = {
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 
-		let response;
 		let loopMode = interaction.options.getInteger('mode');
 		if (loopMode == null) {
-			if (queue.repeatMode == QueueRepeatMode.OFF) {
-				loopMode = QueueRepeatMode.TRACK;
-				response = '🔂 Musique mise en boucle';
-			} else {
-				loopMode = QueueRepeatMode.OFF;
+			loopMode = queue.repeatMode == QueueRepeatMode.OFF ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF
+		}
+
+		let response;
+		switch (loopMode) {
+			case QueueRepeatMode.OFF:
 				response = '🛑 Boucle annulé';
-			}
-		}
-		else if (loopMode == QueueRepeatMode.OFF) {
-			response = '🛑 Boucle annulé';
-		}
-		else if (loopMode == QueueRepeatMode.TRACK) {
-			response = '🔂 Musique mise en boucle';
-		}
-		else if (loopMode == QueueRepeatMode.QUEUE) {
-			response = '🔁 File mise en boucle';
+				break;
+
+			case QueueRepeatMode.TRACK:
+				response = '🔂 Musique mise en boucle';
+				break; 
+			
+			case QueueRepeatMode.QUEUE:
+				response = '🔁 File mise en boucle';
+				break;
 		}
 		queue.setRepeatMode(loopMode);
 		return await interaction.editReply(response);
-		
+
 	},
 };
