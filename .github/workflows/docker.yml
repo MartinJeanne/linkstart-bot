@@ -9,11 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Update config file
-      run: |
-        echo "{ \"clientId\": \"${{ secrets.DISCORD_CLIENT_ID }}\"," > ressources/config.json
-        echo "\"guildId\": \"${{ secrets.DISCORD_GUILD_ID }}\"," >> ressources/config.json
-        echo "\"token\": \"${{ secrets.DISCORD_TOKEN }}\" }" >> ressources/config.json
+    - name: Create .env file
+      run: echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
     - name: Build Docker Image
       run: |
         docker build -t linkstart-bot-image .
