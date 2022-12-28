@@ -12,7 +12,7 @@ Modify "ressources/config.json" and fill these information:
 ```
 
 ### Run bot with Node.js
-Deploy command to Discord
+Deploy commands to Discord
 ```
 node deploy-commands.js
 ```
