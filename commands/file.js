@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js');
+const { QueueRepeatMode } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -21,12 +22,14 @@ module.exports = {
 		const queue = client.player.getQueue(interaction.guildId);
 		if (!queue || !queue.playing) return await interaction.editReply('Je ne joue pas de musique actuellement !');
 
+		let loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
+
 		let embed = new EmbedBuilder()
 			.setColor(0x6df4d0)
-			.setTitle('🎶 File des musiques')
+			.setTitle('File des musiques 🎶 ')
 			.addFields({ name: 'Actuelle', value: queue.nowPlaying().toString() })
 			.setTimestamp()
-			.setFooter({ text: 'Bonne écoute !', iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
+			.setFooter({ text: `Boucle : ${loopEmoji}`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
 
 		for (let i = 0; i < queue.tracks.length; i++) {
 			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].toString() })
