@@ -41,11 +41,9 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.reply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande", ephemeral: true });
 	}
 });
-
-//client.player.on("trackStart", (queue, track) => queue.metadata.channel.send('Je joue : **' + track.title + '**'))
 
 client.on('guildMemberAdd', member => {
 	// Adding "Nouveau" to new user when they join the server
