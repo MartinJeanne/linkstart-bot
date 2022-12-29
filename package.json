@@ -2,10 +2,10 @@
   "name": "linkstart-bot",
   "version": "1.0.0",
   "description": "discord bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "prestart": "node deploy-commands.js",
-    "start": "node index.js",
+    "prestart": "node src/deploy-commands.js",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Garwalle",
@@ -21,5 +21,14 @@
   },
   "devDependencies": {
     "eslint": "^8.14.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinJeanne/Linkstart-bot.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/MartinJeanne/Linkstart-bot/issues"
+  },
+  "homepage": "https://github.com/MartinJeanne/Linkstart-bot#readme"
 }

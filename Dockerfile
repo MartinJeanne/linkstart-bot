@@ -1,14 +1,16 @@
 FROM node:16-alpine
-WORKDIR /usr/src/app
+WORKDIR /usr/linkstart-bot
 
+# npm
 COPY package.json .
 COPY package-lock.json .
 RUN npm install
 
-COPY commands commands
+# Environnement variables
 COPY .env .
 
+# Code
+COPY src .
+
 # Run the bot
-COPY deploy-commands.js .
-COPY index.js .
 CMD ["npm", "start"]

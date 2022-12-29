@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('retour')
-		.setDescription('Rejoue la musique dernière musique'),
+		.setDescription('Rejoue la dernière musique'),
 
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply
