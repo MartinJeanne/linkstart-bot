@@ -19,7 +19,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 (async () => {
 	try {
 		await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commands });
-		console.log(`(/) commandes rechargées !`);
+		console.log(`Commandes (/) rechargées !`);
 	} catch (error) {
 		console.error(error);
 	}
