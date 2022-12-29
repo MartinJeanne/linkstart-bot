@@ -2,15 +2,15 @@
   "name": "linkstart-bot",
   "version": "1.0.0",
   "description": "discord bot",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "prestart": "node deploy-commands.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Garwalle",
   "license": "WTFPL",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
     "@discordjs/opus": "^0.8.0",
     "axios": "^0.27.2",
     "discord-api-types": "^0.32.0",

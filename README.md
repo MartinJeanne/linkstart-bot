@@ -4,19 +4,19 @@ French discord bot that can play music among other things!
 ## Run the bot
 Rename .env.example file in .env and fill these information needed:
 ```env
-DISCORD_CLIENT_ID = "your_application_id"
-DISCORD_TOKEN = "the_token_of_your_bot"
+DISCORD_CLIENT_ID=your_application_id
+DISCORD_TOKEN=the_token_of_your_bot
 ```
 
 ### Run bot with Node.js
-Deploy commands to Discord (can take time to propagate)
+Install dependencies
 ```
-node deploy-commands.js
+npm install
 ```
 
-Launch the bot
+Lauch the bot (slash commands can take time to propagate to Discord)
 ```
-node main.js
+npm start
 ```
 
 ### Run bot with Docker
