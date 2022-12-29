@@ -4,7 +4,7 @@ const { QueueRepeatMode } = require('discord-player');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('boucle')
-		.setDescription('Joue la musique actuelle en boucle')
+		.setDescription('Joue de la musique en boucle')
 		.addIntegerOption(option => option.setName('mode')
 			.setDescription('Sur quoi boucler')
 			.setRequired(false)

@@ -2,8 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('passe')
-		.setDescription('Passe la musique en cours'),
+		.setName('suivant')
+		.setDescription('Passe à la musique suivante'),
 
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply

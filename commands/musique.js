@@ -3,10 +3,10 @@ const { QueryType } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('play')
-		.setDescription('Joue une musique')
+		.setName('musique')
+		.setDescription('Joue de la musique')
 		.addStringOption(option => option.setName('musique')
-			.setDescription('Nom ou url de la musique')
+			.setDescription('Nom ou lien de la musique')
 			.setRequired(true)),
 
 	async execute(interaction, client) {
