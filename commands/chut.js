@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chut')
-		.setDescription("Je dis à quelqu'un de la fermer, il ne saura pas que c'est toi qui à lancé la commande !")
+		.setDescription("Dis à quelqu'un de se taire, il ne saura pas que c'est toi qui à lancé la commande !")
 		.addUserOption(option => option.setName('membre')
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
