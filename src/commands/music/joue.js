@@ -3,7 +3,7 @@ const { QueryType } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('musique')
+		.setName('joue')
 		.setDescription('Joue de la musique')
 		.addStringOption(option => option.setName('musique')
 			.setDescription('Nom ou lien de la musique')
@@ -21,7 +21,21 @@ module.exports = {
 			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
 
-		const queue = await client.player.createQueue(interaction.guild);
+		// Create the server queue with options
+		const queue = client.player.createQueue(interaction.guild, {
+			leaveOnEnd: false,
+			leaveOnStop: true,
+			leaveOnEmpty: true,
+			autoSelfDeaf: false,
+			spotifyBridge: true,
+			ytdlOptions: {
+				quality: "highestaudio",
+				highWaterMark: 1 << 25,
+			},
+			metadata: {
+				channel: interaction.channel,
+			},
+		});
 		if (!queue.connection) await queue.connect(channel);
 
 		const toSearch = interaction.options.getString('musique');
