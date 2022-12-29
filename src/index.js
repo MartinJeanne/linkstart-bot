@@ -13,10 +13,21 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 
 // Player to play music
 client.player = new Player(client, {
-	ytdlOptions: {
-		quality: "highestaudio",
+    ytdlOptions: {
+		quality: 'highestaudio',
 		highWaterMark: 1 << 25
-	}
+		},
+		leaveOnEnd: false,
+		leaveOnStop: true,
+		leaveInEmpty: true,
+		leaveOnEndCooldown: 15000,
+		leaveOnEmptyCooldown: 15000,
+		autoSelfDeaf: true,
+		initialVolume: 30,
+		bufferingTimeout: 2500,
+		spotifyBride: true,
+		disableVolume: false,
+		smoothVolume: true
 })
 
 client.commands = new Collection();
