@@ -10,7 +10,7 @@ RUN npm install
 COPY .env .
 
 # Code
-COPY src .
+COPY src src
 
 # Run the bot
 CMD ["npm", "start"]
