@@ -1,8 +1,6 @@
 # linkstart-bot
 French discord bot that can play music among other things!
-
-## Invite my bot
-Invite [Linkstart](https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot) on your server!
+[Invite Linkstart](https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot) on your server
 
 ## Run the bot
 Rename .env.example file in .env and fill these information:
