@@ -30,10 +30,7 @@ module.exports = {
 			ytdlOptions: {
 				quality: "highestaudio",
 				highWaterMark: 1 << 25,
-			},
-			metadata: {
-				channel: interaction.channel,
-			},
+			}
 		});
 		if (!queue.connection) await queue.connect(channel);
 
