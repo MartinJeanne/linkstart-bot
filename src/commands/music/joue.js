@@ -10,7 +10,7 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
-		await interaction.deferReply({ ephemeral: true }); // make Discord API wait for reply
+		await interaction.deferReply(); // make Discord API wait for reply
 
 		const channel = interaction.member.voice.channel;
 		// if user is not in channel
@@ -19,7 +19,6 @@ module.exports = {
 		// if i'm in channel AND user is not in my channel
 		else if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
 			return await interaction.editReply('Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
-
 
 		// Create the server queue with options
 		const queue = client.player.createQueue(interaction.guild, {
