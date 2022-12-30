@@ -29,7 +29,7 @@ for (const folder of commandFolders) {
 
 // Once bot is started
 client.once('ready', () => {
-	console.log(`${client.user.tag} is ready!`)
+	console.log(`${client.user.tag} est prêt !`)
 });
 
 // Slash commands events listener
@@ -44,7 +44,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande", ephemeral: true });
+		await interaction.reply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un admin s.v.p !", ephemeral: true });
 	}
 });
 
