@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chut')
-		.setDescription("Dis à quelqu'un de se taire, il ne saura pas que c'est toi qui à lancé la commande !")
+		.setDescription("Dis à quelqu'un de se taire, il ne saura pas que c'est toi qui a lancé la commande !")
 		.addUserOption(option => option.setName('membre')
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
@@ -18,7 +18,10 @@ module.exports = {
 			`${mentionnedUser}, je crois qu'il faut que tu te taises.`,
 			`${mentionnedUser} shhh`,
 			`Silence please ${mentionnedUser} !`,
-			`Puedes la fermer ${mentionnedUser} ?`
+			`Puedes la fermer ${mentionnedUser} ?`,
+			`${mentionnedUser} :zipper_mouth: :zipper_mouth:`,
+			`${mentionnedUser} :shushing_face:`,
+			`Nan ? Sérieux ?! Bon tg maintenant ${mentionnedUser}.`
 		];
 
 		if (mentionnedUser === interaction.member.user.id) {
@@ -30,7 +33,7 @@ module.exports = {
 		}
 
 		else if (mentionnedUser == '306129521990565888') {
-			await interaction.reply({ content: "Es-tu sûr de vouloir faire ça ?", ephemeral: true });
+			await interaction.reply({ content: "Hahaha non je crois pas non, c'est mon créateur lui :stuck_out_tongue_winking_eye:", ephemeral: true });
 		}
 
 		else {
