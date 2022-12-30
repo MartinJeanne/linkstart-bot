@@ -19,12 +19,12 @@ module.exports = {
 		let embed = new EmbedBuilder()
 			.setColor(0x6df4d0)
 			.setTitle('File des musiques 🎶')
-			.addFields({ name: 'Actuelle', value: queue.nowPlaying().toString() })
+			.addFields({ name: 'Actuelle', value: queue.nowPlaying().title })
 			.setTimestamp()
 			.setFooter({ text: `Boucle : ${loopEmoji}`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
 
 		for (let i = 0; i < queue.tracks.length; i++) {
-			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].toString() })
+			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].title })
 		}
 
 		return await interaction.editReply({ embeds: [embed] });
