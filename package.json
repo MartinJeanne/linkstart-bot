@@ -13,11 +13,13 @@
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
     "axios": "^0.27.2",
+    "chatgpt": "^3.3.8",
     "discord-api-types": "^0.32.0",
     "discord-player": "^5.3.2",
     "discord.js": "^14.5.0",
     "dotenv": "^16.0.3",
-    "ffmpeg-static": "^5.1.0"
+    "ffmpeg-static": "^5.1.0",
+    "puppeteer": "^19.4.1"
   },
   "devDependencies": {
     "eslint": "^8.14.0"
