@@ -13,10 +13,7 @@ module.exports = {
         await interaction.deferReply(); // make Discord API wait for reply
 
         const prompt = interaction.options.getString('question');
-        const question = `
-        Réponds à cette comme question si tu étais une intelligence artificiel appelé \"Linkstart-bot\"
-        faisant parti d'un serveur Discord appelé \"Linkstart\"
-        et que ton créateur s'appellelait \"Garwalle\", voici la question :\n` + prompt
+        const question = `Réponds à cette comme question si tu étais une intelligence artificiel appelé \"Linkstart-bot\" faisant parti d'un serveur Discord appelé \"Linkstart\" et que ton créateur s'appellelait \"Garwalle\", voici la question :\n` + prompt
 
 
         const body = JSON.stringify({
