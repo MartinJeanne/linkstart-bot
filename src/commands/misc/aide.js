@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require('node:fs');
 
 module.exports = {
@@ -7,6 +7,7 @@ module.exports = {
 		.setDescription('Obtient des informations sur mes commandes'),
 
 	async execute(interaction, client) {
+		await interaction.deferReply();
 
 		const commands = [];
 
@@ -19,7 +20,17 @@ module.exports = {
 			}
 		}
 
-		console.log(commands);
-		return await interaction.editReply(`Voici la liste des commandes :\n${commands}`);
+		const embed = new EmbedBuilder()
+			.setColor(0x6df4d0)
+			.setTitle('Liste des commandes')
+			.setTimestamp()
+			.setFooter({ text: `Merci !`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
+
+		for (let i = 0; i < commands.length; i++) {
+			embed.addFields({ name: `${commands[i].name}`, value: `${commands[i].description}` });
+		}
+
+		console.log(commands[0]);
+		await interaction.editReply({ embeds: [embed] });
 	},
 };

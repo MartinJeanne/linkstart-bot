@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { QueueRepeatMode } = require('discord-player');
 const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
 
@@ -14,9 +13,9 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
-		let loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
+		const loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
 
-		let embed = new EmbedBuilder()
+		const embed = new EmbedBuilder()
 			.setColor(0x6df4d0)
 			.setTitle('File des musiques 🎶')
 			.addFields({ name: 'Actuelle', value: queue.nowPlaying().title })
@@ -27,6 +26,6 @@ module.exports = {
 			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].title });
 		}
 
-		return await interaction.editReply({ embeds: [embed] });
+		await interaction.editReply({ embeds: [embed] });
 	},
 };
