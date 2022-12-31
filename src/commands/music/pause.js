@@ -12,13 +12,9 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
-		if (queue.setPaused()) {
-			queue.setPaused(false)
-			return await interaction.editReply('▶️ Reprise de la musique');
-		}
-		else {
-			queue.setPaused(true);
-			return await interaction.editReply('⏸️ Musique en pause');
-		}
+		await queue.setPaused(!queue.connection.paused);
+
+		if (queue.connection.paused) await interaction.editReply('⏸️ Musique mise en pause');
+		else await interaction.editReply('▶️ Reprise de la musique');
 	},
 };
