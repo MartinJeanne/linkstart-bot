@@ -21,15 +21,17 @@ module.exports = {
 			return await interaction.editReply(':interrobang: Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
 		// Create the server queue with options
-		const queue = client.player.createQueue(interaction.guild, {
+		const queue = await client.player.createQueue(interaction.guild, {
 			leaveOnEnd: false,
 			leaveOnStop: true,
 			leaveOnEmpty: true,
 			autoSelfDeaf: false,
 			spotifyBridge: true,
 			ytdlOptions: {
-				quality: "highestaudio",
-				highWaterMark: 1 << 25,
+				filter: 'audioonly',
+				opusEncoded: true,
+				highWaterMark: 1 << 30,
+				dlChunkSize: 0,
 			}
 		});
 		if (!queue.connection) await queue.connect(channel);
@@ -47,6 +49,6 @@ module.exports = {
 			await queue.play();
 			await interaction.editReply(`▶️ Je joue : **${song.title}**`);
 		}
-		else await interaction.editReply(`▶️ Ajouté à la file : **${song.title}**`);
+		else await interaction.editReply(`▶️ Dans la file position **${queue.tracks.length}.** ajouté : **${song.title}**`);
 	},
 };
