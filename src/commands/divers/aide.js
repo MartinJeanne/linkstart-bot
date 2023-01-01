@@ -7,8 +7,6 @@ module.exports = {
 		.setDescription('Obtient des informations sur mes commandes'),
 
 	async execute(interaction, client) {
-		await interaction.deferReply({ ephemeral: true });
-
 		const commands = [];
 
 		const commandFolders = fs.readdirSync("src/commands");

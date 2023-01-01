@@ -25,19 +25,19 @@ module.exports = {
 		];
 
 		if (mentionnedUser === interaction.member.user.id) {
-			await interaction.reply({ content: "Heu, t'es bizarre fréritot..", ephemeral: true });
+			await interaction.editReply({ content: "Heu, t'es bizarre fréritot..", ephemeral: true });
 		}
 
 		else if (mentionnedUser == client.user.id) {
-			await interaction.reply({ content: "Tu t'es pris pour qui ? J'vais te goumer.", ephemeral: true });
+			await interaction.editReply({ content: "Tu t'es pris pour qui ? J'vais te goumer.", ephemeral: true });
 		}
 
 		else if (mentionnedUser == '306129521990565888') {
-			await interaction.reply({ content: "Hahaha non je crois pas non, c'est mon créateur lui :stuck_out_tongue_winking_eye:", ephemeral: true });
+			await interaction.editReply({ content: "Hahaha non je crois pas non, c'est mon créateur lui :stuck_out_tongue_winking_eye:", ephemeral: true });
 		}
 
 		else {
-			await interaction.reply({ content: `Je m'en occupe.`, ephemeral: true });
+			await interaction.editReply({ content: `Je m'en occupe.`, ephemeral: true });
 			const random = Math.floor(Math.random() * chutSentences.length);
 			await interaction.channel.send(chutSentences[random]);
 		}
