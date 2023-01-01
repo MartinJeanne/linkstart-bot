@@ -10,8 +10,6 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
-		await interaction.deferReply(); // make Discord API wait for reply
-
 		const channel = interaction.member.voice.channel;
 		// if user is not in channel
 		if (!channel)
@@ -41,14 +39,22 @@ module.exports = {
 			requestedBy: interaction.user,
 			searchEngine: QueryType.AUTO
 		});
-		if (result.tracks.length === 0) return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
-		const song = result.tracks[0];
+		if (result.tracks.length === 0) {
+			await queue.destroy();
+			return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
+		}
 
-		await queue.addTrack(song);
+		result.playlist ? queue.addTracks(result.tracks) : queue.addTrack(result.tracks[0]);
+
 		if (!queue.playing) {
 			await queue.play();
-			await interaction.editReply(`▶️ Je joue : **${song.title}**`);
+			if (!result.playlist)
+				await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 		}
-		else await interaction.editReply(`▶️ Dans la file position **${queue.tracks.length}.** ajouté : **${song.title}**`);
+		else if (!result.playlist)
+			await interaction.editReply(`▶️**${queue.tracks.length}.** position : **${result.tracks[0].title}**`);
+
+		if (result.playlist)
+			await interaction.editReply(`▶️ **${result.tracks.length}** musique ajoutées depuis la ${result.playlist.type}: ${result.playlist.title}** `);
 	},
 };
