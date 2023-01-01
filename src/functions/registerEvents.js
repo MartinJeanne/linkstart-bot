@@ -6,7 +6,6 @@ module.exports = function (client) {
 
     // When member join the server
     client.on('guildMemberAdd', member => {
-        console.log('test' + member);
         // Adding "Nouveau" to new user when they join the server
         if (member.guild.id == '485000880114892821') member.roles.add('485021407529664526');
     });
