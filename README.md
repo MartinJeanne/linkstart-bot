@@ -15,7 +15,7 @@ Install dependencies
 npm install
 ```
 
-Lauch the bot (slash commands can take time to propagate to Discord)
+Lauch the bot:
 ```
 npm start
 ```
