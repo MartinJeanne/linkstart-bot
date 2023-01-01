@@ -10,7 +10,7 @@ DISCORD_TOKEN=the_token_of_your_bot
 ```
 
 ### Run bot with Node.js
-Install dependencies
+Install dependencies:
 ```
 npm install
 ```
