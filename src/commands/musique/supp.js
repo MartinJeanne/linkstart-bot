@@ -10,8 +10,6 @@ module.exports = {
             .setRequired(true)),
 
     async execute(interaction, client) {
-        await interaction.deferReply(); // make Discord API wait for reply
-
         const queue = await checkPlayerUsable(interaction, client);
         if (!queue) return;
 

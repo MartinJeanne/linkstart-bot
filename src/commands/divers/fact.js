@@ -13,6 +13,6 @@ module.exports = {
 				joke = response.data.value;
 			})
 			.catch(error => console.log(error));
-		await interaction.reply(joke);
+		await interaction.editReply(joke);
 	},
 };

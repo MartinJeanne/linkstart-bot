@@ -7,8 +7,6 @@ module.exports = {
 		.setDescription('Passe à la musique suivante'),
 
 	async execute(interaction, client) {
-		await interaction.deferReply(); // make Discord API wait for reply
-
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 

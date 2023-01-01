@@ -40,10 +40,11 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
+		await interaction.deferReply(); // make Discord API wait for reply
 		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un admin s.v.p !", ephemeral: true });
+		await interaction.editReply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un modérateur", ephemeral: true });
 	}
 });
 
