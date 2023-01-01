@@ -4,6 +4,8 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player')
+// Register my Discord events
+const registerEvents = require('./functions/registerEvents.js');
 // dotenv to use environnement variables in .env file
 const dotenv = require('dotenv');
 dotenv.config();
@@ -27,10 +29,7 @@ for (const folder of commandFolders) {
 	}
 }
 
-// Once bot is started
-client.once('ready', () => {
-	console.log(`${client.user.tag} est prêt !`)
-});
+registerEvents(client);
 
 // Slash commands events listener
 client.on('interactionCreate', async interaction => {
@@ -46,18 +45,6 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un admin s.v.p !", ephemeral: true });
 	}
-});
-
-// When member join the server
-client.on('guildMemberAdd', member => {
-	// Adding "Nouveau" to new user when they join the server
-	member.roles.add('485021407529664526');
-});
-
-// When member leave the server
-client.on('guildMemberRemove', member => {
-	const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
-	channel.send(`Bye, ${member}`);
 });
 
 client.login(process.env.DISCORD_TOKEN); 

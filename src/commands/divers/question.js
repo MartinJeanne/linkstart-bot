@@ -16,7 +16,6 @@ module.exports = {
         // TODO établir un meilleur contexte (faire une recherche), utiliser le pseudo de l'user ?
         const question = `Réponds à cette comme question si tu étais une intelligence artificiel appelé "Linkstart-bot", faisant parti d'un serveur Discord appelé "Linkstart", et que ton créateur s'appellelait "Garwalle", voici la question :\n` + prompt
 
-
         const body = JSON.stringify({
             'model': 'text-davinci-003',
             'prompt': question,
