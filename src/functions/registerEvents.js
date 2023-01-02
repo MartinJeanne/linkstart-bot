@@ -1,7 +1,7 @@
 module.exports = function (client) {
     // Once bot is started
     client.once('ready', () => {
-        console.log(`${client.user.tag} est prêt !`)
+        console.log(`${client.user.tag} est lancé !`)
     });
 
     // When member join the server
@@ -15,6 +15,23 @@ module.exports = function (client) {
         if (member.guild.id == '485000880114892821') {
             const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
             channel.send(`Bye, ${member}`);
+        }
+    });
+
+    // When user uses a slash (/) command!
+    client.on('interactionCreate', async interaction => {
+        if (!interaction.isCommand()) return;
+
+        const command = client.commands.get(interaction.commandName);
+
+        if (!command) return;
+
+        try {
+            await interaction.deferReply(); // make Discord API wait for reply
+            await command.execute(interaction, client);
+        } catch (error) {
+            console.error(error);
+            await interaction.editReply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un modérateur", ephemeral: true });
         }
     });
 };
