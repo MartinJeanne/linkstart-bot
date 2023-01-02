@@ -17,17 +17,22 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(0x6df4d0)
-			.setTitle('File des musiques 🎶')
-			.addFields({ name: 'Actuelle', value: `${queue.nowPlaying().title}\n${bar}` })
+			.setTitle('File de musiques 🎶')
+			.addFields({ name: '\u200B', value: `**${queue.nowPlaying().title}**\n${bar}` })
 			.setThumbnail(queue.nowPlaying().thumbnail)
 			.setTimestamp()
 			.setFooter({ text: `Boucle : ${loopEmoji}`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
 
-		// TODO only two fields, and support pagination
-		for (let i = 0; i < queue.tracks.length; i++) {
-			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].title });
+		if (queue.tracks.length == 0) return await interaction.editReply({ embeds: [embed] });
+		
+		const musicNb = queue.tracks.length > 10 ? 10 : queue.tracks.length;
+		
+		let queueString = '';
+		for (let i = 0; i < musicNb; i++) {
+			queueString += `**${i + 1}.** ${queue.tracks[i].title}\n`
 		}
 
+		embed.addFields({ name: '\u200B', value: queueString });
 		await interaction.editReply({ embeds: [embed] });
 	},
 };
