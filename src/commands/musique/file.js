@@ -11,7 +11,7 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
-		const loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
+		const loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '⏹️';
 
 		const bar = queue.createProgressBar({ queue: false, length: 19, timecodes: true })
 
