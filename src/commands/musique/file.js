@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { QueueRepeatMode } = require('discord-player');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
+const createQueueEmbed = require('../../functions/createQueueEmbed.js');
 const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
 
 module.exports = {
@@ -11,23 +11,39 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
-		const loopEmoji = queue.repeatMode == QueueRepeatMode.TRACK ? '🔂' : queue.repeatMode == QueueRepeatMode.QUEUE ? '🔁' : '🛑';
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('left')
+					.setLabel('⬅️')
+					.setStyle(ButtonStyle.Primary),
 
-		const bar = queue.createProgressBar({ queue: false, length: 19, timecodes: true })
+				new ButtonBuilder()
+					.setCustomId('right')
+					.setLabel('➡️')
+					.setStyle(ButtonStyle.Primary),
+			);
 
-		const embed = new EmbedBuilder()
-			.setColor(0x6df4d0)
-			.setTitle('File des musiques 🎶')
-			.addFields({ name: 'Actuelle', value: `${queue.nowPlaying().title}\n${bar}` })
-			.setThumbnail(queue.nowPlaying().thumbnail)
-			.setTimestamp()
-			.setFooter({ text: `Boucle : ${loopEmoji}`, iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128' });
+		let page = 0;
+		const embed = await createQueueEmbed(queue, page);
+		const message = await interaction.editReply({ embeds: [embed], components: queue.tracks.length > 10 ? [row] : [] });
 
-		
-		for (let i = 0; i < queue.tracks.length; i++) {
-			embed.addFields({ name: `${i + 1}.`, value: queue.tracks[i].title });
-		}
+		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
+		collector.on('collect', async interaction => {
 
-		await interaction.editReply({ embeds: [embed] });
+			switch (interaction.customId) {
+				case 'right':
+					if (page >= Math.ceil(queue.tracks.length / 10) - 1) break;
+					page += 1;
+					break;
+				case 'left':
+					if (page <= 0) break;
+					page -= 1;
+					break;
+			}
+
+			const embed = await createQueueEmbed(queue, page);
+			await interaction.update({ embeds: [embed] });
+		});
 	},
 };

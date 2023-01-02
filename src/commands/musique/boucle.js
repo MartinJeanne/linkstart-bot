@@ -27,7 +27,7 @@ module.exports = {
 		let response;
 		switch (loopMode) {
 			case QueueRepeatMode.OFF:
-				response = '🛑 Boucle annulé';
+				response = '⏹️ Boucle annulé';
 				break;
 
 			case QueueRepeatMode.TRACK:
