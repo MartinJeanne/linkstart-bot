@@ -11,6 +11,6 @@ module.exports = {
 		if (!queue) return;
 		
 		queue.destroy();
-		return await interaction.editReply('🛑 Tchao !');
+		return await interaction.editReply('⏹️ Tchao !');
 	},
 };

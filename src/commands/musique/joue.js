@@ -52,7 +52,7 @@ module.exports = {
 				await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 		}
 		else if (!result.playlist)
-			await interaction.editReply(`▶️**${queue.tracks.length}.** position : **${result.tracks[0].title}**`);
+			await interaction.editReply(`▶️ **${queue.tracks.length}.** position : **${result.tracks[0].title}**`);
 
 		if (result.playlist)
 			await interaction.editReply(`▶️ **${result.tracks.length}** musique ajoutées depuis la ${result.playlist.type}: ${result.playlist.title}** `);
