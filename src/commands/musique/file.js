@@ -11,6 +11,7 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
+		// TODO improve button style
 		const row = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
