@@ -10,7 +10,8 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
+		const nextSong = queue.tracks[0];
 		queue.skip();
-		return await interaction.editReply('⏩ Musique passé');
+		return await interaction.editReply(`⏩ Suivant, musique actuelle : **${nextSong.title}**`);
 	},
 };
