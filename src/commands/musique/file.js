@@ -35,5 +35,7 @@ module.exports = {
 			const row = await queueRowBuilder(queue, page);
 			await interaction.update({ embeds: [embed], components: row ? [row] : [] });
 		});
+
+		collector.on('end', collected => interaction.deleteReply());
 	},
 };
