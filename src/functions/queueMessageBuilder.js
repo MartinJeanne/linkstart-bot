@@ -12,7 +12,7 @@ exports.queueEmbedBuilder = async function (queue, page) {
     return new EmbedBuilder()
         .setColor(0xd7667e)
         .setTitle(`${queue.nowPlaying().title}`)
-        .setDescription(`${progress.current} : ${progress.end}\n\n` + queueString)
+        .setDescription(`*${progress.current} : ${progress.end}*\n\n` + queueString)
         .setThumbnail(queue.nowPlaying().thumbnail)
         .setTimestamp()
         .setFooter({

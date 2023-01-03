@@ -10,9 +10,8 @@ module.exports = {
 		const queue = await checkPlayerUsable(interaction, client);
 		if (!queue) return;
 
-		const skipped = queue.nowPlaying();
-		const current = queue.tracks[0];
+		const nextSong = queue.tracks[0];
 		queue.skip();
-		return await interaction.editReply(`⏩ Musique passé : **${skipped.title}**\nMusique actuelle : **${current.title}**`);
+		return await interaction.editReply(`⏩ Suivant, musique actuelle : **${nextSong.title}**`);
 	},
 };
