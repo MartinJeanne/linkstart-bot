@@ -36,7 +36,7 @@ exports.queueRowBuilder = async function (queue, page) {
     const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
     const rigthBtn = page >= Math.ceil(queue.tracks.length / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
 
-    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn ? leftBtn : null, rigthBtn);
+    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
     else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
     else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
 }
