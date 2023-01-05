@@ -2,63 +2,80 @@ const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, But
 const { QueryType, Track, Playlist } = require('discord-player');
 const { default: axios } = require('axios');
 const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('playlist')
         .setDescription('Joue ou sauvegarde une playlist !')
-        .addSubcommand(subcommand => subcommand.setName('ajouter')
+        .addSubcommand(subcommand => subcommand.setName('crée')
             .setDescription('Ajoute une playlist existante')
             .addStringOption(option => option.setName('url').setDescription('Le lien de la playlist')
                 .setRequired(true))
             .addStringOption(option => option.setName('nom').setDescription('Nom de la playlist')))
-        .addSubcommand(subcommand => subcommand.setName('jouer')
+        .addSubcommand(subcommand => subcommand.setName('joue')
             .setDescription('Joue une playlist !')),
 
     async execute(interaction, client) {
-        const playlists = 'http://127.0.0.1:8081/api/playlists'
-        const members = 'http://127.0.0.1:8081/api/members'
+        const playlistsUrl = `${process.env.API_URL}/playlists`;
+        const membersUrl = `${process.env.API_URL}/members`;
 
         const memberId = interaction.member.user.id;
+        const maxPlaylists = 5;
 
+        // TODO don't throw error in linkstart-backend when no content
         switch (interaction.options.getSubcommand()) {
-            case 'ajouter':
+            case 'crée':
                 // Check if user is in db
-                await axios.get(`${members}/${memberId}`).catch(async error => {
+                await axios.get(`${membersUrl}/${memberId}`).catch(async error => {
                     const errorMessage = error.response.data.message;
-
                     if (errorMessage && errorMessage.includes('NoContentFoundException')) {
                         const newUser = {
                             id: memberId,
                             tag: interaction.member.user.tag
                         }
 
-                        await axios.post(members, newUser)
+                        await axios.post(membersUrl, newUser)
                             .catch(error => console.log(error));
                     }
+                    else throw 'Erreur lors de la récupération des utilisateurs';
                 });
 
-                const url = interaction.options.getString('url');
+                const isMaxPlaylists = await axios.get(`${membersUrl}/${memberId}/playlists`)
+                    .then(response => {
+                        const userPlaylists = response.data._embedded.playlistDtoList;
+                        if (userPlaylists?.length < maxPlaylists) return false;
+                        else return true;
+                    }).catch(error => {
+                        const errorMessage = error.response.data.message;
+                        if (errorMessage && errorMessage.includes('NoContentFoundException')) return false;
+                        else throw 'Erreur lors de la récupération des playlists';
+                    });
+
+                if (isMaxPlaylists === true) return await interaction.editReply(`Tu es au maximum de playlists : ${maxPlaylists}`);
+
                 const name = interaction.options.getString('nom');
+                const url = interaction.options.getString('url');
 
                 const newPlaylist = {
                     name: name ? name : "Ma playlist",
                     url: url
                 }
 
-                await axios.post(playlists, newPlaylist, { params: { memberId } })
+                await axios.post(playlistsUrl, newPlaylist, { params: { memberId } })
                     .catch(error => console.log(error));
 
                 await interaction.editReply('Playlist ajouté !');
                 break;
 
-            case 'jouer':
+            case 'joue':
                 const queue = await checkPlayerUsable(interaction, client);
                 if (!queue) return;
 
-                await axios.get(`${members}/${memberId}/playlists`).then(async response => {
+                await axios.get(`${membersUrl}/${memberId}/playlists`).then(async response => {
                     const userPlaylists = response.data?._embedded?.playlistDtoList;
-                    if (!userPlaylists) await interaction.editReply('Tu n\'as pas de playlist enregistrées !');
+                    if (!userPlaylists) await interaction.editReply('Tu n\'as pas de playlist enregistrée !');
 
                     let buttons = [];
                     for (let i = 0; i < userPlaylists.length; i++) {
@@ -85,10 +102,10 @@ module.exports = {
                         await interaction.update(`Je joue la playlist : **${playlist.name}**`);
                     });
                     collector.on('end', collected => interaction.deleteReply());
-                }).catch(async error => {
+                })/*.catch(async error => {
                     await interaction.editReply('Tu n\'as pas de playlist enregistrées !');
                     console.log(error);
-                });
+                });*/
                 break;
         }
     },

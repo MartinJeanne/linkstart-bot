@@ -52,4 +52,4 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 registerEvents(client);
 
 // Launch the bot
-client.login(process.env.DISCORD_TOKEN); 
+client.login(process.env.DISCORD_TOKEN);
