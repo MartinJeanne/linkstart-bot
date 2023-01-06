@@ -2,6 +2,9 @@ const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, But
 const { QueryType, Track, Playlist } = require('discord-player');
 const { default: axios } = require('axios');
 const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
+const getUser = require('../../functions/getUser');
+const isUserAtMaxPlaylist = require('../../functions/isUserAtMaxPlaylist');
+const postPlaylist = require('../../functions/postPlaylist');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -19,51 +22,26 @@ module.exports = {
 
     async execute(interaction, client) {
         const playlistsUrl = `${process.env.API_URL}/playlists`;
-        const membersUrl = `${process.env.API_URL}/members`;
+        const membersUrl = `${process.env.API_URL}/discordUsers`;
 
         const discordId = interaction.member.user.id;
         const maxPlaylists = 5;
 
-        // TODO don't throw error in linkstart-backend when no content
         switch (interaction.options.getSubcommand()) {
             case 'crée':
-                const userId = await axios.get(membersUrl, discordId).then(async response => {
-                    if (response.status === 200) return response.data._embedded.memberDtoList[0].id;
-                    else if (response.status === 204) {
-                        const newUser = {
-                            discordId: discordId,
-                            tag: interaction.member.user.tag
-                        }
+                const user = await getUser(interaction);
+                if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-                        const res = await axios.post(membersUrl, newUser).catch(error => console.error(error));
-                        return res.data.id;
-                    }
-                    else return null;
-                }).catch(error => console.error(error));
+                const isMaxPlaylist = await isUserAtMaxPlaylist(user, maxPlaylists);
+                if (isMaxPlaylist === true) return await interaction.editReply(`Tu es au maximum de playlists : ${maxPlaylists}`);
 
-                if (!userId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur`);
+                const playlistName = interaction.options.getString('nom');
+                const playlistUrl = interaction.options.getString('url');
+                
+                const createdPlaylist = await postPlaylist(user, playlistName, playlistUrl);
+                if (!createdPlaylist) return await interaction.editReply(`❌ Il y a eu un problème lors de la création de la playlist dans la base de donnée`);
 
-                const isMaxPlaylists = await axios.get(`${membersUrl}/${userId}/playlists`).then(response => {
-                    const userPlaylists = response.data._embedded.playlistDtoList;
-                    if (response.status === 204) return false;
-                    else if (response.status === 200 && userPlaylists?.length < maxPlaylists) return false;
-                    else return true;
-                }).catch(error => console.error(error));
-
-                if (isMaxPlaylists === true) return await interaction.editReply(`Tu es au maximum de playlists : ${maxPlaylists}`);
-
-                const name = interaction.options.getString('nom');
-                const url = interaction.options.getString('url');
-
-                const newPlaylist = {
-                    name: name ? name : "Ma playlist",
-                    url: url
-                }
-
-                await axios.post(playlistsUrl, newPlaylist, { params: { discordId } })
-                    .catch(error => console.log(error));
-
-                await interaction.editReply('Playlist ajouté !');
+                await interaction.editReply(`✔️ Nouvelle playlist : ${createdPlaylist.name} ajouté !`);
                 break;
 
             case 'joue':
