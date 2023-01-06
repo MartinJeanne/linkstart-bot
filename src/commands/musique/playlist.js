@@ -21,37 +21,34 @@ module.exports = {
         const playlistsUrl = `${process.env.API_URL}/playlists`;
         const membersUrl = `${process.env.API_URL}/members`;
 
-        const memberId = interaction.member.user.id;
+        const discordId = interaction.member.user.id;
         const maxPlaylists = 5;
 
         // TODO don't throw error in linkstart-backend when no content
         switch (interaction.options.getSubcommand()) {
             case 'crée':
-                // Check if user is in db
-                await axios.get(`${membersUrl}/${memberId}`).catch(async error => {
-                    const errorMessage = error.response.data.message;
-                    if (errorMessage && errorMessage.includes('NoContentFoundException')) {
+                const userId = await axios.get(membersUrl, discordId).then(async response => {
+                    if (response.status === 200) return response.data._embedded.memberDtoList[0].id;
+                    else if (response.status === 204) {
                         const newUser = {
-                            id: memberId,
+                            discordId: discordId,
                             tag: interaction.member.user.tag
                         }
 
-                        await axios.post(membersUrl, newUser)
-                            .catch(error => console.log(error));
+                        const res = await axios.post(membersUrl, newUser).catch(error => console.error(error));
+                        return res.data.id;
                     }
-                    else throw 'Erreur lors de la récupération des utilisateurs';
-                });
+                    else return null;
+                }).catch(error => console.error(error));
 
-                const isMaxPlaylists = await axios.get(`${membersUrl}/${memberId}/playlists`)
-                    .then(response => {
-                        const userPlaylists = response.data._embedded.playlistDtoList;
-                        if (userPlaylists?.length < maxPlaylists) return false;
-                        else return true;
-                    }).catch(error => {
-                        const errorMessage = error.response.data.message;
-                        if (errorMessage && errorMessage.includes('NoContentFoundException')) return false;
-                        else throw 'Erreur lors de la récupération des playlists';
-                    });
+                if (!userId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur`);
+
+                const isMaxPlaylists = await axios.get(`${membersUrl}/${userId}/playlists`).then(response => {
+                    const userPlaylists = response.data._embedded.playlistDtoList;
+                    if (response.status === 204) return false;
+                    else if (response.status === 200 && userPlaylists?.length < maxPlaylists) return false;
+                    else return true;
+                }).catch(error => console.error(error));
 
                 if (isMaxPlaylists === true) return await interaction.editReply(`Tu es au maximum de playlists : ${maxPlaylists}`);
 
@@ -63,7 +60,7 @@ module.exports = {
                     url: url
                 }
 
-                await axios.post(playlistsUrl, newPlaylist, { params: { memberId } })
+                await axios.post(playlistsUrl, newPlaylist, { params: { discordId } })
                     .catch(error => console.log(error));
 
                 await interaction.editReply('Playlist ajouté !');
@@ -73,7 +70,7 @@ module.exports = {
                 const queue = await checkPlayerUsable(interaction, client);
                 if (!queue) return;
 
-                await axios.get(`${membersUrl}/${memberId}/playlists`).then(async response => {
+                await axios.get(`${membersUrl}/${discordId}/playlists`).then(async response => {
                     const userPlaylists = response.data?._embedded?.playlistDtoList;
                     if (!userPlaylists) await interaction.editReply('Tu n\'as pas de playlist enregistrée !');
 
