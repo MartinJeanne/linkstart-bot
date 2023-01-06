@@ -12,11 +12,11 @@ module.exports = async function (user, name, url) {
     }
 
     const discordUserId = user.id;
-    const playlist = await axios.post(playlistsUrl, newPlaylist, { params: { discordUserId } })
+    const createdPlaylist = await axios.post(playlistsUrl, newPlaylist, { params: { discordUserId } })
         .then(response => {
             return response.data;
         })
         .catch(error => console.log(error));
 
-    return playlist;
+    return createdPlaylist;
 };
