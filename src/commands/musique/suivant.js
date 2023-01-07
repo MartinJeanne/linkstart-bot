@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
+const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('Passe à la musique suivante'),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerUsable(interaction, client);
+		const queue = await checkPlayerPlaying(interaction, client);
 		if (!queue) return;
 
 		const nextSong = queue.tracks[0];

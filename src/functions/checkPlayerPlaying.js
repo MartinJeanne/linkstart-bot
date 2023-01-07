@@ -8,23 +8,9 @@ module.exports = async function (interaction, client) {
 		return await interaction.editReply(':interrobang: Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
 
 	const queue = client.player.getQueue(interaction.guildId);
-	if (!queue) {
-		// Create the server queue with options
-		const queue = await client.player.createQueue(interaction.guild, {
-			leaveOnEnd: false,
-			leaveOnStop: true,
-			leaveOnEmpty: true,
-			autoSelfDeaf: false,
-			spotifyBridge: true,
-			ytdlOptions: {
-				filter: 'audioonly',
-				opusEncoded: true,
-				highWaterMark: 1 << 30,
-				dlChunkSize: 0,
-			}
-		});
-		if (!queue.connection) await queue.connect(interaction.member.voice.channel);
-		return queue;
-	}
-	return queue;
+	if (!queue || !queue.playing) {
+		await interaction.editReply(':interrobang: Je ne joue pas de musique actuellement !');
+		return null;
+	} 
+	else return queue;
 };

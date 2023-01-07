@@ -9,6 +9,8 @@ exports.queueEmbedBuilder = async function (queue, page) {
         queueString += `**${i + 1}.** ${queue.tracks[i].title}\n`;
     }
 
+    const pageNb = Math.ceil(queue.tracks.length / 10);
+    
     return new EmbedBuilder()
         .setColor(0xd7667e)
         .setTitle(`${queue.nowPlaying().title}`)
@@ -16,11 +18,10 @@ exports.queueEmbedBuilder = async function (queue, page) {
         .setThumbnail(queue.nowPlaying().thumbnail)
         .setTimestamp()
         .setFooter({
-            text: `\nPage : ${page + 1}/${Math.ceil(queue.tracks.length / 10)}`,
+            text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}` ,
             iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128'
         });
 };
-
 
 exports.queueRowBuilder = async function (queue, page) {
     if (queue.tracks.length < 10) return null;
@@ -35,8 +36,7 @@ exports.queueRowBuilder = async function (queue, page) {
     const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
     const rigthBtn = page >= Math.ceil(queue.tracks.length / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
 
-    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn ? leftBtn : null, rigthBtn);
+    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
     else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
     else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
 }
-
