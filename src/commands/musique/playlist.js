@@ -48,10 +48,6 @@ module.exports = {
 
 
         else if (subcommand == 'joue') {
-
-            const queue = await checkPlayerUsable(interaction, client);
-            if (!queue) return;
-
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
@@ -71,18 +67,22 @@ module.exports = {
             const message = await interaction.editReply({ content: 'Quelle playlist veux-tu jouer ?', components: [row] });
 
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
-            collector.on('collect', async interaction => {
-                const playlist = userPlaylists.find(playlist => playlist.id == interaction.customId);
+            collector.on('collect', async inter => {
+                await inter.deferUpdate();
+                const queue = await checkPlayerUsable(inter, client);
+                if (!queue) return;
+
+                const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 const result = await client.player.search(playlist.url, {
-                    requestedBy: interaction.user,
+                    requestedBy: inter.user,
                     searchEngine: QueryType.AUTO
                 });
 
                 queue.addTracks(result.tracks);
                 if (!queue.playing) await queue.play();
-                await interaction.update({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
+                await inter.editReply({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
             });
-            collector.on('end', collected => interaction.deleteReply());
+            //collector.on('end', collected => interaction.deleteReply());
         }
     },
 };
