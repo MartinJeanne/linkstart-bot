@@ -21,11 +21,7 @@ module.exports = {
             .setDescription('Joue une playlist !')),
 
     async execute(interaction, client) {
-        const playlistsUrl = `${process.env.API_URL}/playlists`;
-        const membersUrl = `${process.env.API_URL}/discordUsers`;
-
         const subcommand = interaction.options.getSubcommand();
-        const discordId = interaction.member.user.id;
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
