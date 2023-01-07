@@ -1,12 +1,11 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { QueryType, Track, Playlist } = require('discord-player');
-const { default: axios } = require('axios');
-const checkPlayerUsable = require('../../functions/checkPlayerUsable');
-const getUser = require('../../functions/getUser');
-const getUserPlaylist = require('../../functions/getUserPlaylist');
-const postPlaylist = require('../../functions/postPlaylist');
 const dotenv = require('dotenv');
 dotenv.config();
+const checkPlayerUsable = require('../../functions/checkPlayerUsable');
+const { getUser, getUserPlaylists } = require('../../functions/discordUserEndpoints');
+const { postPlaylist, deletePlaylist } = require('../../functions/playlistEndpoints');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,11 +13,12 @@ module.exports = {
         .setDescription('Joue ou sauvegarde une playlist !')
         .addSubcommand(subcommand => subcommand.setName('crée')
             .setDescription('Ajoute une playlist existante')
-            .addStringOption(option => option.setName('url').setDescription('Le lien de la playlist')
-                .setRequired(true))
+            .addStringOption(option => option.setName('url').setDescription('Le lien de la playlist').setRequired(true))
             .addStringOption(option => option.setName('nom').setDescription('Nom de la playlist')))
         .addSubcommand(subcommand => subcommand.setName('joue')
-            .setDescription('Joue une playlist !')),
+            .setDescription('Joue une playlist !'))
+        .addSubcommand(subcommand => subcommand.setName('supp')
+            .setDescription('Supprime une playlist')),
 
     async execute(interaction, client) {
         const subcommand = interaction.options.getSubcommand();
@@ -29,7 +29,7 @@ module.exports = {
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-            const userPlaylists = await getUserPlaylist(user);
+            const userPlaylists = await getUserPlaylists(user);
             if (Array.isArray(userPlaylists) && userPlaylists.length >= maxPlaylists)
                 return await interaction.editReply(`Tu es au maximum de playlists : **${maxPlaylists}**`);
 
@@ -47,9 +47,9 @@ module.exports = {
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-            const userPlaylists = await getUserPlaylist(user);
-            if (!userPlaylists) return await interaction.editReply('Tu n\'as pas de playlist enregistrée !');
-            
+            const userPlaylists = await getUserPlaylists(user);
+            if (!Array.isArray(userPlaylists)) return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
+
             let buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
@@ -77,8 +77,40 @@ module.exports = {
                 queue.addTracks(result.tracks);
                 if (!queue.playing) await queue.play();
                 await inter.editReply({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
+                collector.stop();
             });
-            //collector.on('end', collected => interaction.deleteReply());
+            collector.on('end', () => interaction.deleteReply());
+        }
+
+
+        else if (subcommand == 'supp') {
+            const user = await getUser(interaction);
+            if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+
+            const userPlaylists = await getUserPlaylists(user);
+            if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
+
+            let buttons = [];
+            for (let i = 0; i < userPlaylists.length; i++) {
+                buttons.push(
+                    new ButtonBuilder()
+                        .setCustomId(String(userPlaylists[i].id))
+                        .setLabel(userPlaylists[i].name)
+                        .setStyle(ButtonStyle.Primary)
+                );
+            }
+            const row = new ActionRowBuilder().addComponents(...buttons);
+            const message = await interaction.editReply({ content: 'Quelle playlist veux-tu supprimer ?', components: [row] });
+
+            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+            collector.on('collect', async inter => {
+                const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
+
+                deletePlaylist(playlist.id);
+                await inter.reply({ content: `:wastebasket: Playlist supprimé : **${playlist.name}**`, components: [] });
+                collector.stop();
+            });
+            collector.on('end', () => interaction.deleteReply());
         }
     },
 };
