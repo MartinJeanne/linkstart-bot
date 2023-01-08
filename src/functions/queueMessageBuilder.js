@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-exports.queueEmbedBuilder = async function (queue, page) {
+module.exports.queueEmbedBuilder = async function (queue, page) {
     const progress = queue.getPlayerTimestamp();
 
     let queueString = '';
@@ -23,7 +23,7 @@ exports.queueEmbedBuilder = async function (queue, page) {
         });
 };
 
-exports.queueRowBuilder = async function (queue, page) {
+module.exports.queueRowBuilder = async function (queue, page) {
     if (queue.tracks.length < 10) return null;
 
     function pageButtonBuilder(id, emoji) {

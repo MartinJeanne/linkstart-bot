@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
+const checkPlayerUsable = require('../../functions/checkPlayerUsable');
 
 module.exports = {
 	data: new SlashCommandBuilder()
