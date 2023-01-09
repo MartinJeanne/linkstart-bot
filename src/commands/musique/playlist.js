@@ -50,7 +50,7 @@ module.exports = {
             const userPlaylists = await getUserPlaylists(user);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
 
-            let buttons = [];
+            const buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -79,7 +79,6 @@ module.exports = {
                 await inter.editReply({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
-            collector.on('end', () => interaction.deleteReply());
         }
 
 
@@ -90,7 +89,7 @@ module.exports = {
             const userPlaylists = await getUserPlaylists(user);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
 
-            let buttons = [];
+            const buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -110,7 +109,6 @@ module.exports = {
                 await inter.reply({ content: `:wastebasket: Playlist supprimé : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
-            collector.on('end', () => interaction.deleteReply());
         }
     },
 };
