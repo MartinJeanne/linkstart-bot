@@ -9,6 +9,6 @@ module.exports = {
 	async execute(interaction) {
 		await axios.get('https://api.chucknorris.io/jokes/random')
 			.then(async response => await interaction.editReply(response.data.value))
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
 	},
 };

@@ -6,7 +6,6 @@ const checkPlayerUsable = require('../../functions/checkPlayerUsable');
 const { getUser, getUserPlaylists } = require('../../functions/discordUserEndpoints');
 const { postPlaylist, deletePlaylist } = require('../../functions/playlistEndpoints');
 
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('playlist')

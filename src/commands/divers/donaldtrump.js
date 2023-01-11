@@ -8,7 +8,7 @@ module.exports = {
 
 	async execute(interaction) {
 		const response = await axios.get('https://www.tronalddump.io/random/quote')
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
 
 		await interaction.editReply(`*${response.data.value}*\n ~ Donald Trump, ${response.data.appeared_at.slice(0, 10)}`);
 	},
