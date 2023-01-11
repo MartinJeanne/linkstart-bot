@@ -17,9 +17,9 @@ module.exports = {
 		const message = await interaction.editReply({ embeds: [embed], components: row ? [row] : [] });
 
 		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
-		collector.on('collect', async interaction => {
+		collector.on('collect', async inter => {
 
-			switch (interaction.customId) {
+			switch (inter.customId) {
 				case 'left':
 					if (page <= 0) break;
 					page -= 1;
@@ -36,6 +36,6 @@ module.exports = {
 			await interaction.update({ embeds: [embed], components: row ? [row] : [] });
 		});
 
-		collector.on('end', collected => interaction.deleteReply());
+		collector.on('end', () => interaction.deleteReply());
 	},
 };

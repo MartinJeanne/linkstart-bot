@@ -25,7 +25,6 @@ module.exports = {
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
-
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
