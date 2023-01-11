@@ -7,11 +7,8 @@ module.exports = {
 		.setDescription('Envoie une des "Chuck Norris facts"'),
 
 	async execute(interaction) {
-		let joke;
 		await axios.get('https://api.chucknorris.io/jokes/random')
-			.then(response => joke = response.data.value)
+			.then(async response => await interaction.editReply(response.data.value))
 			.catch(error => console.log(error));
-
-		await interaction.editReply(joke);
 	},
 };

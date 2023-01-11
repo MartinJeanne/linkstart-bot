@@ -75,7 +75,7 @@ module.exports = {
 
                 queue.addTracks(result.tracks);
                 if (!queue.playing) await queue.play();
-                await inter.editReply({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
+                await inter.editReply({ content: `▶️ Je joue ta playlist : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
         }
