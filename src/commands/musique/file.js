@@ -16,7 +16,7 @@ module.exports = {
 		const row = await queueRowBuilder(queue, page);
 		const message = await interaction.editReply({ embeds: [embed], components: row ? [row] : [] });
 
-		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
+		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120000 });
 		collector.on('collect', async inter => {
 
 			switch (inter.customId) {
@@ -33,7 +33,7 @@ module.exports = {
 
 			const embed = await queueEmbedBuilder(queue, page);
 			const row = await queueRowBuilder(queue, page);
-			await interaction.update({ embeds: [embed], components: row ? [row] : [] });
+			await inter.update({ embeds: [embed], components: row ? [row] : [] });
 		});
 
 		collector.on('end', () => interaction.deleteReply());
