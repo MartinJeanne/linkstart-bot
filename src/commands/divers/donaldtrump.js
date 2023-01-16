@@ -10,6 +10,6 @@ module.exports = {
 		const response = await axios.get('https://www.tronalddump.io/random/quote')
 			.catch(error => console.error(error));
 
-		await interaction.editReply(`*${response.data.value}*\n ~ Donald Trump, ${response.data.appeared_at.slice(0, 10)}`);
+		await interaction.editReply(`**${response.data.value}** *~ Donald Trump, ${response.data.appeared_at.slice(0, 10)}*`);
 	},
 };
