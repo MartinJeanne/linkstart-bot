@@ -6,7 +6,6 @@ const checkPlayerUsable = require('../../functions/checkPlayerUsable');
 const { getUser, getUserPlaylists } = require('../../functions/discordUserEndpoints');
 const { postPlaylist, deletePlaylist } = require('../../functions/playlistEndpoints');
 
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('playlist')
@@ -25,7 +24,6 @@ module.exports = {
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
-
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
@@ -50,7 +48,7 @@ module.exports = {
             const userPlaylists = await getUserPlaylists(user);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
 
-            let buttons = [];
+            const buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -76,10 +74,9 @@ module.exports = {
 
                 queue.addTracks(result.tracks);
                 if (!queue.playing) await queue.play();
-                await inter.editReply({ content: `Je joue la playlist : **${playlist.name}**`, components: [] });
+                await inter.editReply({ content: `▶️ Je joue ta playlist : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
-            collector.on('end', () => interaction.deleteReply());
         }
 
 
@@ -90,7 +87,7 @@ module.exports = {
             const userPlaylists = await getUserPlaylists(user);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
 
-            let buttons = [];
+            const buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -110,7 +107,6 @@ module.exports = {
                 await inter.reply({ content: `:wastebasket: Playlist supprimé : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
-            collector.on('end', () => interaction.deleteReply());
         }
     },
 };

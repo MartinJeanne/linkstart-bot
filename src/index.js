@@ -3,7 +3,7 @@ const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord
 // fs from node to navigate through commands files
 const fs = require('node:fs');
 // Player from discord-player to play music
-const { Player } = require('discord-player')
+const { Player } = require('discord-player');
 // dotenv to use environnement variables in .env file
 const dotenv = require('dotenv');
 dotenv.config();

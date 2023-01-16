@@ -39,4 +39,4 @@ module.exports.queueRowBuilder = async function (queue, page) {
     if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
     else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
     else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
-}
+};
