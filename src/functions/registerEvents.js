@@ -8,14 +8,14 @@ module.exports = async function (client) {
         if (!command) return;
 
         try {
-            await interaction.deferReply(); // make Discord API wait for reply
+            await interaction.deferReply({ ephemeral: command.isEphemeral });
             await command.execute(interaction, client);
         } catch (error) {
             console.error(error);
             await interaction.editReply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un modérateur", ephemeral: true });
         }
     });
-    
+
     // When member join the server
     client.on('guildMemberAdd', member => {
         // Adding "Nouveau" to new user when they join the server

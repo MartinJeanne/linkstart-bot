@@ -8,6 +8,8 @@ module.exports = {
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
 
+	isEphemeral: true,
+
 	async execute(interaction, client) {
 		mentionnedUser = interaction.options.getUser('membre');
 		const chutSentences = [
