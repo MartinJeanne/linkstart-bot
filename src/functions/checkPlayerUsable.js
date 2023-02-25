@@ -22,7 +22,7 @@ module.exports = async function (interaction, client) {
 	const queue = await client.player.createQueue(interaction.guild, {
 		leaveOnEnd: false,
 		leaveOnStop: true,
-		leaveOnEmpty: true,
+		leaveOnEmpty: false,
 		autoSelfDeaf: false,
 		spotifyBridge: true,
 		ytdlOptions: {
@@ -34,6 +34,4 @@ module.exports = async function (interaction, client) {
 	});
 	if (!queue.connection) await queue.connect(interaction.member.voice.channel);
 	return queue;
-
-
 };

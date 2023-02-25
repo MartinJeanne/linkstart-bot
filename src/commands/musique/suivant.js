@@ -11,7 +11,7 @@ module.exports = {
 		if (!queue) return;
 
 		const nextSong = queue.tracks[0];
-		queue.skip();
+		await queue.skip();
 		return await interaction.editReply(`⏩ Suivant, musique actuelle : **${nextSong.title}**`);
 	},
 };
