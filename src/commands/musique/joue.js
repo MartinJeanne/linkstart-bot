@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { QueryType } = require('discord-player');
+const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -9,30 +10,8 @@ module.exports = {
 			.setDescription('Nom ou lien de la musique')
 			.setRequired(true)),
 
-	async execute(interaction, client) {
-		const channel = interaction.member.voice.channel;
-		// if user is not in channel
-		if (!channel)
-			return await interaction.editReply(':interrobang: Tu dois être dans un salon vocal pour exécuter cette commande !');
-		// if i'm in channel AND user is not in my channel
-		else if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
-			return await interaction.editReply(':interrobang: Tu dois être dans le même salon vocal que moi pour exécuter cette commande !');
-
-		// Create the server queue with options
-		const queue = await client.player.createQueue(interaction.guild, {
-			leaveOnEnd: false,
-			leaveOnStop: true,
-			leaveOnEmpty: true,
-			autoSelfDeaf: false,
-			spotifyBridge: true,
-			ytdlOptions: {
-				filter: 'audioonly',
-				opusEncoded: true,
-				highWaterMark: 1 << 30,
-				dlChunkSize: 0,
-			}
-		});
-		if (!queue.connection) await queue.connect(channel);
+	async execute(interaction, client) {		
+		const queue = await checkPlayerUsable(interaction, client);
 
 		const toSearch = interaction.options.getString('musique');
 		const result = await client.player.search(toSearch, {
