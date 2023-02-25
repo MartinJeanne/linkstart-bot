@@ -22,7 +22,7 @@ module.exports = async function (interaction, client) {
 	const queue = await client.player.createQueue(interaction.guild, {
 		leaveOnEnd: false,
 		leaveOnStop: true,
-		leaveOnEmpty: false,
+		leaveOnEmpty: true,
 		autoSelfDeaf: false,
 		spotifyBridge: true,
 		ytdlOptions: {
