@@ -10,8 +10,8 @@ module.exports = {
 		const queue = await checkPlayerPlaying(interaction, client);
 		if (!queue) return;
 
-		const nextSong = queue.tracks[0];
-		queue.skip();
-		return await interaction.editReply(`⏩ Suivant, musique actuelle : **${nextSong.title}**`);
+		if (queue.tracks.length > 0) await queue.play(); // Skip don't work so well, queue.play() do the same thing
+		else await queue.skip(); // We use skip in the case no songs in queue, to terminate the current song
+		return await interaction.editReply(`⏩ Suivant, musique actuelle : **${queue.nowPlaying().title}**`);
 	},
 };
