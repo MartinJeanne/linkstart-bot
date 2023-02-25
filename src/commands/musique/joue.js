@@ -10,7 +10,7 @@ module.exports = {
 			.setDescription('Nom ou lien de la musique')
 			.setRequired(true)),
 
-	async execute(interaction, client) {		
+	async execute(interaction, client) {
 		const queue = await checkPlayerUsable(interaction, client);
 
 		const toSearch = interaction.options.getString('musique');
@@ -23,17 +23,18 @@ module.exports = {
 			return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
 		}
 
-		result.playlist ? queue.addTracks(result.tracks) : queue.addTrack(result.tracks[0]);
+		if (result.playlist) {
+			queue.addTracks(result.tracks);
+			await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
+		}
+		else {
+			queue.addTrack(result.tracks[0]);
+			await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
+		}
 
 		if (!queue.playing) {
 			await queue.play();
-			if (!result.playlist)
-				await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
+			queue.playing = true;
 		}
-		else if (!result.playlist)
-			await interaction.editReply(`▶️ **${queue.tracks.length}.** position : **${result.tracks[0].title}**`);
-
-		if (result.playlist)
-			await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
-	},
+	}
 };
