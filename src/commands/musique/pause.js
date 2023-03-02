@@ -10,7 +10,8 @@ module.exports = {
 		const queue = await checkPlayerPlaying(interaction, client);
 		if (!queue) return;
 
-		await queue.setPaused(!queue.connection.paused);
+		// TODO await queue.setPaused(!queue.connection.paused);
+		await queue.node.pause();
 
 		if (queue.connection.paused) await interaction.editReply('⏸️ Musique mise en pause');
 		else await interaction.editReply('▶️ Reprise de la musique');

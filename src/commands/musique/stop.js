@@ -11,7 +11,6 @@ module.exports = {
 		if (!queue) return;
 		
 		queue.destroy();
-		queue.playing = false;
 		return await interaction.editReply('⏹️ Tchao !');
 	},
 };

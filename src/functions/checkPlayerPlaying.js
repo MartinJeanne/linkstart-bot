@@ -15,8 +15,8 @@ module.exports = async function (interaction, client) {
 		return null;
 	}
 
-	const queue = client.player.getQueue(interaction.guildId);
-	if (!queue || !queue.playing) {
+	const queue = client.player.nodes.get(interaction.guildId);
+	if (!queue) {
 		await interaction.editReply(':interrobang: Je ne joue pas de musique actuellement !');
 		return null;
 	} 

@@ -15,11 +15,12 @@ module.exports = async function (interaction, client) {
 		return null;
 	}
 
-	const q = client.player.getQueue(interaction.guildId);
+	const q = await client.player.nodes.get(interaction.guildId);
 	if (q) return q;
 
+
 	// Create the server queue with options
-	const queue = await client.player.createQueue(interaction.guild, {
+	const queue = await client.player.nodes.create(interaction.guild, {
 		leaveOnEnd: false,
 		leaveOnStop: true,
 		leaveOnEmpty: true,

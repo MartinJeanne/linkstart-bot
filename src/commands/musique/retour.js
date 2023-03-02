@@ -11,7 +11,7 @@ module.exports = {
 		if (!queue) return;
 
 		if (!queue.previousTracks[1]) return await interaction.editReply('❌ Pas de musique précédente');
-		queue.back();
+		queue.history.back();
 		return await interaction.editReply('⏪ Retour à la musique précédente');
 	},
 };

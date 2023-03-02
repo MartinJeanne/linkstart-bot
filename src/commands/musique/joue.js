@@ -32,9 +32,8 @@ module.exports = {
 			await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 		}
 
-		if (!queue.playing) {
-			await queue.play();
-			queue.playing = true;
+		if (!queue.isPlaying()) {
+			await queue.node.play();
 		}
 	}
 };
