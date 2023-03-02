@@ -2,9 +2,8 @@ FROM node:18-alpine
 WORKDIR /usr/linkstart-bot
 
 # npm
-COPY package.json .
-COPY package-lock.json .
-RUN npm install
+COPY ["package.json", "package-lock.json*", "./"]
+RUN npm install --production
 
 # Environnement variables
 COPY .env .

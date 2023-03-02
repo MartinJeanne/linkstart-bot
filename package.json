@@ -11,7 +11,6 @@
   "license": "WTFPL",
   "dependencies": {
     "@discord-player/equalizer": "^0.1.4-dev.1",
-    "@discord-player/extractor": "^4.0.0-dev.3",
     "@discord-player/utils": "^0.1.0-dev.3",
     "@discordjs/opus": "^0.9.0",
     "axios": "^0.27.2",
