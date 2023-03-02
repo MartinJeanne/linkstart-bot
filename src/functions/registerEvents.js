@@ -33,25 +33,17 @@ module.exports = async function (client) {
     // TODO Remove once the stop song bug is corrected
     const { VoiceConnectionStatus } = require('@discordjs/voice');
 
-    // v5
-    client.player.on('connectionCreate', (queue) => {
-        queue.connection.voiceConnection.on('stateChange', (oldState, newState) => {
+    // v6
+    client.player.events.on('connection', (queue) => {
+        queue.dispatcher.voiceConnection.on('stateChange', (oldState, newState) => {
             if (oldState.status === VoiceConnectionStatus.Ready && newState.status === VoiceConnectionStatus.Connecting) {
-                queue.connection.voiceConnection.configureNetworking();
+                queue.dispatcher.voiceConnection.configureNetworking();
             }
-        })
+        });
     });
 
     // Once bot is started
     client.once('ready', () => {
         console.log(`${client.user.tag} est lancé !`)
-    });
-
-    client.player.on('error', () => {
-        console.log('player error');
-    });
-
-    client.player.on('trackAdd', () => {
-        console.log('player trackAdd');
     });
 };

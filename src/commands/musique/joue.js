@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { QueryType } = require('discord-player');
-const checkPlayerUsable = require('../../functions/checkPlayerUsable.js');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,7 +11,8 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerUsable(interaction, client);
+		const queue = await getQueue({interaction: interaction, client: client, canCreate: true});
+		if (!queue) return;
 
 		const toSearch = interaction.options.getString('musique');
 		const result = await client.player.search(toSearch, {
@@ -24,7 +25,7 @@ module.exports = {
 		}
 
 		if (result.playlist) {
-			queue.addTracks(result.tracks);
+			queue.addTrack(result.tracks);
 			await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
 		}
 		else {
@@ -32,9 +33,8 @@ module.exports = {
 			await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 		}
 
-		if (!queue.playing) {
-			await queue.play();
-			queue.playing = true;
+		if (!queue.isPlaying()) {
+			await queue.node.play();
 		}
 	}
 };

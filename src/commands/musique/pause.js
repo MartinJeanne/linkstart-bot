@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,12 +7,16 @@ module.exports = {
 		.setDescription('Pause ou relance la musique'),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerPlaying(interaction, client);
+		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
 		if (!queue) return;
 
-		await queue.setPaused(!queue.connection.paused);
-
-		if (queue.connection.paused) await interaction.editReply('⏸️ Musique mise en pause');
-		else await interaction.editReply('▶️ Reprise de la musique');
+		if(await queue.node.isPaused()) {
+			await queue.node.resume();
+			await interaction.editReply('▶️ Reprise de la musique');
+		}
+		else {
+			await queue.node.pause();
+			await interaction.editReply('⏸️ Musique mise en pause');
+		}
 	},
 };

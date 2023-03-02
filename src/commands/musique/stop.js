@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const checkPlayerUsable = require('../../functions/checkPlayerUsable');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,11 +7,10 @@ module.exports = {
 		.setDescription('Stop la musique'),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerUsable(interaction, client);
+		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
 		if (!queue) return;
 		
-		queue.destroy();
-		queue.playing = false;
+		queue.delete();
 		return await interaction.editReply('⏹️ Tchao !');
 	},
 };

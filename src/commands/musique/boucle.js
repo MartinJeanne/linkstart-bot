@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { QueueRepeatMode } = require('discord-player');
-const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
 			)),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerPlaying(interaction, client);
+		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
 		if (!queue) return;
 
 		let loopMode = interaction.options.getInteger('mode');

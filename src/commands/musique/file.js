@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ComponentType } = require('discord.js');
 const { queueEmbedBuilder, queueRowBuilder } = require('../../functions/queueMessageBuilder.js');
-const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Affiche la file des musiques'),
 
 	async execute(interaction, client) {
-		const queue = await checkPlayerPlaying(interaction, client);
+		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
 		if (!queue) return;
 
 		let page = 0;

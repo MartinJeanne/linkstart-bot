@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const checkPlayerPlaying = require('../../functions/checkPlayerPlaying.js');
+const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,11 +7,11 @@ module.exports = {
         .setDescription('Mélange les musiques'),
 
     async execute(interaction, client) {
-        const queue = await checkPlayerPlaying(interaction, client);
+        const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
         if (!queue) return;
 
-        if (queue.tracks.length < 2) return await interaction.editReply(`:interrobang: Pas assez de musique pour mélanger la file`);
-        queue.shuffle();
+        if (queue.getSize() < 2) return await interaction.editReply(`:interrobang: Pas assez de musique pour mélanger la file`);
+        queue.tracks.shuffle();
         await interaction.editReply(`:twisted_rightwards_arrows: File mélangé !`);
     },
 };
