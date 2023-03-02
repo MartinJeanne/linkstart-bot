@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { QueryType, Track, Playlist } = require('discord-player');
-const checkPlayerUsable = require('../../functions/checkPlayerUsable');
+const getQueue = require('../../functions/getQueue.js');
 const { getUser, getUserPlaylists } = require('../../functions/discordUserEndpoints');
 const { postPlaylist, deletePlaylist } = require('../../functions/playlistEndpoints');
 
@@ -61,7 +61,7 @@ module.exports = {
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
             collector.on('collect', async inter => {
                 await inter.deferUpdate();
-                const queue = await checkPlayerUsable(inter, client);
+                const queue = await getQueue({interaction: interaction, client: client, canCreate: true});
                 if (!queue) return;
 
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);

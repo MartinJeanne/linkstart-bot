@@ -1,5 +1,9 @@
 /** Check if user can use Player commands */
-module.exports = async function (interaction, client) {
+module.exports = async function (args) {
+	const interaction = args.interaction;
+	const client = args.client;
+	const canCreate = args.canCreate;
+
 	// if user is not in channel
 	if (!interaction.member.voice.channel) {
 		const error = ':interrobang: Tu dois être dans un salon vocal pour cela';
@@ -15,10 +19,29 @@ module.exports = async function (interaction, client) {
 		return null;
 	}
 
+
 	const queue = client.player.nodes.get(interaction.guildId);
-	if (!queue) {
+	if (queue) return queue;
+	
+	else if (!canCreate) {
 		await interaction.editReply(':interrobang: Je ne joue pas de musique actuellement !');
 		return null;
-	} 
-	else return queue;
+	}
+
+	// Create the server queue with options
+	const newQueue = await client.player.nodes.create(interaction.guild, {
+		leaveOnEnd: false,
+		leaveOnStop: true,
+		leaveOnEmpty: true,
+		autoSelfDeaf: false,
+		spotifyBridge: true,
+		ytdlOptions: {
+			filter: 'audioonly',
+			opusEncoded: true,
+			highWaterMark: 1 << 30,
+			dlChunkSize: 0,
+		}
+	});
+	if (!newQueue.connection) await newQueue.connect(interaction.member.voice.channel);
+	return newQueue;
 };

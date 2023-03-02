@@ -1,21 +1,22 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports.queueEmbedBuilder = async function (queue, page) {
-    const progress = queue.getPlayerTimestamp();
+    const progress = queue.node.getTimestamp();
 
     let queueString = '';
+    const tracks = queue.tracks.toArray();
     for (let i = (page * 10); i < (page * 10 + 10); i++) {
-        if (i >= queue.tracks.length) break;
-        queueString += `**${i + 1}.** ${queue.tracks[i].title}\n`;
+        if (i >= queue.getSize()) break;
+        queueString += `**${i + 1}.** ${tracks[i].title}\n`;
     }
 
     const pageNb = Math.ceil(queue.tracks.length / 10);
     
     return new EmbedBuilder()
         .setColor(0xd7667e)
-        .setTitle(`${queue.nowPlaying().title}`)
-        .setDescription(`*${progress.current} : ${progress.end}*\n\n` + queueString)
-        .setThumbnail(queue.nowPlaying().thumbnail)
+        .setTitle(`${queue.currentTrack.title}`)
+        .setDescription(`*${progress.currentTrack} : ${progress.end}*\n\n` + queueString)
+        .setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
         .setFooter({
             text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}` ,

@@ -46,10 +46,4 @@ module.exports = async function (client) {
     client.once('ready', () => {
         console.log(`${client.user.tag} est lancé !`)
     });
-
-    /* TODO DELETE
-    client.player.on('error', () => {
-        console.log('player error');
-    });
-    */
 };
