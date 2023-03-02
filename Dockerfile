@@ -1,4 +1,5 @@
 FROM node:16-alpine
+WORKDIR /usr/linkstart-bot
 
 # npm
 COPY package.json .
