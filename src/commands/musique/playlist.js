@@ -70,7 +70,7 @@ module.exports = {
                     searchEngine: QueryType.AUTO
                 });
 
-                queue.addTracks(result.tracks);
+                queue.addTrack(result.tracks);
                 if (!queue.playing) await queue.play();
                 await inter.editReply({ content: `▶️ Je joue ta playlist : **${playlist.name}**`, components: [] });
                 collector.stop();
