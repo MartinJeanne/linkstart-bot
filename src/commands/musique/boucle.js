@@ -21,7 +21,7 @@ module.exports = {
 
 		let loopMode = interaction.options.getInteger('mode');
 		if (loopMode == null) {
-			loopMode = queue.repeatMode == QueueRepeatMode.OFF ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF
+			loopMode = queue.repeatMode == QueueRepeatMode.OFF ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF;
 		}
 
 		let response;
