@@ -71,7 +71,7 @@ module.exports = {
                 });
 
                 queue.addTrack(result.tracks);
-                if (!queue.playing) await queue.play();
+                if (!queue.isPlaying()) await queue.node.play();
                 await inter.editReply({ content: `▶️ Je joue ta playlist : **${playlist.name}**`, components: [] });
                 collector.stop();
             });
