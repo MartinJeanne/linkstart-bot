@@ -33,8 +33,6 @@ module.exports = {
 			await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 		}
 
-		if (!queue.isPlaying()) {
-			await queue.node.play();
-		}
+		if (!queue.isPlaying()) await queue.node.play();
 	}
 };
