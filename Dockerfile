@@ -1,7 +1,7 @@
 FROM node:18-alpine
 WORKDIR /usr/linkstart-bot
 
-# npm
+# dependencies installation
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 
