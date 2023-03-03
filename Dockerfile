@@ -1,9 +1,9 @@
-FROM node:18-alpine
-WORKDIR /usr/linkstart-bot
+FROM node:18
+WORKDIR /usr/src/linkstart-bot
 
 # dependencies installation
 COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production
+RUN npm install
 
 # Environnement variables
 COPY .env .
