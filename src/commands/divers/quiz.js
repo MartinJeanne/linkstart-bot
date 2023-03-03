@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('quiz')
         .setDescription('Joue ou sauvegarde une playlist !')
-        .addSubcommand(subcommand => subcommand.setName('joue')
+        .addSubcommand(subcommand => subcommand.setName('test')
             .setDescription('Joue à un quiz !')
             .addStringOption(option => option.setName('url').setDescription('Le lien de la playlist').setRequired(true))
             .addStringOption(option => option.setName('nom').setDescription('Nom de la playlist')))

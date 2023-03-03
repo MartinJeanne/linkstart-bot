@@ -14,7 +14,8 @@ module.exports = {
         if (!queue) return;
 
         const index = interaction.options.getInteger('position');
-        const deletedSong = queue.node.remove(queue.tracks[index - 1]);
+        const tracks = queue.tracks.toArray();
+        const deletedSong = queue.node.remove(tracks[index - 1]);
         if (!deletedSong) await interaction.editReply(`:interrobang: Aucune musique à cette position\n**/file** pour avoir la liste des musiques`);
         else await interaction.editReply(`:broom: Musique supprimé : **${deletedSong.title}**`);
     },
