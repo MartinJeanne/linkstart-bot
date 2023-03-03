@@ -24,6 +24,8 @@ module.exports.queueEmbedBuilder = function (queue, page) {
         });
 };
 
+
+/* TODO to implement?
 module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {
     constructor() {
         const progress = queue.node.getTimestamp();
@@ -49,6 +51,7 @@ module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {
     }
 
 };
+*/
 
 module.exports.queueRowBuilder = function (queue, page) {
     if (queue.getSize() < 10) return null;
