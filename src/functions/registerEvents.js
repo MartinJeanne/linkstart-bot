@@ -30,6 +30,11 @@ module.exports = async function (client) {
         }
     });
 
+    // Once bot is started
+    client.once('ready', () => {
+        console.log(`${client.user.tag} est lancé !`)
+    });
+
     // TODO Remove once the stop song bug is corrected
     const { VoiceConnectionStatus } = require('@discordjs/voice');
 
@@ -40,10 +45,5 @@ module.exports = async function (client) {
                 queue.dispatcher.voiceConnection.configureNetworking();
             }
         });
-    });
-
-    // Once bot is started
-    client.once('ready', () => {
-        console.log(`${client.user.tag} est lancé !`)
     });
 };
