@@ -58,4 +58,4 @@ registerEvents(client);
 client.login(process.env.DISCORD_TOKEN);
 
 
-// TODO Quand j'ajoute une nouvelle fonctionnalité sur le bot, faire un message sur les serveur en pinguant le bot et il réponde (blague)
+// TODO Quand j'ajoute une nouvelle fonctionnalité sur le bot, faire un message sur les serveur en pinguant le bot et il répond (blague)
