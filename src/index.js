@@ -1,5 +1,5 @@
 // Require the necessary discord.js classes
-const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
 // fs from node to navigate through commands files
 const fs = require('node:fs');
 // Player from discord-player to play music
@@ -11,7 +11,10 @@ dotenv.config();
 const registerEvents = require('./functions/registerEvents.js');
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({ 
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+});
 
 // Player to play music
 client.player = new Player(client);
