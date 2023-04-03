@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 
-const messageRoleReactions = [
+const messagesRolesReactions = [
     {
         // LearnMoreTech
         messageId: '1091361707483463742', roleReactions: [
@@ -9,9 +9,9 @@ const messageRoleReactions = [
     },
     {
         // Eyesight
-        messageId: '1091441859747926118', roleReactions: [
+        messageId: '1077527581101936661', roleReactions: [
             { reaction: 'bait', role: '1083777942515093644' },
-            //{ reaction: 'wipfir', role: '790874978819112970' }
+            { reaction: 'pencil2', role: '1092404838140219472' }
         ]
     }
 ];
@@ -23,7 +23,7 @@ module.exports = async function (client) {
 
         const command = client.commands.get(interaction.commandName);
 
-        if (!command) return;
+        if (!command) return null;
 
         try {
             await interaction.deferReply({ ephemeral: command.isEphemeral });
@@ -35,24 +35,21 @@ module.exports = async function (client) {
     });
 
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
-        if (reaction.partial) {
-            try {
-                await reaction.fetch();
-            } catch (error) {
-                console.error('❌ Il y a eu une erreur lors du fetch du message:', error);
-                return;
-            }
-        }
-
-        const messageRoleReaction = messageRoleReactions.find(item => item.messageId == reaction.message.id);
-        if (!messageRoleReaction) return;
-
-        const roleReaction = messageRoleReaction.roleReactions.find(item => item.reaction = reaction.emoji.name);
+        const role = await reactionForRole(reaction);
+        if (!role) return;
         const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.add(roleReaction.role);
+        member.roles.add(role);
     });
+
 
     client.on(Events.MessageReactionRemove, async (reaction, user) => {
+        const role = await reactionForRole(reaction);
+        if (!role) return;
+        const member = await reaction.message.guild.members.fetch(user.id);
+        member.roles.remove(role);
+    });
+
+    async function reactionForRole(reaction) {
         if (reaction.partial) {
             try {
                 await reaction.fetch();
@@ -62,13 +59,13 @@ module.exports = async function (client) {
             }
         }
 
-        const messageRoleReaction = messageRoleReactions.find(item => item.messageId == reaction.message.id);
-        if (!messageRoleReaction) return;
+        const messageRolesReactions = messagesRolesReactions.find(mrr => mrr.messageId == reaction.message.id);
+        if (!messageRolesReactions) return;
 
-        const roleReaction = messageRoleReaction.roleReactions.find(item => item.reaction = reaction.emoji.name);
-        const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.remove(roleReaction.role);
-    });
+        const roleReaction = messageRolesReactions.roleReactions.find(roleReactions => roleReactions.reaction = reaction.emoji.name);
+        
+        return roleReaction.role;
+    }
 
     // When member join the server
     client.on(Events.GuildMemberAdd, member => {
