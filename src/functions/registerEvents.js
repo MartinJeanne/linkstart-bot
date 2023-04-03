@@ -12,7 +12,7 @@ const messagesRolesReactions = [
         // Eyesight
         messageId: '1077527581101936661', roleReactions: [
             { reaction: 'bait', role: '1083777942515093644' },
-            { reaction: 'pencil2', role: '1092404838140219472' }
+            { reaction: '🎨', role: '1092404838140219472' }
         ]
     }
 ];
