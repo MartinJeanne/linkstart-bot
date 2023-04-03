@@ -33,7 +33,7 @@ module.exports = async function (client) {
         if (!messageRolesReactions) return;
         const roleReaction = messageRolesReactions.roleReactions.find(roleReactions => roleReactions.reaction == reaction.emoji.name);
 
-        return roleReaction.role;
+        return roleReaction?.role;
     }
 
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
