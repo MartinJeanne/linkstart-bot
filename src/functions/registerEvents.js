@@ -1,5 +1,7 @@
 const { Events } = require('discord.js');
+const { getDiscordMessages } = require('./discordMessageURL.js');
 
+let discordMessagesId;
 const messagesRolesReactions = [
     {
         // LearnMoreTech
@@ -29,8 +31,8 @@ module.exports = async function (client) {
             }
         }
 
-        const messageRolesReactions = messagesRolesReactions.find(mrr => mrr.messageId == reaction.message.id);
-        if (!messageRolesReactions) return;
+        if (!discordMessagesId.includes(reaction.message.id)) return;
+        // search roleReaction by discordMessageId
         const roleReaction = messageRolesReactions.roleReactions.find(roleReactions => roleReactions.reaction == reaction.emoji.name);
 
         return roleReaction?.role;
@@ -83,7 +85,11 @@ module.exports = async function (client) {
     });
 
     // Once bot is started
-    client.once(Events.ClientReady, () => {
+    client.once(Events.ClientReady, async () => {
+        const response = await getDiscordMessages();
+        discordMessagesId = response.map(discordMessage => discordMessage.discordId);
+        
+        console.log(discordMessagesId);
         console.log(`${client.user.tag} est lancé !`)
     });
 };
