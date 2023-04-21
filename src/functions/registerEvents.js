@@ -1,7 +1,11 @@
 const { Events } = require('discord.js');
-const { getDiscordMessages } = require('./discordMessageURL.js');
+const { getDiscordMessages } = require('../endpoints/discordMessage.js');
+const { getRoleReactions } = require('../endpoints/roleReaction.js');
 
-let discordMessagesId;
+let discordMessages;
+let roleReactions;
+
+/* TODO
 const messagesRolesReactions = [
     {
         // LearnMoreTech
@@ -18,7 +22,7 @@ const messagesRolesReactions = [
         ]
     }
 ];
-
+*/
 
 module.exports = async function (client) {
     async function reactionForRole(reaction) {
@@ -31,18 +35,20 @@ module.exports = async function (client) {
             }
         }
 
-        if (!discordMessagesId.includes(reaction.message.id)) return;
-        // search roleReaction by discordMessageId
-        const roleReaction = messageRolesReactions.roleReactions.find(roleReactions => roleReactions.reaction == reaction.emoji.name);
+        const discordIds = discordMessages.map(discordMessage => discordMessage.discordId);
+        if (!discordIds.includes(reaction.message.id)) return;
+        roleReactions = await getRoleReactions(reaction.message.id, reaction.emoji.name);
 
-        return roleReaction?.role;
+        return roleReactions?.role;
     }
 
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
         const role = await reactionForRole(reaction);
         if (!role) return;
         const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.add(role);
+        console.log(role)
+        let res = member.roles.add(role);
+        console.log(res)
     });
 
 
@@ -86,10 +92,8 @@ module.exports = async function (client) {
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        const response = await getDiscordMessages();
-        discordMessagesId = response.map(discordMessage => discordMessage.discordId);
+        discordMessages = await getDiscordMessages();
         
-        console.log(discordMessagesId);
-        console.log(`${client.user.tag} est lancé !`)
+        console.log(`${client.user.tag} est lancé !`);
     });
 };
