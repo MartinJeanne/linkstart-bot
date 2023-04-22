@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const { getDiscordMessages } = require('../endpoints/discordMessage.js');
-const { getRoleReactions } = require('../endpoints/roleReaction.js');
+const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
 
 let discordMessages;
 let roleReactions;
@@ -30,7 +30,7 @@ module.exports = async function (client) {
 
         const discordIds = discordMessages.map(discordMessage => discordMessage.discordId);
         if (!discordIds.includes(reaction.message.id)) return;
-        roleReactions = await getRoleReactions(reaction.message.id, reaction.emoji.name);
+        roleReactions = await getRoleReaction(reaction.message.id, reaction.emoji.name);
 
         return roleReactions?.role;
     }
@@ -83,10 +83,30 @@ module.exports = async function (client) {
         }
     });
 
+    client.on(Events.MessageCreate, async message => {
+        if (!message.mentions.has(client.user.id)) return;
+
+        if (message.member.id == '306129521990565888' && message.content[0] == 'H')
+            return await message.channel.send(`Par contre me ping pas comme ça sale chien.`);
+        if (message.member.id == '306129521990565888' && message.content[0] == 'P')
+            return await message.channel.send(`Merde, désolé boss.`);
+
+        if (message.member.id == '256876632046960641')
+            return await message.channel.send(`Oui ? Ca va boubou ?`);
+
+        if (message.member.id == '365125783968022529')
+            return await message.channel.send(`Tranquille le woi wabbit ?`);
+
+        if (message.member.id == '161970745117769728')
+            return await message.channel.send(`Mécaniquement iron ou quoi ?`);
+
+        else return message.channel.send(`Ptdr t ki`);
+    });
+
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        discordMessages = await getDiscordMessages();
-        
+        //discordMessages = await getDiscordMessages();
+
         console.log(`${client.user.tag} est lancé !`);
     });
 };

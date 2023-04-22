@@ -5,7 +5,7 @@ dotenv.config();
 const roleReactionsUrl = `${process.env.API_URL}/roleReactions`;
 
 
-module.exports.getRoleReactions = async function (discordId, reaction) {
+module.exports.getRoleReaction = async function (discordId, reaction) {
     const queryParams = {
         discordId: discordId,
         reaction: reaction
