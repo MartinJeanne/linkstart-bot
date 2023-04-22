@@ -39,9 +39,7 @@ module.exports = async function (client) {
         const role = await reactionForRole(reaction);
         if (!role) return;
         const member = await reaction.message.guild.members.fetch(user.id);
-        console.log(role)
         let res = member.roles.add(role);
-        console.log(res)
     });
 
 
