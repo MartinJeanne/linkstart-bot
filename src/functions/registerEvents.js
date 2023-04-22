@@ -6,22 +6,15 @@ let discordMessages;
 let roleReactions;
 
 /* TODO
-const messagesRolesReactions = [
-    {
         // LearnMoreTech
-        messageId: '1091361707483463742', roleReactions: [
-            { reaction: 'wipfire', role: '790874978819112970' },
-            { reaction: '😎', role: '790690948199481365' }
-        ]
-    },
-    {
+        messageId: 1091361707483463742
+            reaction: 'wipfire', role: '790874978819112970'
+            reaction: '😎', role: '790690948199481365'
+
         // Eyesight
-        messageId: '1077527581101936661', roleReactions: [
-            { reaction: 'bait', role: '1083777942515093644' },
-            { reaction: '🎨', role: '1092404838140219472' }
-        ]
-    }
-];
+        messageId: 1077527581101936661
+            reaction: 'bait', role: '1083777942515093644'
+            reaction: '🎨', role: '1092404838140219472'
 */
 
 module.exports = async function (client) {
