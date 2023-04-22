@@ -1,22 +1,21 @@
 const { Events } = require('discord.js');
+const { getDiscordMessages } = require('../endpoints/discordMessage.js');
+const { getRoleReactions } = require('../endpoints/roleReaction.js');
 
-const messagesRolesReactions = [
-    {
+let discordMessages;
+let roleReactions;
+
+/* TODO
         // LearnMoreTech
-        messageId: '1091361707483463742', roleReactions: [
-            { reaction: 'wipfire', role: '790874978819112970' },
-            { reaction: '😎', role: '790690948199481365' }
-        ]
-    },
-    {
-        // Eyesight
-        messageId: '1077527581101936661', roleReactions: [
-            { reaction: 'bait', role: '1083777942515093644' },
-            { reaction: '🎨', role: '1092404838140219472' }
-        ]
-    }
-];
+        messageId: 1091361707483463742
+            reaction: 'wipfire', role: '790874978819112970'
+            reaction: '😎', role: '790690948199481365'
 
+        // Eyesight
+        messageId: 1077527581101936661
+            reaction: 'bait', role: '1083777942515093644'
+            reaction: '🎨', role: '1092404838140219472'
+*/
 
 module.exports = async function (client) {
     async function reactionForRole(reaction) {
@@ -29,18 +28,20 @@ module.exports = async function (client) {
             }
         }
 
-        const messageRolesReactions = messagesRolesReactions.find(mrr => mrr.messageId == reaction.message.id);
-        if (!messageRolesReactions) return;
-        const roleReaction = messageRolesReactions.roleReactions.find(roleReactions => roleReactions.reaction == reaction.emoji.name);
+        const discordIds = discordMessages.map(discordMessage => discordMessage.discordId);
+        if (!discordIds.includes(reaction.message.id)) return;
+        roleReactions = await getRoleReactions(reaction.message.id, reaction.emoji.name);
 
-        return roleReaction?.role;
+        return roleReactions?.role;
     }
 
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
         const role = await reactionForRole(reaction);
         if (!role) return;
         const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.add(role);
+        console.log(role)
+        let res = member.roles.add(role);
+        console.log(res)
     });
 
 
@@ -83,7 +84,9 @@ module.exports = async function (client) {
     });
 
     // Once bot is started
-    client.once(Events.ClientReady, () => {
-        console.log(`${client.user.tag} est lancé !`)
+    client.once(Events.ClientReady, async () => {
+        discordMessages = await getDiscordMessages();
+        
+        console.log(`${client.user.tag} est lancé !`);
     });
 };
