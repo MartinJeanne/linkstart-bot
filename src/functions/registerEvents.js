@@ -105,7 +105,7 @@ module.exports = async function (client) {
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        //discordMessages = await getDiscordMessages();
+        discordMessages = await getDiscordMessages();
 
         console.log(`${client.user.tag} est lancé !`);
     });
