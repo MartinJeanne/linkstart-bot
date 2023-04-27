@@ -88,16 +88,22 @@ module.exports = async function (client) {
 
         if (message.member.id == '306129521990565888' && message.content[0] == 'H')
             return await message.channel.send(`Par contre me ping pas comme ça sale chien.`);
-        if (message.member.id == '306129521990565888' && message.content[0] == 'P')
+        else if (message.member.id == '306129521990565888' && message.content[0] == 'P')
             return await message.channel.send(`Merde, désolé boss.`);
 
-        if (message.member.id == '256876632046960641')
+        else if (message.member.id == '306129521990565888')
+            return await message.channel.send(`Ouais boss ?`);
+
+        else if (message.member.id == '306129521990565888' && message.content[0] == 'R')
+            return await message.channel.send(`Ok.`);
+
+        else if (message.member.id == '256876632046960641')
             return await message.channel.send(`Oui ? Ca va boubou ?`);
 
-        if (message.member.id == '365125783968022529')
+        else if (message.member.id == '365125783968022529')
             return await message.channel.send(`Tranquille le woi wabbit ?`);
 
-        if (message.member.id == '161970745117769728')
+        else if (message.member.id == '161970745117769728')
             return await message.channel.send(`Mécaniquement iron ou quoi ?`);
 
         else return message.channel.send(`Ptdr t ki`);
