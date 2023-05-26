@@ -11,7 +11,7 @@ module.exports = {
 	isEphemeral: true,
 
 	async execute(interaction, client) {
-		mentionnedUser = interaction.options.getUser('membre');
+		const mentionnedUser = interaction.options.getUser('membre');
 		const chutSentences = [
 			`TA GUEULE ${mentionnedUser}`,
 			`Ferme ton clapet ${mentionnedUser}.`,

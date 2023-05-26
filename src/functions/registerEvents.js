@@ -5,18 +5,6 @@ const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.
 let discordMessages;
 let roleReactions;
 
-/* TODO
-        // LearnMoreTech
-        messageId: 1091361707483463742
-            reaction: 'wipfire', role: '790874978819112970'
-            reaction: '😎', role: '790690948199481365'
-
-        // Eyesight
-        messageId: 1077527581101936661
-            reaction: 'bait', role: '1083777942515093644'
-            reaction: '🎨', role: '1092404838140219472'
-*/
-
 module.exports = async function (client) {
     async function reactionForRole(reaction) {
         if (reaction.partial) {
