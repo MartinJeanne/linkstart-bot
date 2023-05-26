@@ -5,18 +5,6 @@ const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.
 let discordMessages;
 let roleReactions;
 
-/* TODO
-        // LearnMoreTech
-        messageId: 1091361707483463742
-            reaction: 'wipfire', role: '790874978819112970'
-            reaction: '😎', role: '790690948199481365'
-
-        // Eyesight
-        messageId: 1077527581101936661
-            reaction: 'bait', role: '1083777942515093644'
-            reaction: '🎨', role: '1092404838140219472'
-*/
-
 module.exports = async function (client) {
     async function reactionForRole(reaction) {
         if (reaction.partial) {
@@ -86,12 +74,7 @@ module.exports = async function (client) {
     client.on(Events.MessageCreate, async message => {
         if (!message.mentions.has(client.user.id)) return;
 
-        if (message.member.id == '306129521990565888' && message.content[0] == 'H')
-            return await message.channel.send(`Par contre me ping pas comme ça sale chien.`);
-        else if (message.member.id == '306129521990565888' && message.content[0] == 'P')
-            return await message.channel.send(`Merde, désolé boss.`);
-
-        else if (message.member.id == '306129521990565888')
+        if (message.member.id == '306129521990565888')
             return await message.channel.send(`Ouais boss ?`);
 
         else if (message.member.id == '306129521990565888' && message.content[0] == 'R')
@@ -106,7 +89,7 @@ module.exports = async function (client) {
         else if (message.member.id == '161970745117769728')
             return await message.channel.send(`Mécaniquement iron ou quoi ?`);
 
-        else return message.channel.send(`Ptdr t ki`);
+        else return message.channel.send(`Ptdr t ki (si t'as besoin d'aide fais /aide)`);
     });
 
     // Once bot is started
