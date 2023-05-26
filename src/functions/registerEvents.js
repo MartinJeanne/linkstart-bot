@@ -74,11 +74,11 @@ module.exports = async function (client) {
     client.on(Events.MessageCreate, async message => {
         if (!message.mentions.has(client.user.id)) return;
 
-        if (message.member.id == '306129521990565888')
-            return await message.channel.send(`Ouais boss ?`);
-
-        else if (message.member.id == '306129521990565888' && message.content[0] == 'R')
+        if (message.member.id == '306129521990565888' && message.content[0] == 'R')
             return await message.channel.send(`Ok.`);
+
+        else if (message.member.id == '306129521990565888')
+            return await message.channel.send(`Ouais boss ?`);
 
         else if (message.member.id == '256876632046960641')
             return await message.channel.send(`Oui ? Ca va boubou ?`);
