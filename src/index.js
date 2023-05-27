@@ -56,6 +56,3 @@ registerEvents(client);
 
 // Launch the bot
 client.login(process.env.DISCORD_TOKEN);
-
-
-// TODO Quand j'ajoute une nouvelle fonctionnalité sur le bot, faire un message sur les serveur en pinguant le bot et il répond (blague)
