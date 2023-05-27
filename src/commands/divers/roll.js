@@ -12,7 +12,7 @@ module.exports = {
 		const parameter = interaction.options.getInteger('valeur');
 		const maxValue = parameter != null ? parameter : 20;
 
-		const result = Math.floor(Math.random() * maxValue);
-		await interaction.editReply({ content: `Dé à **${maxValue}** face\nRésultat : **${result}**🎲`});
+		const result = Math.floor(Math.random() * maxValue) + 1;
+		await interaction.editReply({ content: `🎲 **${result}**/${maxValue}`});
 	},
 };
