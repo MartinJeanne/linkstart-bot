@@ -6,7 +6,7 @@ module.exports = {
 		.setDescription("Jette un dé !")
 		.addStringOption(option => 
 			option.setName('action')
-			.setDescription('Laction à réaliser')
+			.setDescription('L\'action à réaliser')
 			.setRequired(false))
 		.addIntegerOption(option => 
 			option.setName('nombre-face')
@@ -23,16 +23,19 @@ module.exports = {
 		const modifier = interaction.options.getInteger('modificateur');
 		const maxValue = parameter != null ? parameter : 20;
 
-		const result = Math.floor(Math.random() * maxValue) + 1;
-		let response = `🎲 **${result}**/${maxValue}`;
+		let result = Math.floor(Math.random() * maxValue) + 1;
+		let response = `1d${maxValue} : ${result}`;
+
+		if (action && action.trim()) response = `*${action}*\n ${response}`;
+		
 		if (modifier) {
 			const modifierSigne = modifier > 0 ? '+' : '';
-			response += ` (${modifierSigne}${modifier}) = **${result + modifier}**`;
+			result += modifier;
+			response += ` (${modifierSigne}${modifier})`;
 		}
-		if (action && action.trim()) response += ` : *${action}*`;
-		console.log(action)
-		
 
+		response += `\n🎲 **${result}**`;
+		
 		await interaction.editReply({ content: response });
 	},
 };
