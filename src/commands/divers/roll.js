@@ -29,9 +29,7 @@ module.exports = {
 			const modifierSigne = modifier > 0 ? '+' : '';
 			response += ` (${modifierSigne}${modifier}) = **${result + modifier}**`;
 		}
-		if (action && action.trim()) response += ` : *${action}*`;
-		console.log(action)
-		
+		if (action && action.trim()) response = `*${action}*\n ${response}`;		
 
 		await interaction.editReply({ content: response });
 	},
