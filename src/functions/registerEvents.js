@@ -51,7 +51,7 @@ module.exports = async function (client) {
             await command.execute(interaction, client);
         } catch (error) {
             console.error(error);
-            await interaction.editReply({ content: "❌ Une erreur c'est produite lors de l'exécution de cette commande, reportez ce problème à un modérateur", ephemeral: true });
+            await interaction.editReply({ content: "❌ Erreur lors de l'execution de cette commande", ephemeral: true });
         }
     });
 
@@ -79,7 +79,7 @@ module.exports = async function (client) {
             return await message.channel.send(`Ouais boss ?`);
 
         else if (message.member.id == '256876632046960641')
-            return await message.channel.send(`Oui ? Ca va boubou ?`);
+            return await message.channel.send(`Ca va boubou ?`);
 
         else if (message.member.id == '365125783968022529')
             return await message.channel.send(`Tranquille le woi wabbit ?`);
