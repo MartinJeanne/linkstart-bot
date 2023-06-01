@@ -10,8 +10,12 @@ module.exports = {
 			.setRequired(false))
 		.addIntegerOption(option => 
 			option.setName('nombre-face')
-			.setDescription('La valeur max du dé')
+			.setDescription('La valeur max du dé (défaut 20)')
 			.setRequired(false))
+			.addIntegerOption(option => 
+				option.setName('nombre-dé')
+				.setDescription('La nb de dé(s) à lancer (défaut 1')
+				.setRequired(false))
 		.addIntegerOption(option => 
 			option.setName('modificateur')
 			.setDescription('Bonus ou malus')
@@ -19,12 +23,20 @@ module.exports = {
 
 	async execute(interaction, client) {
 		const action = interaction.options.getString('action');
-		const parameter = interaction.options.getInteger('nb face');
+		const parameter = interaction.options.getInteger('nombre-face');
+		const nbDice = interaction.options.getInteger('nombre-dé');
 		const modifier = interaction.options.getInteger('modificateur');
 		const maxValue = parameter != null ? parameter : 20;
 
-		let result = Math.floor(Math.random() * maxValue) + 1;
-		let response = `1d${maxValue} : ${result}`;
+		let response = `${nbDice}d${maxValue} : `;
+		let result = 0;
+		for (let i = 0; i < nbDice; i++) {
+			const diceValue = Math.floor(Math.random() * maxValue) + 1;
+			response += `${diceValue}, `;
+			result += diceValue;
+			
+		}
+		response = response.slice(0, -2); 
 
 		if (action && action.trim()) response = `*${action}*\n ${response}`;
 		
