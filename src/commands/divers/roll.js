@@ -15,7 +15,7 @@ module.exports = {
 			.setMaxValue(10000))
 			.addIntegerOption(option => 
 				option.setName('nombre-dé')
-				.setDescription('La nb de dé(s) à lancer (défaut 1')
+				.setDescription('La nb de dé(s) à lancer (défaut 1)')
 				.setRequired(false)
 				.setMaxValue(30))
 		.addIntegerOption(option => 
@@ -26,9 +26,10 @@ module.exports = {
 	async execute(interaction, client) {
 		const action = interaction.options.getString('action');
 		const parameter = interaction.options.getInteger('nombre-face');
-		const nbDice = interaction.options.getInteger('nombre-dé');
+		let nbDice = interaction.options.getInteger('nombre-dé');
 		const modifier = interaction.options.getInteger('modificateur');
 		const maxValue = parameter != null ? parameter : 20;
+		if (!nbDice) nbDice = 1;
 
 		let response = `${nbDice}d${maxValue} : `;
 		let result = 0;
