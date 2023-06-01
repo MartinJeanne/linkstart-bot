@@ -11,11 +11,13 @@ module.exports = {
 		.addIntegerOption(option => 
 			option.setName('nombre-face')
 			.setDescription('La valeur max du dé (défaut 20)')
-			.setRequired(false))
+			.setRequired(false)
+			.setMaxValue(10000))
 			.addIntegerOption(option => 
 				option.setName('nombre-dé')
 				.setDescription('La nb de dé(s) à lancer (défaut 1')
-				.setRequired(false))
+				.setRequired(false)
+				.setMaxValue(30))
 		.addIntegerOption(option => 
 			option.setName('modificateur')
 			.setDescription('Bonus ou malus')
