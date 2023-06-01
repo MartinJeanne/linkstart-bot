@@ -31,17 +31,17 @@ module.exports = {
 		const maxValue = parameter != null ? parameter : 20;
 		if (!nbDice) nbDice = 1;
 
-		let response = `${nbDice}d${maxValue} : `;
+		let response;
+		if (action && action.trim()) response = `*${action}*\n${nbDice}d${maxValue} : `;
+		else  response = `${nbDice}d${maxValue} : `;
+
 		let result = 0;
 		for (let i = 0; i < nbDice; i++) {
 			const diceValue = Math.floor(Math.random() * maxValue) + 1;
 			response += `${diceValue}, `;
 			result += diceValue;
-			
 		}
-		response = response.slice(0, -2); 
-
-		if (action && action.trim()) response = `*${action}*\n ${response}`;
+		response = response.slice(0, -2);
 		
 		if (modifier) {
 			const modifierSigne = modifier > 0 ? '+' : '';
