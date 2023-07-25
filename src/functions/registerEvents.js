@@ -70,10 +70,14 @@ module.exports = async function (client) {
     });
 
     client.on(Events.MessageCreate, async message => {
-        if (message.channel.type === ChannelType.DM || message.author.id == '306129521990565888' ) {
-            const msgArray = message.content.split(' ');
-            const channel = client.channels.cache.get(msgArray.shift());
-            channel.send(msgArray.join(' '));
+        if (message.channel.type === ChannelType.DM && message.author.id == '306129521990565888' ) {
+            try {
+                const msgArray = message.content.split(' ');
+                const channel = client.channels.cache.get(msgArray.shift());
+                return channel.send(msgArray.join(' '));
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         if (!message.mentions.has(client.user.id)) return;
@@ -99,7 +103,7 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
-        client.user.setActivity('le cul de Serkuos', { type: ActivityType.Custom });
+        client.user.setActivity('le cul de Serkuos', { type: ActivityType.Watching });
 
         console.log(`${client.user.tag} est lancé !`);
     });
