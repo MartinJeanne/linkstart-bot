@@ -4,7 +4,7 @@ const { default: axios } = require('axios');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('donaldtrump')
-		.setDescription('Découvre une chose débile que Donald Trump a dit'),
+		.setDescription('Donad Trump said dump things. Discover one of it.'),
 
 	async execute(interaction) {
 		const response = await axios.get('https://www.tronalddump.io/random/quote')

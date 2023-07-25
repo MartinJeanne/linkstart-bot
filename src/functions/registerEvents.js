@@ -82,12 +82,12 @@ module.exports = async function (client) {
             return await message.channel.send(`Ca va boubou ?`);
 
         else if (message.member.id == '365125783968022529')
-            return await message.channel.send(`Tranquille le woi wabbit ?`);
+            return await message.channel.send(`Ca fart Pokix`);
 
         else if (message.member.id == '161970745117769728')
-            return await message.channel.send(`Mécaniquement iron ou quoi ?`);
+            return await message.channel.send(`Gnugnu le mec est trop edgy`);
 
-        else return message.channel.send(`Ptdr t ki (si t'as besoin d'aide fais /aide)`);
+        else return message.channel.send(`Ptdr t ki`);
     });
 
     // Once bot is started

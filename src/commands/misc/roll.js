@@ -3,31 +3,31 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roll')
-		.setDescription("Jette un dé !")
+		.setDescription("Roll a dice !")
 		.addStringOption(option => 
 			option.setName('action')
-			.setDescription('L\'action à réaliser')
+			.setDescription('Action that your character wants to perform')
 			.setRequired(false))
 		.addIntegerOption(option => 
-			option.setName('nombre-face')
-			.setDescription('La valeur max du dé (défaut 20)')
+			option.setName('dice-value')
+			.setDescription('Max dice value (default 20)')
 			.setRequired(false)
 			.setMaxValue(10000))
 			.addIntegerOption(option => 
-				option.setName('nombre-dé')
-				.setDescription('La nb de dé(s) à lancer (défaut 1)')
+				option.setName('dice-to-roll')
+				.setDescription('Number of dice to roll (default 1)')
 				.setRequired(false)
 				.setMaxValue(30))
 		.addIntegerOption(option => 
-			option.setName('modificateur')
-			.setDescription('Bonus ou malus')
+			option.setName('modifier')
+			.setDescription('Bonus or malus')
 			.setRequired(false)),
 
 	async execute(interaction, client) {
 		const action = interaction.options.getString('action');
-		const parameter = interaction.options.getInteger('nombre-face');
-		let nbDice = interaction.options.getInteger('nombre-dé');
-		const modifier = interaction.options.getInteger('modificateur');
+		const parameter = interaction.options.getInteger('dice-value');
+		let nbDice = interaction.options.getInteger('dice-to-roll');
+		const modifier = interaction.options.getInteger('modifier');
 		const maxValue = parameter != null ? parameter : 20;
 		if (!nbDice) nbDice = 1;
 

@@ -4,10 +4,10 @@ const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('boucle')
-		.setDescription('Joue de la musique en boucle')
+		.setName('loop')
+		.setDescription('Play music in loop')
 		.addIntegerOption(option => option.setName('mode')
-			.setDescription('Sur quoi boucler')
+			.setDescription('Loop mode')
 			.setRequired(false)
 			.addChoices(
 				{ name: 'Aucun', value: QueueRepeatMode.OFF },
@@ -27,15 +27,15 @@ module.exports = {
 		let response;
 		switch (loopMode) {
 			case QueueRepeatMode.OFF:
-				response = '⏹️ Boucle annulé';
+				response = '⏹️ Loop canceled';
 				break;
 
 			case QueueRepeatMode.TRACK:
-				response = '🔂 Musique mise en boucle';
+				response = '🔂 Music now in loop';
 				break; 
 			
 			case QueueRepeatMode.QUEUE:
-				response = '🔁 File mise en boucle';
+				response = '🔁 Queue now in loop';
 				break;
 		}
 		queue.setRepeatMode(loopMode);

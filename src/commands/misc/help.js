@@ -3,8 +3,8 @@ const fs = require('node:fs');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('aide')
-		.setDescription('Obtient des informations sur mes commandes'),
+		.setName('help')
+		.setDescription('Get the list of commands with a short description'),
 
 	async execute(interaction, client) {
 		const commands = [];

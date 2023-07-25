@@ -4,8 +4,8 @@ const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('file')
-		.setDescription('Affiche la file des musiques'),
+		.setName('queue')
+		.setDescription('Show music queue'),
 
 	async execute(interaction, client) {
 		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});

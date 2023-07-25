@@ -3,20 +3,15 @@ const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('pause')
-		.setDescription('Pause ou relance la musique'),
+		.setName('next')
+		.setDescription('Go to next music'),
 
 	async execute(interaction, client) {
 		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
 		if (!queue) return;
 
-		if(await queue.node.isPaused()) {
-			await queue.node.resume();
-			await interaction.editReply('▶️ Reprise de la musique');
-		}
-		else {
-			await queue.node.pause();
-			await interaction.editReply('⏸️ Musique mise en pause');
-		}
+		const nextSong = queue.history.nextTrack;
+		await queue.node.skip();
+		return await interaction.editReply(`⏩ Next: **${nextSong.title}**`);
 	},
 };

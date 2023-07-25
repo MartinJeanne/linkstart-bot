@@ -3,8 +3,8 @@ const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('mélange')
-        .setDescription('Mélange les musiques'),
+        .setName('shuffle')
+        .setDescription('Shuffle music queue'),
 
     async execute(interaction, client) {
         const queue = await getQueue({interaction: interaction, client: client, canCreate: false});

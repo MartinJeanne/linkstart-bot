@@ -4,29 +4,29 @@ const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('joue')
-		.setDescription('Joue de la musique')
-		.addStringOption(option => option.setName('musique')
-			.setDescription('Nom ou lien de la musique')
+		.setName('play')
+		.setDescription('Play music')
+		.addStringOption(option => option.setName('music')
+			.setDescription('Name or link of the music')
 			.setRequired(true)),
 
 	async execute(interaction, client) {
 		const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
 		if (!queue) return;
 
-		const toSearch = interaction.options.getString('musique');
+		const toSearch = interaction.options.getString('music');
 		const result = await client.player.search(toSearch, {
 			requestedBy: interaction.user,
 			searchEngine: QueryType.AUTO
 		});
 		if (result.tracks.length === 0) {
 			await queue.destroy();
-			return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
+			return await interaction.editReply(':interrobang: No result found for this search');
 		}
 
 		if (result.playlist) {
 			queue.addTrack(result.tracks);
-			await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
+			await interaction.editReply(`▶️ **${result.tracks.length}** music added from ${result.playlist.type}: **${result.playlist.title}** `);
 		}
 		else {
 			try {
@@ -34,7 +34,7 @@ module.exports = {
 				await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
 			} catch (error) {
 				console.error(error);
-				await interaction.editReply('❌ Oups, erreur lors de la lecture de la musique');
+				await interaction.editReply('❌ Oops, something went wrong when playing the music');
 			}
 		}
 

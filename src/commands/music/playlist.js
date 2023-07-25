@@ -7,21 +7,21 @@ const { postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('playlist')
-        .setDescription('Joue ou sauvegarde une playlist !')
-        .addSubcommand(subcommand => subcommand.setName('crée')
-            .setDescription('Ajoute une playlist existante')
-            .addStringOption(option => option.setName('url').setDescription('Le lien de la playlist').setRequired(true))
-            .addStringOption(option => option.setName('nom').setDescription('Nom de la playlist')))
-        .addSubcommand(subcommand => subcommand.setName('joue')
-            .setDescription('Joue une playlist !'))
-        .addSubcommand(subcommand => subcommand.setName('supp')
-            .setDescription('Supprime une playlist')),
+        .setDescription('Play or save a playlist!')
+        .addSubcommand(subcommand => subcommand.setName('create')
+            .setDescription('Save a playlist')
+            .addStringOption(option => option.setName('link').setDescription('Link of your playlist').setRequired(true))
+            .addStringOption(option => option.setName('name').setDescription('Name of the playlist')))
+        .addSubcommand(subcommand => subcommand.setName('play')
+            .setDescription('Play your playlist!'))
+        .addSubcommand(subcommand => subcommand.setName('remove')
+            .setDescription('Delete a playlist')),
 
     async execute(interaction, client) {
         const subcommand = interaction.options.getSubcommand();
         const maxPlaylists = 5;
 
-        if (subcommand == 'crée') {
+        if (subcommand == 'create') {
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
@@ -29,8 +29,8 @@ module.exports = {
             if (Array.isArray(userPlaylists) && userPlaylists.length >= maxPlaylists)
                 return await interaction.editReply(`Tu es au maximum de playlists : **${maxPlaylists}**`);
 
-            const playlistName = interaction.options.getString('nom');
-            const playlistUrl = interaction.options.getString('url');
+            const playlistName = interaction.options.getString('name');
+            const playlistUrl = interaction.options.getString('link');
 
             const createdPlaylist = await postPlaylist(user, playlistName, playlistUrl);
             if (!createdPlaylist) return await interaction.editReply(`❌ Il y a eu un problème lors de la création de la playlist dans la base de donnée`);
@@ -39,7 +39,7 @@ module.exports = {
         }
 
 
-        else if (subcommand == 'joue') {
+        else if (subcommand == 'play') {
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
@@ -56,7 +56,7 @@ module.exports = {
                 );
             }
             const row = new ActionRowBuilder().addComponents(...buttons);
-            const message = await interaction.editReply({ content: 'Quelle playlist veux-tu jouer ?', components: [row] });
+            const message = await interaction.editReply({ content: 'Wich playlist you wanna play?', components: [row] });
 
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
             collector.on('collect', async inter => {
@@ -78,7 +78,7 @@ module.exports = {
         }
 
 
-        else if (subcommand == 'supp') {
+        else if (subcommand == 'remove') {
             const user = await getUser(interaction);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
