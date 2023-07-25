@@ -70,13 +70,18 @@ module.exports = async function (client) {
     });
 
     client.on(Events.MessageCreate, async message => {
-        if (message.channel.type === ChannelType.DM && message.author.id == '306129521990565888' ) {
-            try {
-                const msgArray = message.content.split(' ');
-                const channel = client.channels.cache.get(msgArray.shift());
-                return channel.send(msgArray.join(' '));
-            } catch (error) {
-                console.error(error);
+        if (message.channel.type === ChannelType.DM) {
+            if (message.author.id == '306129521990565888') {
+                try {
+                    const msgArray = message.content.split(' ');
+                    const channel = client.channels.cache.get(msgArray.shift());
+                    return channel.send(msgArray.join(' '));
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                const channel = client.channels.cache.get('788781047420420137');
+                return channel.send(message.content);
             }
         }
 
