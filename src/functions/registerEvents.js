@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, ActivityType  } = require('discord.js');
 const { getDiscordMessages } = require('../endpoints/discordMessage.js');
 const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
 
@@ -93,6 +93,7 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
+        client.user.setActivity('La ptit cul à Serkuos', { type: ActivityType.Watching });
 
         console.log(`${client.user.tag} est lancé !`);
     });
