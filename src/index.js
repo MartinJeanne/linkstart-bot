@@ -11,8 +11,12 @@ dotenv.config();
 const registerEvents = require('./functions/registerEvents.js');
 
 // Create a new client instance
-const client = new Client({ 
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessages
+	],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 

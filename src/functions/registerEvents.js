@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, ActivityType, ChannelType } = require('discord.js');
 const { getDiscordMessages } = require('../endpoints/discordMessage.js');
 const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
 
@@ -40,7 +40,7 @@ module.exports = async function (client) {
 
     // When user uses a slash (/) command!
     client.on(Events.InteractionCreate, async interaction => {
-        if (!interaction.isCommand()) return;
+        if (!interaction.isCommand() || message.channel.type !== ChannelType.GuildText) return;
 
         const command = client.commands.get(interaction.commandName);
 
@@ -70,6 +70,12 @@ module.exports = async function (client) {
     });
 
     client.on(Events.MessageCreate, async message => {
+        if (message.channel.type === ChannelType.DM || message.author.id == '306129521990565888' ) {
+            const msgArray = message.content.split(' ');
+            const channel = client.channels.cache.get(msgArray.shift());
+            channel.send(msgArray.join(' '));
+        }
+
         if (!message.mentions.has(client.user.id)) return;
 
         if (message.member.id == '306129521990565888' && message.content[0] == 'R')
@@ -93,6 +99,7 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
+        client.user.setActivity('le cul de Serkuos', { type: ActivityType.Custom });
 
         console.log(`${client.user.tag} est lancé !`);
     });
