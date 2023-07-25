@@ -40,7 +40,7 @@ module.exports = async function (client) {
 
     // When user uses a slash (/) command!
     client.on(Events.InteractionCreate, async interaction => {
-        if (!interaction.isCommand() || message.channel.type !== ChannelType.GuildText) return;
+        if (!interaction.isCommand()) return;
 
         const command = client.commands.get(interaction.commandName);
 
