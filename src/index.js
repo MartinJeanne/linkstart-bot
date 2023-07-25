@@ -41,8 +41,12 @@ for (const folder of commandFolders) {
 // Before deploying commands
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
-// Deploy commands
+
 (async () => {
+	// Load all the extractors from the @discord-player/extractor package
+	await client.player.extractors.loadDefault();
+
+	// Deploy commands
 	try {
 		await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commandsToDeploy });
 		console.log(`Commandes slash (/) rechargées !`);
