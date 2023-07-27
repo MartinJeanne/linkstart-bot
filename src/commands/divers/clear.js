@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,6 +12,11 @@ module.exports = {
 
 	// TODO security
 	async execute(interaction) {
+		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)
+			&& interaction.member.id !== '306129521990565888') {
+			return await interaction.editReply({ content: `Tu n'as pas la permission de faire ça !`, ephemeral: true });
+		}
+
 		const nbToDelete = interaction.options.getInteger('nombre');
 		const channel = interaction.channel;
 
