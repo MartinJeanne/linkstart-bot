@@ -10,6 +10,7 @@ module.exports = {
 
 	isEphemeral: true,
 
+	// TODO security
 	async execute(interaction) {
 		const nbToDelete = interaction.options.getInteger('nombre');
 		const channel = interaction.channel;
