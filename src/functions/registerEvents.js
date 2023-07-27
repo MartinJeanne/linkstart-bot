@@ -81,7 +81,7 @@ module.exports = async function (client) {
                 }
             } else {
                 const channel = client.channels.cache.get('788781047420420137');
-                return channel.send(message.content);
+                return channel.send(`${message.author}:  ${message.content}`);
             }
         }
 
@@ -101,8 +101,6 @@ module.exports = async function (client) {
 
         else if (message.member.id == '161970745117769728')
             return await message.channel.send(`Mécaniquement iron ou quoi ?`);
-
-        else return message.channel.send(`Ptdr t ki (si t'as besoin d'aide fais /aide)`);
     });
 
     // Once bot is started
