@@ -43,8 +43,7 @@ module.exports = async function (client) {
         if (!interaction.isCommand()) return;
 
         const command = client.commands.get(interaction.commandName);
-
-        if (!command) return null;
+        if (!command) return;
 
         try {
             await interaction.deferReply({ ephemeral: command.isEphemeral });
@@ -106,7 +105,7 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
-        client.user.setActivity('le cul de Serkuos', { type: ActivityType.Watching });
+        client.user.setActivity('/chut', { type: ActivityType.Watching });
 
         console.log(`${client.user.tag} est lancé !`);
     });
