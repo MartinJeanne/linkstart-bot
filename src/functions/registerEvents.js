@@ -43,8 +43,7 @@ module.exports = async function (client) {
         if (!interaction.isCommand()) return;
 
         const command = client.commands.get(interaction.commandName);
-
-        if (!command) return null;
+        if (!command) return;
 
         try {
             await interaction.deferReply({ ephemeral: command.isEphemeral });

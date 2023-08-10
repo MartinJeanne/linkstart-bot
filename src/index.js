@@ -29,10 +29,10 @@ client.commands = new Collection();
 // Information on commands that will be deployed to Discord API
 const commandsToDeploy = [];
 
-const commandFolders = fs.readdirSync("src/commands");
-for (const folder of commandFolders) {
-	const commandFiles = fs.readdirSync(`src/commands/${folder}`).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
+const folders = fs.readdirSync("src/commands");
+for (const folder of folders) {
+	const files = fs.readdirSync(`src/commands/${folder}`).filter(file => file.endsWith('.js'));
+	for (const file of files) {
 		const command = require(`./commands/${folder}/${file}`);
 
 		// Put commands in collection with the key as the command name and the value as the exported module
@@ -44,7 +44,6 @@ for (const folder of commandFolders) {
 
 // Before deploying commands
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
-
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package

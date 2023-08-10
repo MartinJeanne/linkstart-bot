@@ -11,7 +11,7 @@ module.exports.getUser = async function (interaction) {
         .then(async response => {
             if (response.status !== 200) return null;
 
-            const user = response.data._embedded?.discordUserDtoList?.[0];
+            const user = response.data[0];
             if (user) return user;
 
             const newUser = {
@@ -31,7 +31,7 @@ module.exports.getUser = async function (interaction) {
 module.exports.getUserPlaylists = async function (user) {
     const userPlaylists = await axios.get(`${usersUrl}/${user.id}/playlists`)
         .then(response => {
-            if (response.status === 200) return response.data._embedded?.playlistDtoList;
+            if (response.status === 200) return response.data;
         })
         .catch(error => console.error(error));
 
