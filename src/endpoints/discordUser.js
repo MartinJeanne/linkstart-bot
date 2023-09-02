@@ -9,10 +9,7 @@ module.exports.getUser = async function (interaction) {
 
     const user = await axios.get(`${usersUrl}/${discordId}`)
         .then(async response => {
-            if (response.status !== 200) return null;
-
-            const user = response.data;
-            if (user) return user;
+            if (response.status === 200 && response.data) return response.data;
 
             const newUser = {
                 discordId: discordId,
