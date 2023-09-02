@@ -44,7 +44,8 @@ module.exports = {
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(user);
-            if (!Array.isArray(userPlaylists)) return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
+            if (!Array.isArray(userPlaylists) || userPlaylists.length === 0)
+                return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
 
             const buttons = [];
             for (let i = 0; i < userPlaylists.length; i++) {
@@ -61,7 +62,7 @@ module.exports = {
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
             collector.on('collect', async inter => {
                 await inter.deferUpdate();
-                const queue = await getQueue({interaction: interaction, client: client, canCreate: true});
+                const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
                 if (!queue) return;
 
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);

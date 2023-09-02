@@ -7,11 +7,11 @@ const usersUrl = `${process.env.API_URL}/discordUsers`;
 module.exports.getUser = async function (interaction) {
     const discordId = interaction.member.user.id;
 
-    const user = await axios.get(usersUrl, discordId)
+    const user = await axios.get(`${usersUrl}/${discordId}`)
         .then(async response => {
             if (response.status !== 200) return null;
 
-            const user = response.data[0];
+            const user = response.data;
             if (user) return user;
 
             const newUser = {
@@ -29,7 +29,7 @@ module.exports.getUser = async function (interaction) {
 };
 
 module.exports.getUserPlaylists = async function (user) {
-    const userPlaylists = await axios.get(`${usersUrl}/${user.id}/playlists`)
+    const userPlaylists = await axios.get(`${usersUrl}/${user.discordId}/playlists`)
         .then(response => {
             if (response.status === 200) return response.data;
         })
