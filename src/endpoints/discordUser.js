@@ -4,16 +4,15 @@ dotenv.config();
 
 const usersUrl = `${process.env.API_URL}/discordUsers`;
 
-module.exports.getUser = async function (interaction) {
-    const discordId = interaction.member.user.id;
-
-    const user = await axios.get(`${usersUrl}/${discordId}`)
+module.exports.getUser = async function (discordUser) {
+    const user = await axios.get(`${usersUrl}/${discordUser.id}`)
         .then(async response => {
             if (response.status === 200 && response.data) return response.data;
 
             const newUser = {
-                discordId: discordId,
-                tag: interaction.member.user.tag
+                discordId: discordUser.id,
+                avatarURL: discordUser.avatarURL(),
+                tag: discordUser.tag
             }
 
             const createdUser = await axios.post(usersUrl, newUser).catch(error => console.error(error));

@@ -22,7 +22,7 @@ module.exports = {
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
-            const user = await getUser(interaction);
+            const user = await getUser(interaction.member.user);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(user);
@@ -40,8 +40,7 @@ module.exports = {
 
 
         else if (subcommand == 'joue') {
-            const user = await getUser(interaction);+
-            console.log(user)
+            const user = await getUser(interaction.member.user);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(user);
@@ -81,7 +80,7 @@ module.exports = {
 
 
         else if (subcommand == 'supp') {
-            const user = await getUser(interaction);
+            const user = await getUser(interaction.member.user);
             if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(user);
