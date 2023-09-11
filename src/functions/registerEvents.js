@@ -2,6 +2,7 @@ const { Events, ActivityType, ChannelType } = require('discord.js');
 const { getDiscordMessages } = require('../endpoints/discordMessage.js');
 const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
 
+const garwalleId = '306129521990565888';
 let discordMessages;
 let roleReactions;
 
@@ -27,7 +28,7 @@ module.exports = async function (client) {
         const role = await reactionForRole(reaction);
         if (!role) return;
         const member = await reaction.message.guild.members.fetch(user.id);
-        let res = member.roles.add(role);
+        member.roles.add(role);
     });
 
 
@@ -57,12 +58,12 @@ module.exports = async function (client) {
     // When member join the server
     client.on(Events.GuildMemberAdd, member => {
         // Adding "Nouveau" to new user when they join the server
-        if (member.guild.id == '485000880114892821') member.roles.add('485021407529664526');
+        if (member.guild.id === '485000880114892821') member.roles.add('485021407529664526');
     });
 
     // When member leave the server
     client.on(Events.GuildMemberRemove, member => {
-        if (member.guild.id == '485000880114892821') {
+        if (member.guild.id === '485000880114892821') {
             const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
             channel.send(`Bye, ${member}`);
         }
@@ -70,7 +71,7 @@ module.exports = async function (client) {
 
     client.on(Events.MessageCreate, async message => {
         if (message.channel.type === ChannelType.DM) {
-            if (message.author.id == '306129521990565888') {
+            if (message.author.id === garwalleId) {
                 try {
                     const msgArray = message.content.split(' ');
                     const channel = client.channels.cache.get(msgArray.shift());
@@ -84,21 +85,21 @@ module.exports = async function (client) {
             }
         }
 
-        if (!message.mentions.has(client.user.id)) return;
+        if (!message.mentions.has(client.user.id) || message.mentions.everyone) return;
 
-        if (message.member.id == '306129521990565888' && message.content[0] == 'R')
+        if (message.member.id === garwalleId && message.content[0] === 'R')
             return await message.channel.send(`Ok.`);
 
-        else if (message.member.id == '306129521990565888')
+        else if (message.member.id === garwalleId)
             return await message.channel.send(`Ouais boss ?`);
 
-        else if (message.member.id == '256876632046960641')
+        else if (message.member.id === '256876632046960641')
             return await message.channel.send(`Ca va boubou ?`);
 
-        else if (message.member.id == '365125783968022529')
+        else if (message.member.id === '365125783968022529')
             return await message.channel.send(`Ca fart Pokix ?`);
 
-        else if (message.member.id == '161970745117769728')
+        else if (message.member.id === '161970745117769728')
             return await message.channel.send(`Mécaniquement iron ou quoi ?`);
     });
 
