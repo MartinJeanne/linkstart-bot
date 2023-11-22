@@ -1,4 +1,4 @@
-// Require the necessary discord.js classes
+// Require the necessary discord.js classes test
 const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
 // fs from node to navigate through commands files
 const fs = require('node:fs');
