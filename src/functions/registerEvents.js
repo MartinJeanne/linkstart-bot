@@ -1,6 +1,8 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
 const { getDiscordMessages } = require('../endpoints/discordMessage.js');
 const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
+const schedule = require('node-schedule');
+const birthdayAdvertiser = require('./birthdayAdvertiser.js');
 
 const garwalleId = '306129521990565888';
 let discordMessages;
@@ -107,6 +109,8 @@ module.exports = async function (client) {
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
         client.user.setActivity('/chut', { type: ActivityType.Watching });
+
+        schedule.scheduleJob('26 * * * *', () => { birthdayAdvertiser(client) });
 
         console.log(`${client.user.tag} est lancé !`);
     });
