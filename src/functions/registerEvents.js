@@ -108,10 +108,9 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         discordMessages = await getDiscordMessages();
+        schedule.scheduleJob('0 8 * * *', () => { birthdayAdvertiser(client) });
+        
         client.user.setActivity('/chut', { type: ActivityType.Watching });
-
-        schedule.scheduleJob('26 * * * *', () => { birthdayAdvertiser(client) });
-
         console.log(`${client.user.tag} est lancé !`);
     });
 };

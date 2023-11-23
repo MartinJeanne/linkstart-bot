@@ -33,3 +33,13 @@ module.exports.getUserPlaylists = async function (user) {
 
     return userPlaylists;
 };
+
+module.exports.checkForBirthday = async function () {
+    const userBirthday = await axios.get(`${usersUrl}/birthday`)
+        .then(response => {
+            if (response.status === 200) return response.data;
+        })
+        .catch(error => console.error(error));
+
+    return userBirthday;
+};
