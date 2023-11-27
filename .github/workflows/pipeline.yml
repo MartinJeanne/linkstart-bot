@@ -2,7 +2,7 @@ name: Deploy Docker Container
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
 
 env:
   HOST: Monday
