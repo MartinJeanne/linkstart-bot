@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "master", "develop" ]
 
-env:
-  HOST: Monday
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
