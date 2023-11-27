@@ -33,4 +33,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-        touch /home/martin/coucou.txt
+          touch /home/martin/coucou.txt
