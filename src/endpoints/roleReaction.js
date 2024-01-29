@@ -9,11 +9,10 @@ module.exports.getRoleReaction = async function (discordId, reaction) {
         discordId: discordId,
         reaction: reaction
     }
-    const roleReactions = await axios.get(roleReactionsUrl, { params: queryParams })
+    
+    return axios.get(roleReactionsUrl, { params: queryParams })
         .then(response => {
             if (response.status === 200) return response.data;
         })
         .catch(error => console.error(error));
-
-    return roleReactions;
 };

@@ -35,7 +35,7 @@ module.exports = {
             const createdPlaylist = await postPlaylist(user, playlistName, playlistUrl);
             if (!createdPlaylist) return await interaction.editReply(`❌ Il y a eu un problème lors de la création de la playlist dans la base de donnée`);
 
-            await interaction.editReply(`:white_check_mark: Nouvelle playlist : **${createdPlaylist.name}**, ajouté !`);
+            await interaction.editReply(`:white_check_mark: Playlist crée : **${createdPlaylist.name}**`);
         }
 
 
