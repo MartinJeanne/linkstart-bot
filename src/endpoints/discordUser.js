@@ -30,7 +30,7 @@ module.exports.getUserPlaylists = async function (user) {
 };
 
 module.exports.checkForBirthday = async function () {
-    return axios.get(`${usersUrl}/birthday`)
+    return axios.get(`${usersUrl}/checkBirthdayIsTomorrow`)
         .then(response => {
             if (response.status === 200) return response.data;
         })
