@@ -5,14 +5,14 @@ dotenv.config();
 const playlistsUrl = `${process.env.API_URL}/playlists`;
 
 /** Get user by Discord id */
-module.exports.postPlaylist = async function (user, name, url) {
+module.exports.postPlaylist = async function (member, name, url) {
     const newPlaylist = {
         name: name ? name : "Ma playlist",
         url: url
     };
 
-    const discordUserId = user.id;
-    return axios.post(playlistsUrl, newPlaylist, { params: { discordUserId } })
+    const memberId = member.id;
+    return axios.post(playlistsUrl, newPlaylist, { params: { memberId } })
         .then(response => {
             return response.data;
         })

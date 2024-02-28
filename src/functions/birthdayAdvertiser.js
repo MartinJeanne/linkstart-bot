@@ -1,5 +1,5 @@
 /** Wish happy birthday to users! */
-const { checkForBirthday } = require('../endpoints/discordUser');
+const { checkForBirthday } = require('../endpoints/members');
 
 module.exports = async function (client) {
 
