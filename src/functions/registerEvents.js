@@ -1,9 +1,12 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
-const { getDiscordMessages } = require('../endpoints/discordMessage.js');
-const { getRoleReaction: getRoleReaction } = require('../endpoints/roleReaction.js');
+const { getMessages } = require('../endpoints/messages.js');
+const { postGuilds } = require('../endpoints/guilds.js');
+const { getRoleReaction } = require('../endpoints/roleReaction.js');
+const schedule = require('node-schedule');
+const birthdayAdvertiser = require('./birthdayAdvertiser.js');
 
 const garwalleId = '306129521990565888';
-let discordMessages;
+let messages;
 let roleReactions;
 
 module.exports = async function (client) {
@@ -17,8 +20,8 @@ module.exports = async function (client) {
             }
         }
 
-        const discordIds = discordMessages.map(discordMessage => discordMessage.discordId);
-        if (!discordIds.includes(reaction.message.id)) return;
+        const ids = messages.map(message => message.id);
+        if (!ids.includes(reaction.message.id)) return;
         roleReactions = await getRoleReaction(reaction.message.id, reaction.emoji.name);
 
         return roleReactions?.role;
@@ -69,6 +72,10 @@ module.exports = async function (client) {
         }
     });
 
+    client.on(Events.GuildCreate, guild => {
+        postGuilds(guild);
+    });
+
     client.on(Events.MessageCreate, async message => {
         if (message.channel.type === ChannelType.DM) {
             if (message.author.id === garwalleId) {
@@ -105,9 +112,10 @@ module.exports = async function (client) {
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        discordMessages = await getDiscordMessages();
+        messages = await getMessages();
+        schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
+        
         client.user.setActivity('/chut', { type: ActivityType.Watching });
-
         console.log(`${client.user.tag} est lancé !`);
     });
 };
