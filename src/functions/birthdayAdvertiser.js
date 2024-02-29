@@ -16,7 +16,7 @@ module.exports = async function (client) {
 		const currentYear = new Date().getFullYear();
 		const age = currentYear - birthdayYear;
 
-		//channel.send(`Demain c'est ton anniversaire <@${usersBirthday[i].discordId}> ! Pour tes ${age} ans, amène des croissants 😉`);
-		channel.send(`Bon anniversaire <@${usersBirthday[i].discordId}> ! 😎`);
+		//channel.send(`Demain c'est ton anniversaire <@${usersBirthday[i].id}> ! Pour tes ${age} ans, amène des croissants 😉`);
+		channel.send(`Bon anniversaire <@${usersBirthday[i].id}> ! 😎`);
 	}
 };

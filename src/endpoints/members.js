@@ -1,36 +1,49 @@
 const { default: axios } = require('axios');
 const dotenv = require('dotenv');
+const { getGuild, postGuilds } = require('../endpoints/guilds.js');
 dotenv.config();
 
 const membersUrl = `${process.env.API_URL}/members`;
 
-module.exports.getMember = async function (member) {
+exports.getMember = async function (member) {
     return axios.get(`${membersUrl}/${member.id}`)
         .then(async response => {
             if (response.status === 200 && response.data) return response.data;
-
-            const newUser = {
-                id: member.id,
-                tag: member.user.tag,
-                avatarURL: member.avatarURL(),
-                guildId: member.guild.id
-            }
-
-            const createdUser = await axios.post(membersUrl, newUser).catch(error => console.error(error));
-            return createdUser.data;
+            else return await exports.postMember(member);
         })
-        .catch(error => console.error(error));
+        .catch(console.error);
 };
 
-module.exports.getUserPlaylists = async function (user) {
-    return axios.get(`${membersUrl}/${user.discordId}/playlists`)
+exports.postMember = async function (member) {
+    await getGuild(member.guild.id)
+        .then(async guild => {
+            if (!guild) await postGuilds(member.guild);
+        })
+        .catch(console.error);
+
+    const newUser = {
+        id: member.id,
+        tag: member.user.tag,
+        avatar: member.user.avatarURL(),
+        guildId: member.guild.id
+    }
+
+    return axios.post(membersUrl, newUser)
+        .then(response => {
+            if (response.status === 201 && response.data) return response.data;
+        })
+        .catch(console.error);
+}
+
+exports.getUserPlaylists = async function (user) {
+    return axios.get(`${membersUrl}/${user.id}/playlists`)
         .then(response => {
             if (response.status === 200) return response.data;
         })
         .catch(error => console.error(error));
 };
 
-module.exports.checkForBirthday = async function () {
+exports.checkForBirthday = async function () {
     return axios.get(`${membersUrl}/checkBirthdayIsToday`)
         .then(response => {
             if (response.status === 200) return response.data;

@@ -23,7 +23,7 @@ module.exports = {
 
         if (subcommand == 'crée') {
             const member = await getMember(interaction.member);
-            if (!member.id) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (Array.isArray(userPlaylists) && userPlaylists.length >= maxPlaylists)
@@ -41,7 +41,7 @@ module.exports = {
 
         else if (subcommand == 'joue') {
             const member = await getMember(interaction.member);
-            if (!member.id) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists) || userPlaylists.length === 0)
@@ -81,7 +81,7 @@ module.exports = {
 
         else if (subcommand == 'supp') {
             const member = await getMember(interaction.member);
-            if (!member.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);

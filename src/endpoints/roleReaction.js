@@ -4,11 +4,8 @@ dotenv.config();
 
 const roleReactionsUrl = `${process.env.API_URL}/roleReactions`;
 
-module.exports.getRoleReaction = async function (discordId, reaction) {
-    const queryParams = {
-        discordId: discordId,
-        reaction: reaction
-    }
+module.exports.getRoleReaction = async function (id, reaction) {
+    const queryParams = { id, reaction }
     
     return axios.get(roleReactionsUrl, { params: queryParams })
         .then(response => {

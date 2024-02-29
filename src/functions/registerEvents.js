@@ -1,5 +1,6 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
 const { getMessages } = require('../endpoints/messages.js');
+const { postGuilds } = require('../endpoints/guilds.js');
 const { getRoleReaction } = require('../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
 const birthdayAdvertiser = require('./birthdayAdvertiser.js');
@@ -19,8 +20,8 @@ module.exports = async function (client) {
             }
         }
 
-        const discordIds = messages.map(message => message.discordId);
-        if (!discordIds.includes(reaction.message.id)) return;
+        const ids = messages.map(message => message.id);
+        if (!ids.includes(reaction.message.id)) return;
         roleReactions = await getRoleReaction(reaction.message.id, reaction.emoji.name);
 
         return roleReactions?.role;
@@ -72,8 +73,7 @@ module.exports = async function (client) {
     });
 
     client.on(Events.GuildCreate, guild => {
-        console.log("name: " + guild.name);
-        console.log("id: " + guild.id);
+        postGuilds(guild);
     });
 
     client.on(Events.MessageCreate, async message => {
@@ -113,7 +113,7 @@ module.exports = async function (client) {
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         messages = await getMessages();
-        schedule.scheduleJob('* * * * *', () => { birthdayAdvertiser(client) });
+        schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
         
         client.user.setActivity('/chut', { type: ActivityType.Watching });
         console.log(`${client.user.tag} est lancé !`);
