@@ -1,6 +1,6 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
 const { getMessages } = require('../endpoints/messages.js');
-const { postGuilds } = require('../endpoints/guilds.js');
+const { postGuild } = require('../endpoints/guilds.js');
 const { getRoleReaction } = require('../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
 const birthdayAdvertiser = require('./birthdayAdvertiser.js');
@@ -73,7 +73,7 @@ module.exports = async function (client) {
     });
 
     client.on(Events.GuildCreate, guild => {
-        postGuilds(guild);
+        postGuild(guild);
     });
 
     client.on(Events.MessageCreate, async message => {
