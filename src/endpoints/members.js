@@ -55,7 +55,7 @@ exports.putMember = async function (member) {
 }
 
 exports.checkForBirthday = async function () {
-    return axios.get(`${membersUrl}/checkBirthdayIsToday`)
+    return axios.get(`${membersUrl}/birthdayIsToday`)
         .then(response => {
             if (response.status === 200)
                 return response.data;
