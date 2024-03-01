@@ -1,14 +1,13 @@
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
+	isEphemeral: true,
 	data: new SlashCommandBuilder()
 		.setName('clear')
 		.setDescription('Supprime plusieurs messages')
 		.addIntegerOption(option => option.setName('nombre')
 			.setDescription('Nombre de message à supprimer')
 			.setRequired(true)),
-
-	isEphemeral: true,
 
 	// TODO security
 	async execute(interaction) {

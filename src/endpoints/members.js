@@ -35,6 +35,25 @@ exports.postMember = async function (member) {
         .catch(console.error);
 }
 
+exports.putMember = async function (member) {
+    await exports.getMember(member);
+
+    const modifiedMember = {
+        id: member.id,
+        tag: member.user.tag,
+        guildId: member.guild.id,
+        avatar: member.user.avatarURL(),
+        birthday: member.birthday
+    }
+
+    return axios.put(`${membersUrl}/${member.id}`, modifiedMember)
+        .then(response => {
+            if (response.status === 200 && response.data)
+                return response.data;
+        })
+        .catch(console.error);
+}
+
 exports.checkForBirthday = async function () {
     return axios.get(`${membersUrl}/checkBirthdayIsToday`)
         .then(response => {

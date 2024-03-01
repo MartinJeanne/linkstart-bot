@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getMember } = require('../../endpoints/members.js');
+const { putMember } = require('../../endpoints/members.js');
 
 module.exports = {
+	isEphemeral: true,
 	data: new SlashCommandBuilder()
 		.setName('anniversaire')
 		.setDescription('Enregistre ton anniversaire, je le souhaiterai le moment venu !')
@@ -17,9 +18,17 @@ module.exports = {
 			.setMaxValue(12)),
 
 	async execute(interaction) {
-		const day = interaction.options.getInteger('jour');
-		const month = interaction.options.getInteger('mois');
+		let day = interaction.options.getInteger('jour');
+		let month = interaction.options.getInteger('mois');
 
-		interaction.editReply(day + " " + month);
+		if (day < 10) day = `0${day}`;
+		if (month < 10) month = `0${month}`;
+
+		const member = interaction.member;
+		member.birthday = `1900-${month}-${day}`;
+
+		await putMember(member);
+
+		await interaction.editReply(`Ta date de naissance a été enregistrée : ${day}/${month}/----`);
 	},
 };
