@@ -1,8 +1,6 @@
 const { default: axios } = require('axios');
-const dotenv = require('dotenv');
-dotenv.config();
+const { guildsUrl } = require('../functions/endpointsUrl.js');
 
-const guildsUrl = `${process.env.API_URL}/guilds`;
 
 module.exports.getGuilds = async function () {
     return axios.get(guildsUrl)

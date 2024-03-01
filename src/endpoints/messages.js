@@ -1,8 +1,5 @@
 const { default: axios } = require('axios');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const messagesUrl = `${process.env.API_URL}/messages`;
+const { messagesUrl } = require('../functions/endpointsUrl.js');
 
 module.exports.getMessages = async function () {
     return axios.get(messagesUrl)

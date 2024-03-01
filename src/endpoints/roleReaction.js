@@ -1,8 +1,5 @@
 const { default: axios } = require('axios');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const roleReactionsUrl = `${process.env.API_URL}/roleReactions`;
+const { roleReactionsUrl } = require('../functions/endpointsUrl.js');
 
 module.exports.getRoleReaction = async function (id, reaction) {
     const queryParams = { id, reaction }

@@ -1,11 +1,16 @@
 const { default: axios } = require('axios');
-const dotenv = require('dotenv');
-dotenv.config();
+const { playlistsUrl, playlists, membersUrl } = require('../functions/endpointsUrl.js');
 
-const playlistsUrl = `${process.env.API_URL}/playlists`;
+exports.getUserPlaylists = async function (user) {
+    return axios.get(`${membersUrl}/${user.id}/${playlists}`)
+        .then(response => {
+            if (response.status === 200) 
+                return response.data;
+        })
+        .catch(console.error);
+};
 
-/** Get user by Discord id */
-module.exports.postPlaylist = async function (member, name, url) {
+exports.postPlaylist = async function (member, name, url) {
     const newPlaylist = {
         name: name ? name : "Ma playlist",
         url: url
@@ -16,10 +21,10 @@ module.exports.postPlaylist = async function (member, name, url) {
         .then(response => {
             return response.data;
         })
-        .catch(error => console.log(error));
+        .catch(console.error);
 };
 
-module.exports.deletePlaylist = async function (id) {
+exports.deletePlaylist = async function (id) {
     axios.delete(`${playlistsUrl}/${id}`)
-        .catch(error => console.log(error));
+        .catch(console.error);
 };

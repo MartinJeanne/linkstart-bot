@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { QueryType, Track, Playlist } = require('discord-player');
 const getQueue = require('../../functions/getQueue.js');
-const { getMember, getUserPlaylists } = require('../../endpoints/members.js');
-const { postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
+const { getMember } = require('../../endpoints/members.js');
+const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -51,7 +51,7 @@ module.exports = {
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
-                        .setCustomId(String(userPlaylists[i].id))
+                        .setCustomId(String(userPlaylists[i].created_at))
                         .setLabel(userPlaylists[i].name)
                         .setStyle(ButtonStyle.Primary)
                 );
@@ -65,7 +65,9 @@ module.exports = {
                 const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
                 if (!queue) return;
 
-                const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
+                const playlist = userPlaylists.find(playlist => playlist.created_at == inter.customId);
+                if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);
+
                 const result = await client.player.search(playlist.url, {
                     requestedBy: inter.user,
                     searchEngine: QueryType.AUTO
