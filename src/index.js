@@ -43,7 +43,7 @@ for (const folder of folders) {
 }
 
 // Before deploying commands
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
@@ -51,7 +51,10 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 	// Deploy commands
 	try {
-		await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commandsToDeploy });
+		await rest.put(
+			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID, "790642467405692979"),
+			{ body: commandsToDeploy }
+		);
 		console.log(`Commandes slash (/) rechargées !`);
 	} catch (error) {
 		console.error(error);

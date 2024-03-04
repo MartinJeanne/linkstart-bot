@@ -1,14 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
+	isEphemeral: true,
 	data: new SlashCommandBuilder()
 		.setName('chut')
 		.setDescription("Dis à quelqu'un de se taire, il ne saura pas que c'est toi qui a lancé la commande !")
 		.addUserOption(option => option.setName('membre')
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
-
-	isEphemeral: true,
 
 	async execute(interaction, client) {
 		const mentionnedUser = interaction.options.getUser('membre');

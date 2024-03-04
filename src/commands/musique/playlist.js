@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { QueryType, Track, Playlist } = require('discord-player');
 const getQueue = require('../../functions/getQueue.js');
-const { getUser, getUserPlaylists } = require('../../endpoints/discordUser.js');
-const { postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
+const { getMember } = require('../../endpoints/members.js');
+const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,28 +22,28 @@ module.exports = {
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
-            const user = await getUser(interaction.member.user);
-            if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            const member = await getMember(interaction.member);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-            const userPlaylists = await getUserPlaylists(user);
+            const userPlaylists = await getUserPlaylists(member);
             if (Array.isArray(userPlaylists) && userPlaylists.length >= maxPlaylists)
                 return await interaction.editReply(`Tu es au maximum de playlists : **${maxPlaylists}**`);
 
             const playlistName = interaction.options.getString('nom');
             const playlistUrl = interaction.options.getString('url');
 
-            const createdPlaylist = await postPlaylist(user, playlistName, playlistUrl);
+            const createdPlaylist = await postPlaylist(member, playlistName, playlistUrl);
             if (!createdPlaylist) return await interaction.editReply(`❌ Il y a eu un problème lors de la création de la playlist dans la base de donnée`);
 
-            await interaction.editReply(`:white_check_mark: Nouvelle playlist : **${createdPlaylist.name}**, ajouté !`);
+            await interaction.editReply(`:white_check_mark: Playlist crée : **${createdPlaylist.name}**`);
         }
 
 
         else if (subcommand == 'joue') {
-            const user = await getUser(interaction.member.user);
-            if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            const member = await getMember(interaction.member);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-            const userPlaylists = await getUserPlaylists(user);
+            const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists) || userPlaylists.length === 0)
                 return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
 
@@ -51,7 +51,7 @@ module.exports = {
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
-                        .setCustomId(String(userPlaylists[i].id))
+                        .setCustomId(String(userPlaylists[i].created_at))
                         .setLabel(userPlaylists[i].name)
                         .setStyle(ButtonStyle.Primary)
                 );
@@ -65,7 +65,9 @@ module.exports = {
                 const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
                 if (!queue) return;
 
-                const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
+                const playlist = userPlaylists.find(playlist => playlist.created_at == inter.customId);
+                if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);
+
                 const result = await client.player.search(playlist.url, {
                     requestedBy: inter.user,
                     searchEngine: QueryType.AUTO
@@ -80,10 +82,10 @@ module.exports = {
 
 
         else if (subcommand == 'supp') {
-            const user = await getUser(interaction.member.user);
-            if (!user.discordId) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+            const member = await getMember(interaction.member);
+            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
-            const userPlaylists = await getUserPlaylists(user);
+            const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
 
             const buttons = [];
