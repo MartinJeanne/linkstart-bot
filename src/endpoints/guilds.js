@@ -12,7 +12,7 @@ module.exports.getGuilds = async function () {
 };
 
 module.exports.getGuild = async function (id) {
-    return axios.get(`${guildsUrl}/${id}`)
+    return fetch(`${guildsUrl}/${id}`)
         .then(response => {
             if (response.status === 200)
                 return response.data;

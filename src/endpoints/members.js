@@ -3,7 +3,7 @@ const { getGuild, postGuild } = require('../endpoints/guilds.js');
 const { membersUrl } = require('../functions/endpointsUrl.js');
 
 exports.getMember = async function (member) {
-    return axios.get(`${membersUrl}/${member.id}`)
+    return fetch(`${membersUrl}/${member.id}`)
         .then(async response => {
             if (response.status === 200 && response.data)
                 return response.data;
@@ -62,3 +62,46 @@ exports.checkForBirthday = async function () {
         })
         .catch(console.error);
 };
+
+exports.testGetMembers = async function (member) {
+    return fetch(`${membersUrl}/${member.id}`)
+        .then(async response => {
+            const data = await response.json();
+            if (response.status === 200 && data) {
+                return data;
+            }
+
+            else return await exports.testPostMembers(member);
+        })
+        .catch(console.error);
+}
+
+exports.testPostMembers = async function (member) {
+    await getGuild(member.guild.id)
+        .then(async guild => {
+            if (!guild) await postGuild(member.guild);
+        })
+        .catch(console.error);
+
+    const newMember = {
+        id: member.id,
+        tag: member.user.tag,
+        avatar: member.user.avatarURL(),
+        guildId: member.guild.id
+    }
+
+    const options = {
+        method: "POST",
+        body: JSON.stringify(newMember),
+        headers: {
+          "Content-Type": "application/json", 
+        },
+      }
+
+    return fetch(membersUrl, options)
+        .then(response => {
+            if (response.status === 201 && response.data)
+                return response.data;
+        })
+        .catch(console.error);
+}
