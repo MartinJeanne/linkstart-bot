@@ -1,39 +1,34 @@
-const { default: axios } = require('axios');
-const { getGuild, postGuild } = require('../endpoints/guilds.js');
-const { membersUrl } = require('../functions/endpointsUrl.js');
+const { members, get, post, put } = require('../functions/api-tools.js');
+const { getGuild } = require('./guilds.js');
 
 exports.getMember = async function (member) {
-    return axios.get(`${membersUrl}/${member.id}`)
-        .then(async response => {
-            if (response.status === 200 && response.data)
-                return response.data;
+    return get(`${members}/${member.id}`)
+        .then(async ({ response, data }) => {
+            if (response.status === 200)
+                return data;
 
-            else return await exports.postMember(member);
-        })
-        .catch(console.error);
-};
+            else if (response.status === 404)
+                return await exports.postMember(member);
+        });
+}
 
 exports.postMember = async function (member) {
-    await getGuild(member.guild.id)
-        .then(async guild => {
-            if (!guild) await postGuild(member.guild);
-        })
-        .catch(console.error);
+    const guild = await getGuild(member.guild);
+    if (!guild) throw new Error("Guild was not retrieved/created before postMember!");
 
     const newMember = {
         id: member.id,
         tag: member.user.tag,
         avatar: member.user.avatarURL(),
         guildId: member.guild.id
-    }
+    };
 
-    return axios.post(membersUrl, newMember)
-        .then(response => {
-            if (response.status === 201 && response.data)
-                return response.data;
-        })
-        .catch(console.error);
+    return post(members, newMember)
+        .then(({ response, data }) => {
+            if (response.status === 201) return data;
+        });
 }
+
 
 exports.putMember = async function (member) {
     await exports.getMember(member);
@@ -46,19 +41,15 @@ exports.putMember = async function (member) {
         birthday: member.birthday
     }
 
-    return axios.put(`${membersUrl}/${member.id}`, modifiedMember)
-        .then(response => {
-            if (response.status === 200 && response.data)
-                return response.data;
-        })
-        .catch(console.error);
+    return put(`${members}/${member.id}`, modifiedMember)
+        .then(({ response, data }) => {
+            if (response.status === 200) return data;
+        });
 }
 
 exports.checkForBirthday = async function () {
-    return axios.get(`${membersUrl}/birthdayIsToday`)
-        .then(response => {
-            if (response.status === 200)
-                return response.data;
+    return get(`${members}/birthdayIsToday`)
+        .then(({ response, data }) => {
+            if (response.ok) return data;
         })
-        .catch(console.error);
 };

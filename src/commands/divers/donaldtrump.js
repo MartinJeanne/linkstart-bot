@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { default: axios } = require('axios');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,9 +6,10 @@ module.exports = {
 		.setDescription('Découvre une chose débile que Donald Trump a dit'),
 
 	async execute(interaction) {
-		const response = await axios.get('https://www.tronalddump.io/random/quote')
+		const data = await fetch('https://www.tronalddump.io/random/quote')
+			.then(response => response.json())
 			.catch(error => console.error(error));
 
-		await interaction.editReply(`*${response.data.value}* ~ Donald Trump, ${response.data.appeared_at.slice(0, 10)}`);
-	},
+		await interaction.editReply(`"*${data.value}*" - Donald Trump, ${data.appeared_at.slice(0, 10)}`);
+	}
 };

@@ -1,10 +1,8 @@
-const { default: axios } = require('axios');
-const { messagesUrl } = require('../functions/endpointsUrl.js');
+const { messages, get } = require('../functions/api-tools.js');
 
 module.exports.getMessages = async function () {
-    return axios.get(messagesUrl)
-        .then(response => {
-            if (response.status === 200) return response.data;
-        })
-        .catch(console.error);
+    return get(messages)
+        .then(({ response, data }) => {
+            if (response.status === 200) return data;
+        });
 };

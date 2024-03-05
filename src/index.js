@@ -5,8 +5,7 @@ const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player');
 // dotenv to use environnement variables in .env file
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 // Register bot Discord events
 const registerEvents = require('./functions/registerEvents.js');
 
@@ -52,7 +51,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 	// Deploy commands
 	try {
 		await rest.put(
-			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID, "790642467405692979"),
+			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
 			{ body: commandsToDeploy }
 		);
 		console.log(`Commandes slash (/) rechargées !`);
