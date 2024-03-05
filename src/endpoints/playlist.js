@@ -1,30 +1,26 @@
-const { default: axios } = require('axios');
-const { playlistsUrl, playlists, membersUrl } = require('../functions/endpointsUrl.js');
+const { playlists, members, get, post, del } = require('../functions/api-tools.js');
 
 exports.getUserPlaylists = async function (user) {
-    return axios.get(`${membersUrl}/${user.id}/${playlists}`)
-        .then(response => {
-            if (response.status === 200) 
-                return response.data;
-        })
-        .catch(console.error);
+    return get(`${members}/${user.id}/${playlists}`)
+        .then(({ response, data }) => {
+            if (response.ok) return data;
+        });
 };
 
 exports.postPlaylist = async function (member, name, url) {
     const newPlaylist = {
         name: name ? name : "Ma playlist",
-        url: url
+        url
     };
 
-    const memberId = member.id;
-    return axios.post(playlistsUrl, newPlaylist, { params: { memberId } })
-        .then(response => {
-            return response.data;
-        })
-        .catch(console.error);
+    const queryParam = `?memberId=${member.id}`;
+
+    return post(playlists + queryParam, newPlaylist)
+        .then(({ response, data }) => {
+            if (response.ok) return data;
+        });
 };
 
 exports.deletePlaylist = async function (id) {
-    axios.delete(`${playlistsUrl}/${id}`)
-        .catch(console.error);
+    del(`${playlists}/${id}`);
 };

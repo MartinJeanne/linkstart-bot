@@ -5,8 +5,7 @@ const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player');
 // dotenv to use environnement variables in .env file
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 // Register bot Discord events
 const registerEvents = require('./functions/registerEvents.js');
 

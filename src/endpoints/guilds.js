@@ -1,32 +1,28 @@
-const { default: axios } = require('axios');
-const { guildsUrl } = require('../functions/endpointsUrl.js');
+const { guilds, get, post } = require('../functions/api-tools.js');
 
 
 module.exports.getGuilds = async function () {
-    return axios.get(guildsUrl)
-        .then(response => {
-            if (response.status === 200) 
-                return response.data;
-        })
-        .catch(console.error);
+    return get(guilds)
+        .then(({ response, data }) => {
+            if (response.status === 200) return data;
+        });
 };
 
-module.exports.getGuild = async function (id) {
-    return fetch(`${guildsUrl}/${id}`)
-        .then(response => {
-            if (response.status === 200)
-                return response.data;
-        })
-        .catch(console.error);
+module.exports.getGuild = async function (guild) {
+    return get(`${guilds}/${guild.id}`)
+        .then(async ({ response, data }) => {
+            if (response.ok) return data;
+
+            else if (response.status === 404)
+                return await exports.postGuild(guild);
+        });
 };
 
 module.exports.postGuild = async function (guild) {
     const newGuild = { id: guild.id, name: guild.name };
 
-    return axios.post(guildsUrl, newGuild)
-        .then(response => {
-            if (response.status === 201)
-                return response.data;
-        })
-        .catch(console.error);
+    return post(guilds, newGuild)
+        .then(({ response, data }) => {
+            if (response.ok) return data;
+        });
 };
