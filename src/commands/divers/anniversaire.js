@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { putMember } = require('../../endpoints/members.js');
+const { getOrCreateMember, putMember } = require('../../endpoints/members.js');
 
 module.exports = {
 	isEphemeral: true,
@@ -24,10 +24,9 @@ module.exports = {
 		if (day < 10) day = `0${day}`;
 		if (month < 10) month = `0${month}`;
 
-		const member = interaction.member;
-		member.birthday = `1900-${month}-${day}`;
-
-		await putMember(member);
+		const apiMember = await getOrCreateMember(interaction.member);
+		apiMember.birthday = `1900-${month}-${day}`;
+		await putMember(apiMember);
 
 		await interaction.editReply(`Ta date de naissance a été enregistrée : ${day}/${month}/----`);
 	},

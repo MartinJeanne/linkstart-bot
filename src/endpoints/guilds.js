@@ -8,13 +8,24 @@ module.exports.getGuilds = async function () {
         });
 };
 
-module.exports.getGuild = async function (guild) {
+module.exports.getOrCreateGuild = async function (guild) {
     return get(`${guilds}/${guild.id}`)
         .then(async ({ response, data }) => {
             if (response.ok) return data;
 
-            else if (response.status === 404)
+            else if (response.status === 404) {
                 return await exports.postGuild(guild);
+            }
+        });
+};
+
+module.exports.getGuild = async function (guild, memberId) {
+    let queryParam = '';
+    if (memberId) queryParam = `?memberId=${memberId}`;
+
+    return get(`${guilds}/${guild.id}${queryParam}`)
+        .then(async ({ response, data }) => {
+            if (response.ok) return data;
         });
 };
 
