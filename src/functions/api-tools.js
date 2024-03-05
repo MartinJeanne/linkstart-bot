@@ -60,8 +60,8 @@ exports.del = async function (endpoint) {
 
     return fetch(API_URL + endpoint, options)
         .then(async response => {
-            const data = await response.json();
-            return { response, data };
+            if (!response.ok)
+                throw new Error('Something went wrong in DELETE for endpoint: ' + endpoint);
         })
         .catch(console.error);
 }

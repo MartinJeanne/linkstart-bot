@@ -51,7 +51,7 @@ module.exports = {
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
-                        .setCustomId(String(userPlaylists[i].created_at))
+                        .setCustomId(String(userPlaylists[i].id))
                         .setLabel(userPlaylists[i].name)
                         .setStyle(ButtonStyle.Primary)
                 );
@@ -65,7 +65,7 @@ module.exports = {
                 const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
                 if (!queue) return;
 
-                const playlist = userPlaylists.find(playlist => playlist.created_at == inter.customId);
+                const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);
 
                 const result = await client.player.search(playlist.url, {
