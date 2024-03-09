@@ -110,6 +110,13 @@ module.exports = async function (client) {
             return await message.channel.send(`Mécaniquement iron ou quoi ?`);
     });
 
+    // When member says 'Quoi'
+    client.on(Events.MessageCreate, async message => {
+        if (message)
+            if (message.content.toLowerCase().includes('quoi'))
+                return await message.channel.send(`Feur.`);
+    });
+
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         messages = await getMessages();
