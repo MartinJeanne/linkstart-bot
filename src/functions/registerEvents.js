@@ -114,7 +114,7 @@ module.exports = async function (client) {
     client.once(Events.ClientReady, async () => {
         messages = await getMessages();
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
-        
+
         client.user.setActivity('/chut', { type: ActivityType.Watching });
         console.log(`${client.user.tag} est lancé !`);
     });
