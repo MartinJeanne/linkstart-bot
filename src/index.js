@@ -52,7 +52,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 	// Deploy commands
 	try {
 		await rest.put(
-			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID, '790642467405692979'),
+			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
 			{ body: commandsToDeploy }
 		);
 		console.log(`Commandes slash (/) rechargées !`);
