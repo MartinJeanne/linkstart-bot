@@ -1,10 +1,11 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
-const { getOrCreateMember } = require('../endpoints/members.js');
-const { getMessages } = require('../endpoints/messages.js');
-const { postGuild } = require('../endpoints/guilds.js');
-const { getRoleReaction } = require('../endpoints/roleReaction.js');
+const { messageCreate, messageReactionAdd, messageReactionRemove } = require('./messageEvents.js');
+const { getOrCreateMember } = require('../../endpoints/members.js');
+const { getMessages } = require('../../endpoints/messages.js');
+const { postGuild } = require('../../endpoints/guilds.js');
+const { getRoleReaction } = require('../../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
-const birthdayAdvertiser = require('./birthdayAdvertiser.js');
+const birthdayAdvertiser = require('../birthdayAdvertiser.js');
 
 const garwalleId = '306129521990565888';
 let messages;
@@ -79,39 +80,9 @@ module.exports = async function (client) {
         postGuild(guild);
     });
 
-    client.on(Events.MessageCreate, async message => {
-        if (message.channel.type === ChannelType.DM) {
-            if (message.author.id === garwalleId) {
-                try {
-                    const msgArray = message.content.split(' ');
-                    const channel = client.channels.cache.get(msgArray.shift());
-                    return channel.send(msgArray.join(' '));
-                } catch (error) {
-                    console.error(error);
-                }
-            } else {
-                const channel = client.channels.cache.get('788781047420420137');
-                return channel.send(`${message.author} : ${message.content}`);
-            }
-        }
-
-        if (!message.mentions.has(client.user.id) || message.mentions.everyone) return;
-
-        if (message.member.id === garwalleId && message.content[0] === 'R')
-            return await message.channel.send(`Ok.`);
-
-        else if (message.member.id === garwalleId)
-            return await message.channel.send(`Ouais boss ?`);
-
-        else if (message.member.id === '256876632046960641')
-            return await message.channel.send(`Ca va boubou ?`);
-
-        else if (message.member.id === '365125783968022529')
-            return await message.channel.send(`Ca fart Pokix ?`);
-
-        else if (message.member.id === '161970745117769728')
-            return await message.channel.send(`Mécaniquement iron ou quoi ?`);
-    });
+    messageCreate(client);
+    messageReactionAdd(client);
+    messageReactionRemove(client);
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {

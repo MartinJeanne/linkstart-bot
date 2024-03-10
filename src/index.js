@@ -7,14 +7,15 @@ const { Player } = require('discord-player');
 // dotenv to use environnement variables in .env file
 require('dotenv').config();
 // Register bot Discord events
-const registerEvents = require('./functions/registerEvents.js');
+const registerEvents = require('./functions/registerEvents/registerEvents.js');
 
 // Create a new client instance
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessages
+		GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.MessageContent
 	],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
