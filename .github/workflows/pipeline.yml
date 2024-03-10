@@ -14,8 +14,8 @@ jobs:
         echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
         echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
         echo "API_URL=${{ secrets.API_URL }}" >> .env
-        echo "CLIENT_NAME=${{ secrets.API_URL }}" >> .env
-        echo "CLIENT_PASSWORD=${{ secrets.API_URL }}" >> .env
+        echo "CLIENT_NAME=${{ secrets.CLIENT_NAME }}" >> .env
+        echo "CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}" >> .env
     - name: Build Docker Image
       run: |
         docker build -t linkstart-bot-image .
