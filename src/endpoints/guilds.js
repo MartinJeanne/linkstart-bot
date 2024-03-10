@@ -19,11 +19,8 @@ module.exports.getOrCreateGuild = async function (guild) {
         });
 };
 
-module.exports.getGuild = async function (guild, memberId) {
-    let queryParam = '';
-    if (memberId) queryParam = `?memberId=${memberId}`;
-
-    return get(`${guilds}/${guild.id}${queryParam}`)
+module.exports.getGuild = async function (id) {
+    return get(`${guilds}/${id}`)
         .then(async ({ response, data }) => {
             if (response.ok) return data;
         });

@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { QueryType, Track, Playlist } = require('discord-player');
 const getQueue = require('../../functions/getQueue.js');
-const { getOrCreateMember } = require('../../endpoints/members.js');
 const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 
 module.exports = {
@@ -17,12 +16,11 @@ module.exports = {
         .addSubcommand(subcommand => subcommand.setName('supp')
             .setDescription('Supprime une playlist')),
 
-    async execute(interaction, client) {
+    async execute(interaction, client, member) {
         const subcommand = interaction.options.getSubcommand();
         const maxPlaylists = 5;
 
         if (subcommand == 'crée') {
-            const member = await getOrCreateMember(interaction.member);
             if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
@@ -40,7 +38,6 @@ module.exports = {
 
 
         else if (subcommand == 'joue') {
-            const member = await getOrCreateMember(interaction.member);
             if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
@@ -82,7 +79,6 @@ module.exports = {
 
 
         else if (subcommand == 'supp') {
-            const member = await getOrCreateMember(interaction.member);
             if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);

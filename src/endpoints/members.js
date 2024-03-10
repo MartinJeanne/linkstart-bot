@@ -1,14 +1,16 @@
-const { members, get, post, put } = require('../functions/api-tools.js');
+const { members, get, post, put, patch } = require('../functions/api-tools.js');
 const { getOrCreateGuild } = require('./guilds.js');
 
 exports.getOrCreateMember = async function (member) {
     return get(`${members}/${member.id}`)
         .then(async ({ response, data }) => {
             if (response.status === 200) {
-                const guild = await getOrCreateGuild(member.guild);
-                if (!guild) throw new Error("Guild was not retrieved/created before getMember!");
-
                 const apiMember = data;
+                if (!apiMember) throw new Error("No Member data on getOrCreateMember");
+
+                const guild = await getOrCreateGuild(member.guild);
+                if (!guild) throw new Error("Guild was not retrieved/created before getOrCreateMember!");
+
                 if (!apiMember.guildsId.includes(guild.id)) {
                     apiMember.guildsId.push(guild.id);
                     return exports.putMember(apiMember);
@@ -20,8 +22,8 @@ exports.getOrCreateMember = async function (member) {
         });
 }
 
-exports.getMember = async function (member) {
-    return get(`${members}/${member.id}`)
+exports.getMember = async function (id) {
+    return get(`${members}/${id}`)
         .then(async ({ response, apiMember }) => {
             if (response.status === 200) return apiMember;
         });
@@ -44,7 +46,6 @@ exports.postMember = async function (member) {
         });
 }
 
-
 exports.putMember = async function (apiMember) {
     const modifiedMember = {
         id: apiMember.id,
@@ -55,6 +56,13 @@ exports.putMember = async function (apiMember) {
     }
 
     return put(`${members}/${apiMember.id}`, modifiedMember)
+        .then(({ response, data }) => {
+            if (response.status === 200) return data;
+        });
+}
+
+exports.patchMember = async function (id, modifiedProperties) {
+    return patch(`${members}/${id}`, modifiedProperties)
         .then(({ response, data }) => {
             if (response.status === 200) return data;
         });

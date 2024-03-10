@@ -8,13 +8,12 @@ module.exports = async function (client) {
 	if (members == null) return;
 
 	for (let i = 0; i < members.length; i++) {
-		for (let y = 0; y < members[i].guildIds.length; y++) {
-			const guild = await getGuild(members[i].guildIds[y]);
+		for (let y = 0; y < members[i].guildsId.length; y++) {	
+			const guild = await getGuild(members[i].guildsId[y]);
 			if (!guild.botChannelId) return;
 			const channel = await client.channels.cache.get(guild.botChannelId);
 			if (!channel) return;
+			channel.send(`Bon anniversaire <@${members[i].id}> ! 😎`);
 		}
-
-		channel.send(`Bon anniversaire <@${members[i].id}> ! 😎`);
 	}
-};
+}
