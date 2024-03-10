@@ -1,4 +1,5 @@
 const { Events, ActivityType, ChannelType } = require('discord.js');
+const { getOrCreateMember } = require('../endpoints/members.js');
 const { getMessages } = require('../endpoints/messages.js');
 const { postGuild } = require('../endpoints/guilds.js');
 const { getRoleReaction } = require('../endpoints/roleReaction.js');
@@ -10,6 +11,24 @@ let messages;
 let roleReactions;
 
 module.exports = async function (client) {
+
+    // When user uses a slash (/) command!
+    client.on(Events.InteractionCreate, async interaction => {
+        if (!interaction.isCommand()) return;
+
+        const command = client.commands.get(interaction.commandName);
+        if (!command) return;
+
+        try {
+            await interaction.deferReply({ ephemeral: command.isEphemeral });
+            const member = await getOrCreateMember(interaction.member);
+            await command.execute(interaction, client, member);
+        } catch (error) {
+            console.error(error);
+            await interaction.editReply({ content: "❌ Erreur lors de l'execution de cette commande", ephemeral: true });
+        }
+    });
+
     async function reactionForRole(reaction) {
         if (reaction.partial) {
             try {
@@ -42,22 +61,6 @@ module.exports = async function (client) {
         member.roles.remove(role);
     });
 
-    // When user uses a slash (/) command!
-    client.on(Events.InteractionCreate, async interaction => {
-        if (!interaction.isCommand()) return;
-
-        const command = client.commands.get(interaction.commandName);
-        if (!command) return;
-
-        try {
-            await interaction.deferReply({ ephemeral: command.isEphemeral });
-            await command.execute(interaction, client);
-        } catch (error) {
-            console.error(error);
-            await interaction.editReply({ content: "❌ Erreur lors de l'execution de cette commande", ephemeral: true });
-        }
-    });
-
     // When member join the server
     client.on(Events.GuildMemberAdd, member => {
         // Adding "Nouveau" to new user when they join the server
@@ -65,9 +68,9 @@ module.exports = async function (client) {
     });
 
     // When member leave the server
-    client.on(Events.GuildMemberRemove, member => {
+    client.on(Events.GuildMemberRemove, async member => {
         if (member.guild.id === '485000880114892821') {
-            const channel = member.guild.channels.cache.find(ch => ch.name === 'chat-modérateur');
+            const channel = await client.channels.cache.get('788781047420420137');
             channel.send(`Bye, ${member}`);
         }
     });

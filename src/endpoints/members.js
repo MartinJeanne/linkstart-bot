@@ -5,10 +5,12 @@ exports.getOrCreateMember = async function (member) {
     return get(`${members}/${member.id}`)
         .then(async ({ response, data }) => {
             if (response.status === 200) {
-                const guild = await getOrCreateGuild(member.guild);
-                if (!guild) throw new Error("Guild was not retrieved/created before getMember!");
-
                 const apiMember = data;
+                if (!apiMember) throw new Error("No Member data on getOrCreateMember");
+
+                const guild = await getOrCreateGuild(member.guild);
+                if (!guild) throw new Error("Guild was not retrieved/created before getOrCreateMember!");
+
                 if (!apiMember.guildsId.includes(guild.id)) {
                     apiMember.guildsId.push(guild.id);
                     return exports.putMember(apiMember);

@@ -6,7 +6,7 @@ module.exports = {
 		.setName('aide')
 		.setDescription('Obtient des informations sur mes commandes'),
 
-	async execute(interaction, client) {
+	async execute(interaction) {
 		const commands = [];
 
 		const commandFolders = fs.readdirSync("src/commands");

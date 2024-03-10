@@ -19,14 +19,14 @@ module.exports = {
 			`${mentionnedUser}, je crois qu'il faut que tu te taises.`,
 			`${mentionnedUser} shhh`,
 			`Silence please ${mentionnedUser} !`,
-			`Puedes la fermer ${mentionnedUser} ?`,
+			`Puedes la fermer por favor ${mentionnedUser} ?`,
 			`${mentionnedUser} :zipper_mouth: :zipper_mouth:`,
 			`${mentionnedUser} :shushing_face:`,
 			`Nan ? Sérieux ?! Bon tg maintenant ${mentionnedUser}.`
 		];
 
 		if (mentionnedUser === interaction.member.user.id) {
-			await interaction.editReply({ content: "Heu, t'es bizarre fréritot..", ephemeral: true });
+			await interaction.editReply({ content: "Heu, t'es bizarre fréritot...", ephemeral: true });
 		}
 
 		else if (mentionnedUser == client.user.id) {
@@ -43,4 +43,4 @@ module.exports = {
 			await interaction.channel.send(chutSentences[random]);
 		}
 	},
-};
+}

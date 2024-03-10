@@ -13,8 +13,7 @@ module.exports = async function (client) {
 			if (!guild.botChannelId) return;
 			const channel = await client.channels.cache.get(guild.botChannelId);
 			if (!channel) return;
+			channel.send(`Bon anniversaire <@${members[i].id}> ! 😎`);
 		}
-
-		channel.send(`Bon anniversaire <@${members[i].id}> ! 😎`);
 	}
-};
+}
