@@ -30,38 +30,6 @@ module.exports = async function (client) {
         }
     });
 
-    async function reactionForRole(reaction) {
-        if (reaction.partial) {
-            try {
-                await reaction.fetch();
-            } catch (error) {
-                console.error('❌ Il y a eu une erreur lors du fetch du message:', error);
-                return;
-            }
-        }
-
-        const ids = messages.map(message => message.id);
-        if (!ids.includes(reaction.message.id)) return;
-        roleReactions = await getRoleReaction(reaction.message.id, reaction.emoji.name);
-
-        return roleReactions?.role;
-    }
-
-    client.on(Events.MessageReactionAdd, async (reaction, user) => {
-        const role = await reactionForRole(reaction);
-        if (!role) return;
-        const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.add(role);
-    });
-
-
-    client.on(Events.MessageReactionRemove, async (reaction, user) => {
-        const role = await reactionForRole(reaction);
-        if (!role) return;
-        const member = await reaction.message.guild.members.fetch(user.id);
-        member.roles.remove(role);
-    });
-
     // When member join the server
     client.on(Events.GuildMemberAdd, member => {
         // Adding "Nouveau" to new user when they join the server
@@ -81,8 +49,8 @@ module.exports = async function (client) {
     });
 
     messageCreate(client);
-    messageReactionAdd(client);
-    messageReactionRemove(client);
+    //messageReactionAdd(client);
+    //messageReactionRemove(client);
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
