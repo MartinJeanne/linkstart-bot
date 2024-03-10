@@ -12,7 +12,7 @@ exports.playlists = 'playlists';
 exports.messages = 'messages';
 exports.roleReactions = 'roleReactions';
 
-async function authenticate() {
+async function authenticate(failedEndpoint, failedFetchOption) {
     const body = {
         clientName: CLIENT_NAME,
         password: CLIENT_PASSWORD
@@ -27,10 +27,14 @@ async function authenticate() {
         }
     }
 
-    return fetch(API_URL + 'auth/login', options)
+    await fetch(API_URL + 'auth/login', options)
         .then(async response => await response.json())
         .then(data => token = data.token)
         .catch(console.error);
+
+    //re-doing failed request
+    failedFetchOption.headers.Authorization = `Bearer ${token}`;
+    return await fetch(API_URL + failedEndpoint, failedFetchOption).catch(console.error);
 }
 
 exports.get = async function (endpoint) {
@@ -43,10 +47,9 @@ exports.get = async function (endpoint) {
 
     return fetch(API_URL + endpoint, options)
         .then(async response => {
-            if (response.status == 403) {
-                await authenticate();
-                return await exports.get(endpoint);
-            }
+            if (response.status == 403)
+                response = await authenticate(endpoint, options);
+
             const data = await response.json();
             return { response, data };
         })
@@ -66,10 +69,9 @@ exports.post = async function (endpoint, body) {
 
     return fetch(API_URL + endpoint, options)
         .then(async response => {
-            if (response.status == 403) {
-                await authenticate();
-                return await exports.post(endpoint, body);
-            }
+            if (response.status == 403)
+                response = await authenticate(endpoint, options);
+
             const data = await response.json();
             return { response, data };
         })
@@ -89,10 +91,9 @@ exports.put = async function (endpoint, body) {
 
     return fetch(API_URL + endpoint, options)
         .then(async response => {
-            if (response.status == 403) {
-                await authenticate();
-                return await exports.put(endpoint, body);
-            }
+            if (response.status == 403)
+                response = await authenticate(endpoint, options);
+
             const data = await response.json();
             return { response, data };
         })
@@ -109,10 +110,9 @@ exports.del = async function (endpoint) {
 
     return fetch(API_URL + endpoint, options)
         .then(async response => {
-            if (response.status == 403) {
-                await authenticate();
-                return await exports.del(endpoint);
-            }
+            if (response.status == 403)
+                response = await authenticate(endpoint, options);
+
             else if (!response.ok)
                 throw new Error('Something went wrong in DELETE for endpoint: ' + endpoint);
         })
