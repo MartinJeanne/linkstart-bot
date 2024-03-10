@@ -1,4 +1,4 @@
-const { roleReactions, get } = require('../functions/api-tools.js');
+const { roleReactions, get } = require('../functions/fetch-tools.js');
 
 module.exports.getRoleReaction = async function (id, reaction) {
     const queryParams = `?id=${id}&reaction=${reaction}`

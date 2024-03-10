@@ -1,4 +1,4 @@
-const { messages, get } = require('../functions/api-tools.js');
+const { messages, get } = require('../functions/fetch-tools.js');
 
 module.exports.getMessages = async function () {
     return get(messages)
