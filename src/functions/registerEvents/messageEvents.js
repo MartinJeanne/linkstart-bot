@@ -2,6 +2,23 @@ const { Events, ChannelType } = require('discord.js');
 
 const garwalleId = '306129521990565888';
 
+async function reactionForRole(reaction) {
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error('❌ Il y a eu une erreur lors du fetch du message:', error);
+            return;
+        }
+    }
+
+    const ids = messages.map(message => message.id);
+    if (!ids.includes(reaction.message.id)) return;
+    roleReactions = await getRoleReaction(reaction.message.id, reaction.emoji.name);
+
+    return roleReactions?.role;
+}
+
 exports.messageReactionAdd = async function (client) {
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
         const role = await reactionForRole(reaction);
