@@ -100,6 +100,28 @@ exports.put = async function (endpoint, body) {
         .catch(console.error);
 }
 
+exports.patch = async function (endpoint, body) {
+    const options = {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+            'Authorization': `Bearer ${jwt}`,
+            'content-type': 'application/json',
+            'accept': 'application/json'
+        }
+    }
+
+    return fetch(API_URL + endpoint, options)
+        .then(async response => {
+            if (response.status == 403)
+                response = await authenticateAndRedo(endpoint, options);
+
+            const data = await response.json();
+            return { response, data };
+        })
+        .catch(console.error);
+}
+
 exports.del = async function (endpoint) {
     const options = {
         method: 'DELETE',
