@@ -69,8 +69,7 @@ exports.messageCreate = async function (client) {
                 const random = Math.floor(Math.random() * feurResponses.length);
                 message.reply(feurResponses[random]);
             }
-
-        })
+        });
 
         if (!message.mentions.has(client.user.id) || message.mentions.everyone) return;
 
