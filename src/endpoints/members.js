@@ -56,15 +56,15 @@ exports.putMember = async function (apiMember) {
     }
 
     return put(`${members}/${apiMember.id}`, modifiedMember)
-        .then(({ response, data }) => {
-            if (response.status === 200) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 200) return apiMember;
         });
 }
 
 exports.patchMember = async function (id, modifiedProperties) {
     return patch(`${members}/${id}`, modifiedProperties)
-        .then(({ response, data }) => {
-            if (response.status === 200) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 200) return apiMember;
         });
 }
 
