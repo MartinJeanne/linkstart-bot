@@ -41,8 +41,8 @@ exports.postMember = async function (member) {
     };
 
     return post(members, newMember)
-        .then(({ response, data }) => {
-            if (response.status === 201) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 201) return apiMember;
         });
 }
 

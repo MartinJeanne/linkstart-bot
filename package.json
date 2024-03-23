@@ -7,6 +7,15 @@
     "start": "node src/index.js",
     "test": "jest"
   },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["./src/**"],
+    "coverageThreshold": {
+      "global": {
+        "lines": 50
+      }
+    }
+  },
   "author": "Garwalle",
   "license": "WTFPL",
   "dependencies": {

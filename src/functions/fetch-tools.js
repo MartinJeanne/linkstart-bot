@@ -26,7 +26,7 @@ async function authenticateAndRedo(failedEndpoint, failedFetchOption) {
         .then(data => jwt = data.token)
         .catch(console.error);
 
-    //re-doing failed request
+    //re-do failed request
     failedFetchOption.headers.Authorization = `Bearer ${jwt}`;
     return await fetch(API_URL + failedEndpoint, failedFetchOption).catch(console.error);
 }
