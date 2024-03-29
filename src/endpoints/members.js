@@ -41,8 +41,8 @@ exports.postMember = async function (member) {
     };
 
     return post(members, newMember)
-        .then(({ response, data }) => {
-            if (response.status === 201) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 201) return apiMember;
         });
 }
 
@@ -56,15 +56,15 @@ exports.putMember = async function (apiMember) {
     }
 
     return put(`${members}/${apiMember.id}`, modifiedMember)
-        .then(({ response, data }) => {
-            if (response.status === 200) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 200) return apiMember;
         });
 }
 
 exports.patchMember = async function (id, modifiedProperties) {
     return patch(`${members}/${id}`, modifiedProperties)
-        .then(({ response, data }) => {
-            if (response.status === 200) return data;
+        .then(({ response, apiMember }) => {
+            if (response.status === 200) return apiMember;
         });
 }
 
