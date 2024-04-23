@@ -70,7 +70,7 @@ exports.patchMember = async function (id, modifiedProperties) {
 
 exports.checkForBirthday = async function () {
     return get(`${members}/birthdayIsToday`)
-        .then(({ response, data }) => {
-            if (response.ok) return data;
+        .then(({ response, apiMember }) => {
+            if (response.ok) return apiMember;
         })
 };

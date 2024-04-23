@@ -33,7 +33,8 @@ exports.guild = {
 };
 
 exports.responseOK = {
-    status: 200
+    status: 200,
+    ok: true
 };
 
 exports.responseCREATED = {
