@@ -38,7 +38,8 @@ exports.responseOK = {
 };
 
 exports.responseCREATED = {
-    status: 201
+    status: 201,
+    ok: true
 };
 
 exports.client = {

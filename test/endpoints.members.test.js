@@ -69,16 +69,17 @@ test('should patch member', () => {
     });
 });
 
-test('should check for member birthdays', () => {
+test('should retrieve user which now is birthday member', () => {
     const response = mockedObjects.responseOK;
     const apiMember = mockedObjects.apiMember;
+    const apiMembers = [apiMember];
 
-    const birthdaySpy = jest.spyOn(members, 'checkForBirthday');
-    fetchs.patch.mockResolvedValue({ response, apiMember });
+    const checkForBirthdaySpy = jest.spyOn(members, 'checkForBirthday');
+    fetchs.get.mockResolvedValue({ response, apiMembers });
 
     return members.checkForBirthday().then(memberRes => {
-        expect(birthdaySpy).toHaveBeenCalledWith();
+        expect(checkForBirthdaySpy).toHaveBeenCalledWith();
         expect(fetchs.get).toHaveBeenCalledTimes(1);
-        expect(memberRes).toEqual(apiMember);
+        expect(memberRes).toEqual(apiMembers);
     });
 });
