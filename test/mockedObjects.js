@@ -33,11 +33,13 @@ exports.guild = {
 };
 
 exports.responseOK = {
-    status: 200
+    status: 200,
+    ok: true
 };
 
 exports.responseCREATED = {
-    status: 201
+    status: 201,
+    ok: true
 };
 
 exports.client = {
