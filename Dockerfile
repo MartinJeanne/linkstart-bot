@@ -1,7 +1,7 @@
-FROM node:20
+FROM node:21.7
 WORKDIR /usr/src/linkstart-bot
 
-# dependencies installation
+# Dependencies installation
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install
 
