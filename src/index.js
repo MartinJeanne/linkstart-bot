@@ -21,7 +21,9 @@ const client = new Client({
 });
 
 // Player to play music
-client.player = new Player(client);
+client.player = new Player(client, {
+	skipFFmpeg: false
+});
 
 // The collection of commands
 client.commands = new Collection();
