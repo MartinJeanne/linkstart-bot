@@ -14,7 +14,6 @@ guilds.getGuild.mockResolvedValue(mockedObjects.guild);
 
 afterEach(() => {
     jest.clearAllMocks();
-    messagesSent = [];
 });
 
 test('should call one time members.checkForBirthday', () => {
@@ -28,7 +27,6 @@ test('should call all 5 guilds.getGuild', () => {
         expect(guilds.getGuild).toHaveBeenCalledTimes(5);
     });
 });
-
 
 test('should send message to channel', () => {
     const sendSpy = jest.spyOn(mockedObjects.channel, 'send');

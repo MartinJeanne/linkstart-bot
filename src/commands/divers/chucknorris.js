@@ -6,9 +6,11 @@ module.exports = {
 		.setDescription('Envoie une des "Chuck Norris facts"'),
 
 	async execute(interaction) {
-		fetch('https://api.chucknorris.io/jokes/random')
+		const joke = await fetch('https://api.chucknorris.io/jokes/random')
 			.then(response => response.json())
-			.then(async data => await interaction.editReply(data.value))
-			.catch(error => console.error(error));
+			.then(data => data.value)
+			.catch(console.error);
+
+		await interaction.editReply(joke);
 	},
 };

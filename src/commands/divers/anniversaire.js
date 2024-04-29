@@ -17,14 +17,13 @@ module.exports = {
 			.setMinValue(1)
 			.setMaxValue(12)),
 
-	async execute(interaction) {
+	async execute(interaction, client, apiMember) {
 		let day = interaction.options.getInteger('jour');
 		let month = interaction.options.getInteger('mois');
 
 		if (day < 10) day = `0${day}`;
 		if (month < 10) month = `0${month}`;
 
-		const apiMember = await getOrCreateMember(interaction.member);
 		await patchMember(apiMember.id, { birthday: `1900-${month}-${day}`});
 
 		await interaction.editReply(`Ta date de naissance a été enregistrée : ${day}/${month}/----`);
