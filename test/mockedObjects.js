@@ -53,3 +53,17 @@ exports.client = {
 exports.channel = {
     send: (msg) => { } // Spy on this method
 };
+
+exports.interaction = {
+    editReply: () => { }, // Spy on this method
+};
+
+exports.interactionAnniversaire = {
+    editReply: () => { }, // Spy on this method
+    options: {
+        getInteger: (timeUnit) => {
+            if (timeUnit === 'jour') return 1;
+            else if (timeUnit === 'mois') return 12;
+        }
+    }
+};

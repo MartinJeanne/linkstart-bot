@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const API_URL = process.env.API_URL + '/';
 const CLIENT_NAME = process.env.CLIENT_NAME;
 const CLIENT_PASSWORD = process.env.CLIENT_PASSWORD;
