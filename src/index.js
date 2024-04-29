@@ -4,8 +4,6 @@ const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = requir
 const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player');
-// dotenv to use environnement variables in .env file
-require('dotenv').config();
 // Register bot Discord events
 const registerEvents = require('./functions/registerEvents/registerEvents.js');
 
