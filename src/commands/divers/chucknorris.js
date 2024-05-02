@@ -8,9 +8,9 @@ module.exports = {
 	async execute(interaction) {
 		const joke = await fetch('https://api.chucknorris.io/jokes/random')
 			.then(response => response.json())
-			.then(data => data.value)
-			.catch(console.error);
+			.catch(error => console.error(error));
 
-		await interaction.editReply(joke);
+		if (joke) await interaction.editReply(joke.value);
+		else await interaction.editReply('❌ Erreur lors de la récupération de la blague');
 	},
 };

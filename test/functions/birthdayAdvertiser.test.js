@@ -1,11 +1,11 @@
-const birthdayAdvertiser = require('../src/functions/birthdayAdvertiser')
-const members = require('../src/endpoints/members'); // checkForBirthday
-const guilds = require('../src/endpoints/guilds'); // getGuild
+const birthdayAdvertiser = require('../../src/functions/birthdayAdvertiser')
+const members = require('../../src/endpoints/members'); // checkForBirthday
+const guilds = require('../../src/endpoints/guilds'); // getGuild
 
-const mockedObjects = require('./mockedObjects');
+const mockedObjects = require('../mockedObjects');
 
-jest.mock('../src/endpoints/members');
-jest.mock('../src/endpoints/guilds');
+jest.mock('../../src/endpoints/members');
+jest.mock('../../src/endpoints/guilds');
 
 const memberBirthdayRes = [mockedObjects.apiMember];
 

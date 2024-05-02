@@ -1,10 +1,10 @@
-const members = require('../src/endpoints/members');
-const guilds = require('../src/endpoints/guilds');
-const fetchs = require('../src/functions/fetch-tools');
+const members = require('../../src/endpoints/members');
+const guilds = require('../../src/endpoints/guilds');
+const fetchs = require('../../src/functions/fetch-tools');
 
-const mockedObjects = require('./mockedObjects');
-jest.mock('../src/endpoints/guilds');
-jest.mock('../src/functions/fetch-tools');
+const mockedObjects = require('../mockedObjects');
+jest.mock('../../src/endpoints/guilds');
+jest.mock('../../src/functions/fetch-tools');
 
 afterEach(() => {
     jest.clearAllMocks();
