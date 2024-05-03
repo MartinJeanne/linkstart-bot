@@ -1,6 +1,5 @@
 const { Events, ChannelType } = require('discord.js');
-
-const garwalleId = '306129521990565888';
+const { botCreatorId } = require('../user-ids');
 
 async function reactionForRole(reaction) {
     if (reaction.partial) {
@@ -49,7 +48,7 @@ exports.messageCreate = async function (client) {
     client.on(Events.MessageCreate, async message => {
         // DM
         if (message.channel.type === ChannelType.DM) {
-            if (message.author.id === garwalleId) {
+            if (message.author.id === botCreatorId) {
                 try {
                     const msgArray = message.content.split(' ');
                     const channel = client.channels.cache.get(msgArray.shift());
@@ -73,10 +72,10 @@ exports.messageCreate = async function (client) {
 
         if (!message.mentions.has(client.user.id) || message.mentions.everyone) return;
 
-        if (message.member.id === garwalleId && message.content[0] === 'R')
+        if (message.member.id === botCreatorId && message.content[0] === 'R')
             return await message.channel.send(`Ok.`);
 
-        else if (message.member.id === garwalleId)
+        else if (message.member.id === botCreatorId)
             return await message.channel.send(`Ouais boss ?`);
 
         else if (message.member.id === '256876632046960641')
