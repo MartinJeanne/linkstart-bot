@@ -1,19 +1,24 @@
-const chucknorrisCmd = require('../../src/commands/divers/chucknorris');
+const donardtrumpCmd = require('../../src/commands/divers/donaldtrump');
+
+const API_URL = 'https://www.tronalddump.io/random/quote';
 
 afterEach(() => {
     jest.restoreAllMocks();
 });
 
 test('should have data about the command', () => {
-    expect(chucknorrisCmd.data.name).toBeDefined();
-    expect(chucknorrisCmd.data.description).toBeDefined();
-    expect(chucknorrisCmd.data.description).toBeDefined();
+    expect(donardtrumpCmd.data.name).toBeDefined();
+    expect(donardtrumpCmd.data.description).toBeDefined();
+    expect(donardtrumpCmd.data.description).toBeDefined();
 });
 
 test('should call fetch with the correct API URL', () => {
     const fetchSpy = jest.spyOn(global, 'fetch').mockImplementation(() =>
         Promise.resolve({
-            json: () => Promise.resolve({ value: 'Chuck Norris joke' })
+            json: () => Promise.resolve({
+                value: 'Idiot quote',
+                appeared_at: '2015-09-05T21:42:32.000Z'
+            })
         })
     );
 
@@ -21,10 +26,10 @@ test('should call fetch with the correct API URL', () => {
         editReply: jest.fn()
     };
 
-    return chucknorrisCmd.execute(mockInteraction).then(() => {
-        expect(fetchSpy).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random');
+    return donardtrumpCmd.execute(mockInteraction).then(() => {
+        expect(fetchSpy).toHaveBeenCalledWith(API_URL);
         expect(fetchSpy).toHaveBeenCalledTimes(1);
-        expect(mockInteraction.editReply).toHaveBeenCalledWith("Chuck Norris joke");
+        expect(mockInteraction.editReply).toHaveBeenCalledWith('"*Idiot quote*" - Donald Trump, 2015-09-05');
     });
 });
 
@@ -41,8 +46,8 @@ test('should catch error and log it to console & user if fetch failed', () => {
         editReply: jest.fn()
     };
 
-    return chucknorrisCmd.execute(mockInteraction).then(() => {
-        expect(fetchSpy).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random');
+    return donardtrumpCmd.execute(mockInteraction).then(() => {
+        expect(fetchSpy).toHaveBeenCalledWith(API_URL);
         expect(fetchSpy).toHaveBeenCalledTimes(1);
         expect(mockInteraction.editReply).toHaveBeenCalledWith('❌ Erreur lors de la récupération de la blague');
         expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
@@ -50,7 +55,7 @@ test('should catch error and log it to console & user if fetch failed', () => {
 });
 
 test('should fetch data from the chucknorris API (TI)', async () => {
-    const response = await fetch('https://api.chucknorris.io/jokes/random');
+    const response = await fetch(API_URL);
     expect(response.status).toBe(200);
 });
 
@@ -59,7 +64,7 @@ test('should fetch a joke (TI)', () => {
         editReply: jest.fn()
     };
 
-    return chucknorrisCmd.execute(mockInteraction).then(() => {
+    return donardtrumpCmd.execute(mockInteraction).then(() => {
         expect(mockInteraction.editReply).toHaveBeenCalledWith(expect.anything());
     });
 });
