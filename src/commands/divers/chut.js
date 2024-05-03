@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { botCreatorId } = require('../../functions/user-ids');
 
 module.exports = {
 	isEphemeral: true,
@@ -26,19 +27,19 @@ module.exports = {
 		];
 
 		if (mentionnedUser === interaction.member.user.id) {
-			await interaction.editReply({ content: "Heu, t'es bizarre fréritot...", ephemeral: true });
+			await interaction.editReply("Heu, t'es bizarre fréritot...");
 		}
 
 		else if (mentionnedUser == client.user.id) {
-			await interaction.editReply({ content: "Tu t'es pris pour qui ? J'vais te goumer.", ephemeral: true });
+			await interaction.editReply("Tu t'es pris pour qui ? J'vais te goumer.");
 		}
 
-		else if (mentionnedUser == '306129521990565888') {
-			await interaction.editReply({ content: "Hahaha non je crois pas non, c'est mon créateur lui :stuck_out_tongue_winking_eye:", ephemeral: true });
+		else if (mentionnedUser == botCreatorId) {
+			await interaction.editReply("Hahaha non je crois pas non, c'est mon créateur lui :stuck_out_tongue_winking_eye:");
 		}
 
 		else {
-			await interaction.editReply({ content: `Je m'en occupe.`, ephemeral: true });
+			await interaction.editReply(`Je m'en occupe.`);
 			const random = Math.floor(Math.random() * chutSentences.length);
 			await interaction.channel.send(chutSentences[random]);
 		}
