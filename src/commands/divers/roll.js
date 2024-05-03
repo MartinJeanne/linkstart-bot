@@ -4,24 +4,24 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roll')
 		.setDescription("Jette un dé !")
-		.addStringOption(option => 
+		.addStringOption(option =>
 			option.setName('action')
-			.setDescription('L\'action à réaliser')
-			.setRequired(false))
-		.addIntegerOption(option => 
+				.setDescription('L\'action à réaliser')
+				.setRequired(false))
+		.addIntegerOption(option =>
 			option.setName('nombre-face')
-			.setDescription('La valeur max du dé (défaut 20)')
-			.setRequired(false)
-			.setMaxValue(10000))
-			.addIntegerOption(option => 
-				option.setName('nombre-dé')
+				.setDescription('La valeur max du dé (défaut 20)')
+				.setRequired(false)
+				.setMaxValue(10000))
+		.addIntegerOption(option =>
+			option.setName('nombre-dé')
 				.setDescription('La nb de dé(s) à lancer (défaut 1)')
 				.setRequired(false)
 				.setMaxValue(30))
-		.addIntegerOption(option => 
+		.addIntegerOption(option =>
 			option.setName('modificateur')
-			.setDescription('Bonus ou malus')
-			.setRequired(false)),
+				.setDescription('Bonus ou malus')
+				.setRequired(false)),
 
 	async execute(interaction, client) {
 		const action = interaction.options.getString('action');
@@ -33,7 +33,7 @@ module.exports = {
 
 		let response;
 		if (action && action.trim()) response = `*${action}*\n${nbDice}d${maxValue} : `;
-		else  response = `${nbDice}d${maxValue} : `;
+		else response = `${nbDice}d${maxValue} : `;
 
 		let result = 0;
 		for (let i = 0; i < nbDice; i++) {
@@ -42,7 +42,7 @@ module.exports = {
 			result += diceValue;
 		}
 		response = response.slice(0, -2);
-		
+
 		if (modifier) {
 			const modifierSigne = modifier > 0 ? '+' : '';
 			result += modifier;
@@ -50,7 +50,7 @@ module.exports = {
 		}
 
 		response += `\n🎲 **${result}**`;
-		
+
 		await interaction.editReply({ content: response });
 	},
 };
