@@ -1,9 +1,9 @@
-const anniversaireCmd = require('../src/commands/divers/anniversaire')
-const members = require('../src/endpoints/members'); // checkForBirthday
+const anniversaireCmd = require('../../src/commands/divers/anniversaire')
+const members = require('../../src/endpoints/members'); // checkForBirthday
 
-const mockedObjects = require('./mockedObjects');
+const mockedObjects = require('../mockedObjects');
 
-jest.mock('../src/endpoints/members');
+jest.mock('../../src/endpoints/members');
 
 afterEach(() => {
     jest.clearAllMocks();

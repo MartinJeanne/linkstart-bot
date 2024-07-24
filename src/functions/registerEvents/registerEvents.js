@@ -7,9 +7,7 @@ const { getRoleReaction } = require('../../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
 const birthdayAdvertiser = require('../birthdayAdvertiser.js');
 
-const garwalleId = '306129521990565888';
 let messages;
-let roleReactions;
 
 module.exports = async function (client) {
 
@@ -40,7 +38,7 @@ module.exports = async function (client) {
     client.on(Events.GuildMemberRemove, async member => {
         if (member.guild.id === '485000880114892821') {
             const channel = await client.channels.cache.get('788781047420420137');
-            channel.send(`Bye, ${member}`);
+            channel.send(`Tchuss, ${member}`);
         }
     });
 

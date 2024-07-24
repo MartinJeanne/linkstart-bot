@@ -1,0 +1,1 @@
+exports.botCreatorId = '306129521990565888';
