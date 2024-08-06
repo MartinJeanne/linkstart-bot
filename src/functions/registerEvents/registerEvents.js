@@ -1,4 +1,4 @@
-const { Events, ActivityType, ChannelType } = require('discord.js');
+const { Events } = require('discord.js');
 const { messageCreate, messageReactionAdd, messageReactionRemove } = require('./messageEvents.js');
 const { getOrCreateMember } = require('../../endpoints/members.js');
 const { getMessages } = require('../../endpoints/messages.js');
@@ -6,6 +6,7 @@ const { postGuild } = require('../../endpoints/guilds.js');
 const { getRoleReaction } = require('../../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
 const birthdayAdvertiser = require('../birthdayAdvertiser.js');
+const { updateBotStatus } = require('./minecraftServer.js');
 
 let messages;
 
@@ -47,15 +48,16 @@ module.exports = async function (client) {
     });
 
     messageCreate(client);
-    //messageReactionAdd(client);
-    //messageReactionRemove(client);
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        messages = await getMessages();
+        // TODO messages = await getMessages();
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
 
-        client.user.setActivity('/chut', { type: ActivityType.Watching });
+        updateBotStatus(client);
+        setInterval(() => {
+            updateBotStatus(client);
+        }, 60000);
         console.log(`${client.user.tag} est lancé !`);
     });
 };
