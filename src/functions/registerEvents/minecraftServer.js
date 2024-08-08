@@ -1,9 +1,9 @@
 const { ActivityType } = require('discord.js');
 const { Rcon } = require('rcon-client');
 
-const RCON_HOST = 'linkstart.club'; // L'adresse IP du serveur Minecraft
+const RCON_HOST = 'linkstart-minecraft-server'; // L'adresse IP du serveur Minecraft
 const RCON_PORT = 25575; // Le port RCON configuré
-const RCON_PASSWORD = 'f6fb567448882e35c52c3dd0';
+const RCON_PASSWORD = 'ac9f57699983f48af454b94a';
 
 async function getPlayerList() {
     const rcon = new Rcon({
