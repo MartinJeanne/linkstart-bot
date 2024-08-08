@@ -6,7 +6,7 @@ const { postGuild } = require('../../endpoints/guilds.js');
 const { getRoleReaction } = require('../../endpoints/roleReaction.js');
 const schedule = require('node-schedule');
 const birthdayAdvertiser = require('../birthdayAdvertiser.js');
-const { updateBotStatus } = require('./minecraftServer.js');
+const { matchBotStatusToMcPlayerNb } = require('./minecraftServer.js');
 
 let messages;
 
@@ -53,11 +53,7 @@ module.exports = async function (client) {
     client.once(Events.ClientReady, async () => {
         // TODO messages = await getMessages();
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
-
-        updateBotStatus(client);
-        setInterval(() => {
-            updateBotStatus(client);
-        }, 60000);
+        matchBotStatusToMcPlayerNb(client);
         console.log(`${client.user.tag} est lancé !`);
     });
 };
