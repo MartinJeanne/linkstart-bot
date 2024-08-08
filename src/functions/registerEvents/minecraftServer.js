@@ -1,39 +1,52 @@
 const { ActivityType } = require('discord.js');
 const { Rcon } = require('rcon-client');
 
-const RCON_HOST = 'linkstart.club'; // L'adresse IP du serveur Minecraft
-const RCON_PORT = 25575; // Le port RCON configuré
-const RCON_PASSWORD = 'f6fb567448882e35c52c3dd0';
+const RCON_HOST = process.env.RCON_HOST;
+const RCON_PORT = process.env.RCON_PORT;
+const RCON_PASSWORD = process.env.RCON_PASSWORD;
 
-async function getPlayerList() {
-    const rcon = new Rcon({
-        host: RCON_HOST,
-        port: RCON_PORT,
-        password: RCON_PASSWORD
-    });
+async function connectRcon() {
+    try {
+        rcon = new Rcon({
+            host: RCON_HOST,
+            port: RCON_PORT,
+            password: RCON_PASSWORD
+        });
 
-    await rcon.connect();
-    const response = await rcon.send('list');
-    await rcon.end();
+        await rcon.connect();
+        console.log('Connected to RCON');
 
-    const match = response.match(/There are (\d+) of a max of \d+ players online: (.*)/);
-    const playerCount = parseInt(match[1], 10);
-    const playerList = match[2] ? match[2].split(', ') : [];
-
-    return { playerCount, playerList };
+        rcon.on('end', () => {
+            console.log('RCON connection ended, reconnecting...');
+            setTimeout(connectRcon, 5000); // Reconnect after 5 seconds
+        });
+    } catch (error) {
+        console.error('Error connecting to RCON:', error);
+        setTimeout(connectRcon, 5000); // Retry after 5 seconds on failure
+    }
 }
 
-let previousPlayerList = [null]; // commence à null, pour que la première execution change forcément le status
-exports.updateBotStatus = async function (client) {
+let previousplayerCount = -1; // commence à -1, pour que la première execution change forcément le status
+async function updateBotStatus(client) {
     try {
-        const { playerCount, playerList } = await getPlayerList();
+        const response = await rcon.send('list');
+        const match = response.match(/There are (\d+) of a max of \d+ players online: (.*)/);
+        const playerCount = parseInt(match[1], 10);
 
-        // Détecter les changements dans la liste des joueurs
-        if (JSON.stringify(previousPlayerList) !== JSON.stringify(playerList)) {
-            previousPlayerList = playerList;
+        if (playerCount !== previousplayerCount) {
             client.user.setActivity({ name: `minecraft : ${playerCount}/20`, type: ActivityType.Playing });
+            previousplayerCount = playerCount;
         }
     } catch (error) {
         console.error('Error fetching player list:', error);
     }
+}
+
+exports.matchBotStatusToMcPlayerNb = async function (client) {
+    await connectRcon();
+    await updateBotStatus(client); // for bot startup
+
+    setInterval(() => {
+        updateBotStatus(client); // then every minute
+    }, 60000);
 }
