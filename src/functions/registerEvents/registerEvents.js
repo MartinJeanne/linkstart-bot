@@ -54,10 +54,10 @@ module.exports = async function (client) {
         // TODO messages = await getMessages();
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
 
-        /*updateBotStatus(client);
+        updateBotStatus(client);
         setInterval(() => {
             updateBotStatus(client);
-        }, 60000);*/
+        }, 60000);
         console.log(`${client.user.tag} est lancé !`);
     });
 };
