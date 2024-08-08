@@ -16,7 +16,7 @@ async function connectRcon() {
         await rcon.connect();
         console.log('Connected to RCON');
 
-        rcon.on('end', () => {
+        rcon.once('end', () => {
             console.log('RCON connection ended, reconnecting...');
             setTimeout(connectRcon, 5000); // Reconnect after 5 seconds
         });
@@ -44,9 +44,9 @@ async function updateBotStatus(client) {
 
 exports.matchBotStatusToMcPlayerNb = async function (client) {
     await connectRcon();
-    await updateBotStatus(client); // for bot startup
-
+    
+    updateBotStatus(client); // for bot startup
     setInterval(() => {
-        updateBotStatus(client); // then every minute
-    }, 60000);
+        updateBotStatus(client); // then every 3 0 sec
+    }, 30000);
 }
