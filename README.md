@@ -1,7 +1,7 @@
 # linkstart-bot
 ## Info
-French discord bot that can play music among other things!  
-[Invite Linkstart-bot](https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot) on your server 🤖
+French discord bot that can play music among other things!\
+[Invite Linkstart-bot](https://discord.com/oauth2/authorize?client_id=784536536459771925&permissions=8&scope=bot) on your server 🤖\
 This project take advange of CI/CD and automatically deploy any commit pushed on master via Docker on a VPS.
 
 ## Run the bot
