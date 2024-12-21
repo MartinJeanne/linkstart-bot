@@ -53,9 +53,17 @@ module.exports = async function (client) {
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        // TODO messages = await getMessages();
+        /* Old 
+        messages = await getMessages();
+        matchBotStatusToMcPlayerNb(client);
+        */
+        /* discord-player debug
+        console.log(client.player.scanDeps()); 
+        client.player.on('debug', console.log);
+        client.player.events.on('debug', (queue, message) => console.log(`[DEBUG ${queue.guild.id}] ${message}`)); 
+        */
+
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
-        //matchBotStatusToMcPlayerNb(client);
         console.log(`${client.user.tag} est lancé !`);
     });
 };

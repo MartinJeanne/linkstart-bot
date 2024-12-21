@@ -48,7 +48,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
-	await client.player.extractors.loadMulti(DefaultExtractors);
+	//await client.player.extractors.loadMulti(DefaultExtractors);
 	await client.player.extractors.register(YoutubeiExtractor);
 
 	// Deploy commands
