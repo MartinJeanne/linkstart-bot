@@ -4,6 +4,9 @@ const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = requir
 const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player');
+const { DefaultExtractors } = require('@discord-player/extractor');
+const { YoutubeiExtractor } = require("discord-player-youtubei")
+
 // Register bot Discord events
 const registerEvents = require('./functions/registerEvents/registerEvents.js');
 
@@ -45,7 +48,8 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
-	await client.player.extractors.loadDefault();
+	await client.player.extractors.loadMulti(DefaultExtractors);
+	await client.player.extractors.register(YoutubeiExtractor);
 
 	// Deploy commands
 	try {
