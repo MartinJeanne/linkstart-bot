@@ -32,6 +32,7 @@ async function updateBotStatus(client) {
         const response = await rcon.send('list');
         const match = response.match(/There are (\d+) of a max of \d+ players online: (.*)/);
         const playerCount = parseInt(match[1], 10);
+        const playerList = match[2] ? match[2].split(', ') : [];        
 
         if (playerCount !== previousplayerCount) {
             client.user.setActivity({ name: `minecraft : ${playerCount}/20`, type: ActivityType.Playing });

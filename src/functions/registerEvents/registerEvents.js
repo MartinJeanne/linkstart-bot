@@ -22,7 +22,9 @@ module.exports = async function (client) {
         try {
             await interaction.deferReply({ ephemeral: command.isEphemeral });
             const member = await getOrCreateMember(interaction.member);
-            await command.execute(interaction, client, member);
+            await client.player.context.provide(interaction.guild, async () => {
+                await command.execute(interaction, client, member);
+            });
         } catch (error) {
             console.error(error);
             await interaction.editReply({ content: "❌ Erreur lors de l'execution de cette commande", ephemeral: true });
@@ -53,7 +55,7 @@ module.exports = async function (client) {
     client.once(Events.ClientReady, async () => {
         // TODO messages = await getMessages();
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
-        matchBotStatusToMcPlayerNb(client);
+        //matchBotStatusToMcPlayerNb(client);
         console.log(`${client.user.tag} est lancé !`);
     });
 };
