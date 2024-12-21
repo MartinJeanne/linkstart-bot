@@ -51,17 +51,28 @@ module.exports = async function (client) {
 
     messageCreate(client);
 
+    client.player.events.on('error', (queue, error) => {
+        // Emitted when the player queue encounters error
+        console.log(`General player error event: ${error.message}`);
+        console.log(error);
+    });
+
+    client.player.events.on('playerError', (queue, error) => {
+        // Emitted when the audio player errors while streaming audio track
+        console.log(`Player error event: ${error.message}`);
+        console.log(error);
+    });
+
     // Once bot is started
     client.once(Events.ClientReady, async () => {
         /* Old 
         messages = await getMessages();
         matchBotStatusToMcPlayerNb(client);
         */
-        /* discord-player debug
+        //discord-player debug
         console.log(client.player.scanDeps()); 
         client.player.on('debug', console.log);
         client.player.events.on('debug', (queue, message) => console.log(`[DEBUG ${queue.guild.id}] ${message}`)); 
-        */
 
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
         console.log(`${client.user.tag} est lancé !`);
