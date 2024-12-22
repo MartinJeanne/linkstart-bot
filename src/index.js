@@ -4,8 +4,9 @@ const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = requir
 const fs = require('node:fs');
 // Player from discord-player to play music
 const { Player } = require('discord-player');
-const { DefaultExtractors } = require('@discord-player/extractor');
+const { DefaultExtractors, SpotifyExtractor } = require('@discord-player/extractor');
 const { YoutubeiExtractor } = require("discord-player-youtubei")
+const { DeezerExtractor } = require("discord-player-deezer")
 
 // Register bot Discord events
 const registerEvents = require('./functions/registerEvents/registerEvents.js');
@@ -20,9 +21,6 @@ const client = new Client({
 	],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
-
-// Player to play music
-client.player = new Player(client);
 
 // The collection of commands
 client.commands = new Collection();
@@ -43,13 +41,19 @@ for (const folder of folders) {
 	}
 }
 
+// Player to play music
+const player = new Player(client);
+
 // Before deploying commands
 const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
-	//await client.player.extractors.loadMulti(DefaultExtractors);
-	await client.player.extractors.register(YoutubeiExtractor);
+	//await player.extractors.loadMulti(DefaultExtractors);
+	//const agent = new ProxyAgent("http://proxy_url");
+	//await player.extractors.register(YoutubeiExtractor, { proxy: agent });
+	await player.extractors.register(SpotifyExtractor);
+	await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
 	// Deploy commands
 	try {
