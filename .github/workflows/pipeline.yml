@@ -19,6 +19,7 @@ jobs:
         echo "RCON_HOST=${{ secrets.RCON_HOST }}" >> .env
         echo "RCON_PORT=${{ secrets.RCON_PORT }}" >> .env
         echo "RCON_PASSWORD=${{ secrets.RCON_PASSWORD }}" >> .env
+        echo "DEEZER_DECRYPTION_KEY=${{ secrets.DEEZER_DECRYPTION_KEY }}" >> .env
     - name: Build Docker Image
       run: |
         docker build -t linkstart-bot-image .
