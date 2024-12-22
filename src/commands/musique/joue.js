@@ -20,7 +20,7 @@ module.exports = {
 
 		const result = await player.search(toSearch, {
 			requestedBy: interaction.user,
-			searchEngine: QueryType.SPOTIFY_SEARCH,
+			//searchEngine: QueryType.SPOTIFY_SEARCH,
 		});		
 
 		if (result.tracks.length === 0) {

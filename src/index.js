@@ -52,6 +52,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 	//await player.extractors.loadMulti(DefaultExtractors);
 	//const agent = new ProxyAgent("http://proxy_url");
 	//await player.extractors.register(YoutubeiExtractor, { proxy: agent });
+	await player.extractors.register(YoutubeiExtractor);
 	await player.extractors.register(SpotifyExtractor);
 	await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
