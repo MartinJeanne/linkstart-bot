@@ -1,4 +1,6 @@
 /** Check if user can use Player commands */
+const { useMainPlayer } = require('discord-player');
+
 module.exports = async function (args) {
 	const interaction = args.interaction;
 	const client = args.client;
@@ -20,7 +22,8 @@ module.exports = async function (args) {
 	}
 
 
-	const queue = client.player.nodes.get(interaction.guildId);
+	const player = useMainPlayer();
+	const queue = player.nodes.get(interaction.guildId);
 	if (queue) return queue;
 	
 	else if (!canCreate) {
@@ -29,18 +32,18 @@ module.exports = async function (args) {
 	}
 
 	// Create the server queue with options
-	const newQueue = await client.player.nodes.create(interaction.guild, {
+	const newQueue = await player.nodes.create(interaction.guild, {
 		leaveOnEnd: false,
 		leaveOnStop: true,
 		leaveOnEmpty: true,
 		autoSelfDeaf: false,
-		spotifyBridge: true,
-		ytdlOptions: {
+		skipOnNoStream: true,
+		/*ytdlOptions: {
 			filter: 'audioonly',
 			opusEncoded: true,
 			highWaterMark: 1 << 30,
 			dlChunkSize: 0,
-		}
+		}*/
 	});
 	if (!newQueue.connection) await newQueue.connect(interaction.member.voice.channel);
 	return newQueue;

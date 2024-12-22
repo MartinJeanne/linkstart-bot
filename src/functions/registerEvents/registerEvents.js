@@ -1,4 +1,6 @@
 const { Events } = require('discord.js');
+const { useMainPlayer } = require('discord-player');
+const { playerOnError, playerOnDebug } = require('./playerEvents.js');
 const { messageCreate, messageReactionAdd, messageReactionRemove } = require('./messageEvents.js');
 const { getOrCreateMember } = require('../../endpoints/members.js');
 const { getMessages } = require('../../endpoints/messages.js');
@@ -11,6 +13,7 @@ const { matchBotStatusToMcPlayerNb } = require('./minecraftServer.js');
 let messages;
 
 module.exports = async function (client) {
+    const player = useMainPlayer();
 
     // When user uses a slash (/) command!
     client.on(Events.InteractionCreate, async interaction => {
@@ -22,7 +25,7 @@ module.exports = async function (client) {
         try {
             await interaction.deferReply({ ephemeral: command.isEphemeral });
             const member = await getOrCreateMember(interaction.member);
-            await client.player.context.provide(interaction.guild, async () => {
+            await player.context.provide(interaction.guild, async () => {
                 await command.execute(interaction, client, member);
             });
         } catch (error) {
@@ -51,28 +54,15 @@ module.exports = async function (client) {
 
     messageCreate(client);
 
-    client.player.events.on('error', (queue, error) => {
-        // Emitted when the player queue encounters error
-        console.log(`General player error event: ${error.message}`);
-        console.log(error);
-    });
-
-    client.player.events.on('playerError', (queue, error) => {
-        // Emitted when the audio player errors while streaming audio track
-        console.log(`Player error event: ${error.message}`);
-        console.log(error);
-    });
+    //discord-player
+    //playerOnDebug(player);
+    //playerOnError(player);
+    //console.log(player.scanDeps());
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
-        /* Old 
-        messages = await getMessages();
-        matchBotStatusToMcPlayerNb(client);
-        */
-        //discord-player debug
-        console.log(client.player.scanDeps()); 
-        client.player.on('debug', console.log);
-        client.player.events.on('debug', (queue, message) => console.log(`[DEBUG ${queue.guild.id}] ${message}`)); 
+        //messages = await getMessages();
+        //matchBotStatusToMcPlayerNb(client);
 
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
         console.log(`${client.user.tag} est lancé !`);

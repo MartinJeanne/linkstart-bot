@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { QueryType } = require('discord-player');
+const { useMainPlayer } = require('discord-player');
 const getQueue = require('../../functions/getQueue.js');
 
 module.exports = {
@@ -15,10 +16,13 @@ module.exports = {
 		if (!queue) return;
 
 		const toSearch = interaction.options.getString('musique');
-		const result = await client.player.search(toSearch, {
+		const player = useMainPlayer();
+
+		const result = await player.search(toSearch, {
 			requestedBy: interaction.user,
-			searchEngine: QueryType.AUTO
-		});
+			searchEngine: QueryType.SPOTIFY_SEARCH,
+		});		
+
 		if (result.tracks.length === 0) {
 			await queue.clear();
 			return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
@@ -29,9 +33,10 @@ module.exports = {
 				queue.addTrack(result.tracks);
 				return await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
 			}
-
-			queue.addTrack(result.tracks[0]);
-			await interaction.editReply(`▶️ **${result.tracks[0].title}**`);
+			
+			const track = result.tracks[0];
+			queue.addTrack(track);
+			await interaction.editReply(`▶️ **Titre :** ${track.title}\n **Auteur :** ${track.author}`);
 		} catch (error) {
 			console.error(error);
 			await interaction.editReply('❌ Oups, erreur lors de la lecture de la musique');
@@ -39,4 +44,4 @@ module.exports = {
 
 		if (!queue.isPlaying()) await queue.node.play();
 	}
-};
+}

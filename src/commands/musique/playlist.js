@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { QueryType, Track, Playlist } = require('discord-player');
+const { useMainPlayer, QueryType, Track, Playlist } = require('discord-player');
 const getQueue = require('../../functions/getQueue.js');
 const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 
@@ -17,6 +17,7 @@ module.exports = {
             .setDescription('Supprime une playlist')),
 
     async execute(interaction, client, member) {
+        const player = useMainPlayer();
         const subcommand = interaction.options.getSubcommand();
         const maxPlaylists = 5;
 
@@ -65,7 +66,7 @@ module.exports = {
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);
 
-                const result = await client.player.search(playlist.url, {
+                const result = await player.search(playlist.url, {
                     requestedBy: inter.user,
                     searchEngine: QueryType.AUTO
                 });
@@ -109,7 +110,7 @@ module.exports = {
 };
 
 /*
-const track = new Track(client.player, {
+const track = new Track(player, {
     title: 'super titre',
     description: 'super petite description ça',
     author: 'moi askip',
@@ -124,7 +125,7 @@ const track = new Track(client.player, {
 queue.addTrack(track);
 await interaction.editReply('Ajouté : ' + track.title);
 
-const playlist = new Playlist(client.player, {
+const playlist = new Playlist(player, {
 tracks: [Track],
 title: string,
 description: string,
