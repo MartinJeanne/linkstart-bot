@@ -55,9 +55,9 @@ module.exports = async function (client) {
     messageCreate(client);
 
     //discord-player
-    //playerOnDebug(player);
-    //playerOnError(player);
     //console.log(player.scanDeps());
+    //playerOnDebug(player);
+    playerOnError(player);
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
