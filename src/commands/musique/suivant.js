@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,6 +12,6 @@ module.exports = {
 
 		const nextSong = queue.history.nextTrack;
 		await queue.node.skip();
-		return await interaction.editReply(`⏩ Suivant : **${nextSong.title}**`);
+		return await interaction.editReply(`⏩ Musique passée, je joue : **${nextSong.title}**`);
 	},
 };

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ComponentType } = require('discord.js');
 const { queueEmbedBuilder, queueRowBuilder } = require('../../functions/queueMsgBuilder.js');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

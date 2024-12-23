@@ -3,7 +3,6 @@ const { useMainPlayer } = require('discord-player');
 
 module.exports = async function (args) {
 	const interaction = args.interaction;
-	const client = args.client;
 	const canCreate = args.canCreate;
 
 	// if user is not in channel
@@ -21,11 +20,10 @@ module.exports = async function (args) {
 		return null;
 	}
 
-
 	const player = useMainPlayer();
 	const queue = player.nodes.get(interaction.guildId);
 	if (queue) return queue;
-	
+
 	else if (!canCreate) {
 		await interaction.editReply(':interrobang: Je ne joue pas de musique actuellement !');
 		return null;
@@ -38,6 +36,7 @@ module.exports = async function (args) {
 		leaveOnEmpty: true,
 		autoSelfDeaf: false,
 		skipOnNoStream: true,
+		metadata: interaction.channel,
 		/*ytdlOptions: {
 			filter: 'audioonly',
 			opusEncoded: true,

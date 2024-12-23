@@ -2,7 +2,9 @@ const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, But
 const { QueryType } = require('discord-player');
 const { useMainPlayer } = require('discord-player');
 const fs = require('node:fs');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
+const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,6 +22,8 @@ module.exports = {
 					.setStyle(ButtonStyle.Primary)
 			);
 		}
+		const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
+		if (!queue) return;
 
 		const row = new ActionRowBuilder().addComponents(...buttons);
 		const message = await interaction.editReply({ content: 'Quel son veux-tu jouer ?', components: [row] });
@@ -27,9 +31,6 @@ module.exports = {
 		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
 		collector.on('collect', async btnInter => {
 			await btnInter.deferUpdate();
-			const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
-			if (!queue) return;
-
 
 			const player = useMainPlayer();
 			const result = await player.search('soundbox-files/' + btnInter.customId, {
@@ -38,15 +39,12 @@ module.exports = {
 			});
 
 			try {
-				const track = result.tracks[0];
-				queue.addTrack(track);
-				await interaction.editReply(`▶️ **Je joue :** ${btnInter.customId.slice(0, -4)}`);
+				const reply = addSongToQueue(result.tracks[0], queue);
+				await btnInter.followUp(reply);
 			} catch (error) {
 				console.error(error);
-				await interaction.editReply('❌ Oups, erreur lors de la lecture de la musique');
+				await btnInter.followUp('❌ Erreur lors de la lecture de la musique');
 			}
-
-			if (!queue.isPlaying()) await queue.node.play();
 			//collector.stop();
 		});
 	}

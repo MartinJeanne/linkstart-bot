@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,6 +11,6 @@ module.exports = {
 		if (!queue) return;
 		
 		queue.delete();
-		return await interaction.editReply('⏹️ Tchao !');
+		return await interaction.editReply('⏹️ Tschüss!');
 	},
 };

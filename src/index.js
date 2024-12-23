@@ -52,7 +52,6 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 	//const agent = new ProxyAgent('http://username:mdp@192.168.1.254:8080');
 	//await player.extractors.register(YoutubeiExtractor, { });
 	await player.extractors.loadMulti([SpotifyExtractor, AttachmentExtractor]);
-	await player.extractors.register(SpotifyExtractor);
 	await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
 	// Deploy commands

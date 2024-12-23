@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { QueryType } = require('discord-player');
 const { useMainPlayer } = require('discord-player');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
+const { addSongToQueue, addPlaylistToQueue } = require('../../functions/queue/addSongsToQueue.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,36 +13,33 @@ module.exports = {
 			.setRequired(true)),
 
 	async execute(interaction, client) {
-		const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
-		if (!queue) return;
-
 		const toSearch = interaction.options.getString('musique');
 		const player = useMainPlayer();
 
 		const result = await player.search(toSearch, {
 			requestedBy: interaction.user,
 			//searchEngine: QueryType.SPOTIFY_SEARCH,
-		});		
+		});
 
-		if (result.tracks.length === 0) {
-			await queue.clear();
-			return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
-		}
+		const queue = await getQueue({ interaction: interaction, canCreate: true });
+		if (!queue) return;
 
 		try {
-			if (result.playlist) {
-				queue.addTrack(result.tracks);
-				return await interaction.editReply(`▶️ **${result.tracks.length}** musiques ajoutées depuis la ${result.playlist.type} : **${result.playlist.title}** `);
+			const tracks = result.tracks;
+			if (tracks.length === 0) {
+				return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
 			}
-			
-			const track = result.tracks[0];
-			queue.addTrack(track);
-			await interaction.editReply(`▶️ **Titre :** ${track.title}\n **Auteur :** ${track.author}`);
+			else if (result.playlist) {
+				const reply = addPlaylistToQueue(tracks, result.playlist, queue);
+				return await interaction.editReply(reply);
+			}
+			else {
+				const reply = addSongToQueue(tracks[0], queue);
+				return await interaction.editReply(reply);
+			}
 		} catch (error) {
 			console.error(error);
-			await interaction.editReply('❌ Oups, erreur lors de la lecture de la musique');
+			await interaction.editReply('❌ Erreur lors de la lecture de la musique');
 		}
-
-		if (!queue.isPlaying()) await queue.node.play();
 	}
 }

@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const { useMainPlayer } = require('discord-player');
-const { playerOnError, playerOnDebug } = require('./playerEvents.js');
+const { playerOnError, playerOnDebug, playerCommonEvents } = require('./playerEvents.js');
 const { messageCreate, messageReactionAdd, messageReactionRemove } = require('./messageEvents.js');
 const { getOrCreateMember } = require('../../endpoints/members.js');
 const { getMessages } = require('../../endpoints/messages.js');
@@ -55,9 +55,11 @@ module.exports = async function (client) {
     messageCreate(client);
 
     //discord-player
+    //playerCommonEvents(player);
     //console.log(player.scanDeps());
     //playerOnDebug(player);
     playerOnError(player);
+    
 
     // Once bot is started
     client.once(Events.ClientReady, async () => {
