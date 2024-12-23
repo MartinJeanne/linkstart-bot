@@ -28,7 +28,7 @@ module.exports = {
 		const row = new ActionRowBuilder().addComponents(...buttons);
 		const message = await interaction.editReply({ content: 'Quel son veux-tu jouer ?', components: [row] });
 
-		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
+		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300000 });
 		collector.on('collect', async btnInter => {
 			await btnInter.deferUpdate();
 
@@ -46,6 +46,10 @@ module.exports = {
 				await btnInter.followUp('❌ Erreur lors de la lecture de la musique');
 			}
 			//collector.stop();
+		});
+
+		collector.on('end', collected => {
+			interaction.deleteReply();
 		});
 	}
 }
