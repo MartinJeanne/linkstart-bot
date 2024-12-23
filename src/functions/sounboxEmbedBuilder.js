@@ -1,22 +1,19 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-module.exports.queueEmbedBuilder = function (queue, page) {
-    const progress = queue.node.getTimestamp();
-
-    let queueString = '';
-    const tracks = queue.tracks.toArray();
+exports.soundboxEmbedBuilder = function (files, page) {
+    let embedBody = '';
     for (let i = (page * 10); i < (page * 10 + 10); i++) {
-        if (i >= queue.getSize()) break;
-        queueString += `**${i + 1}.** ${tracks[i].title}\n`;
+        if (i >= files.length) break;
+        embedBody += `**${i + 1}.** ${files[i].slice(0, -4)}\n`;
     }
 
-    const pageNb = Math.ceil(queue.getSize() / 10);
+    const pageNb = Math.ceil(files.lenght / 10);
 
     return new EmbedBuilder()
         .setColor('#3b89c2')
-        .setTitle(`${queue.currentTrack.title}`)
-        .setDescription(`*${progress.current.label} : ${progress.total.label}*\n\n` + queueString)
-        .setThumbnail(queue.currentTrack.thumbnail)
+        .setTitle(`Soundbox`)
+        .setDescription(embedBody)
+        //.setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
         .setFooter({
             text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}`,
@@ -24,22 +21,22 @@ module.exports.queueEmbedBuilder = function (queue, page) {
         });
 };
 
-module.exports.queueRowBuilder = function (queue, page) {
-    if (queue.getSize() < 10) return null;
-
-    function pageButtonBuilder(id, emoji) {
+exports.soundboxRowBuilder = function (files, page) {
+    const buttons = [];
+    function pageButtonBuilder(number) {
         return new ButtonBuilder()
-            .setCustomId(id)
-            .setLabel(emoji)
+            .setCustomId(number.toString())
+            .setLabel(number.toString())
             .setStyle(ButtonStyle.Primary);
     }
 
-    const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
-    const rigthBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
+    for (let i = (page * 10); i < (page * 10 + 10); i++) {
+        if (i >= files.length) break;
+        const newBtn = pageButtonBuilder(i + 1);
+        buttons.push(newBtn);
+    }
 
-    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
-    else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
-    else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
+    return new ActionRowBuilder().addComponents(...buttons);
 };
 
 /* TODO to implement?

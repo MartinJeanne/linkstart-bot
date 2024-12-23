@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { QueryType } = require('discord-player');
-const { useMainPlayer } = require('discord-player');
 const fs = require('node:fs');
+const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { useMainPlayer, QueryType } = require('discord-player');
+const { soundboxEmbedBuilder, soundboxRowBuilder } = require('../../functions/sounboxEmbedBuilder.js');
 const getQueue = require('../../functions/queue/getQueue.js');
 const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
 
@@ -22,13 +22,17 @@ module.exports = {
 					.setStyle(ButtonStyle.Primary)
 			);
 		}
+		
+		let page = 0;
+		const embed = soundboxEmbedBuilder(files, page);
+		const row = soundboxRowBuilder(files, page);
+		const message = await interaction.editReply({ embeds: [embed], components: row ? [row] : [] });
+
+		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300_000 });
+
 		const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
 		if (!queue) return;
-
-		const row = new ActionRowBuilder().addComponents(...buttons);
-		const message = await interaction.editReply({ content: 'Quel son veux-tu jouer ?', components: [row] });
-
-		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300000 });
+		
 		collector.on('collect', async btnInter => {
 			await btnInter.deferUpdate();
 

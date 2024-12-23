@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Affiche la file des musiques'),
 
 	async execute(interaction, client) {
-		const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
+		const queue = await getQueue({interaction: interaction, canCreate: false});
 		if (!queue) return;
 
 		let page = 0;
@@ -18,7 +18,6 @@ module.exports = {
 
 		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120000 });
 		collector.on('collect', async inter => {
-
 			switch (inter.customId) {
 				case 'left':
 					if (page <= 0) break;
