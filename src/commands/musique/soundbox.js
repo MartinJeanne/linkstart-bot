@@ -1,59 +1,49 @@
 const fs = require('node:fs');
-const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, QueryType } = require('discord-player');
-const { soundboxEmbedBuilder, soundboxRowBuilder } = require('../../functions/sounboxEmbedBuilder.js');
-const getQueue = require('../../functions/queue/getQueue.js');
+const { soundboxEmbedBuilder } = require('../../functions/sounboxEmbedBuilder.js');
 const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
 
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('soundbox')
-		.setDescription('Joue un son du bot'),
+		.setDescription('Lance un son'),
+
 
 	async execute(interaction, client) {
-		const buttons = [];
-		const files = fs.readdirSync(`soundbox-files`).filter(file => file.endsWith('.mp3'));
-		for (const file of files) {
-			buttons.push(
-				new ButtonBuilder()
-					.setCustomId(String(file))
-					.setLabel(file.slice(0, -4))
-					.setStyle(ButtonStyle.Primary)
-			);
-		}
-		
-		let page = 0;
-		const embed = soundboxEmbedBuilder(files, page);
-		const row = soundboxRowBuilder(files, page);
-		const message = await interaction.editReply({ embeds: [embed], components: row ? [row] : [] });
-
-		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300_000 });
-
+		const player = useMainPlayer();
 		const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
 		if (!queue) return;
-		
-		collector.on('collect', async btnInter => {
-			await btnInter.deferUpdate();
 
-			const player = useMainPlayer();
-			const result = await player.search('soundbox-files/' + btnInter.customId, {
-				requestedBy: btnInter.user,
+		let page = 0;
+		const files = fs.readdirSync(`soundbox-files`).filter(file => file.endsWith('.mp3'));
+		const embed = soundboxEmbedBuilder(files, page);
+		await interaction.editReply({ embeds: [embed] });
+
+		const collectorFilter = m => m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
+		const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 300_000 });
+
+		collector.on('collect', async m => {
+			const i = parseInt(m.content) - 1; // Song index
+
+			const result = await player.search(`soundbox-files/${files[i]}`, {
+				requestedBy: m.author,
 				searchEngine: QueryType.FILE,
 			});
 
 			try {
 				const reply = addSongToQueue(result.tracks[0], queue);
-				await btnInter.followUp(reply);
+				await m.reply(reply);
 			} catch (error) {
 				console.error(error);
-				await btnInter.followUp('❌ Erreur lors de la lecture de la musique');
+				await m.reply('❌ Erreur lors de la lecture de la musique');
 			}
-			//collector.stop();
 		});
 
-		collector.on('end', collected => {
+		collector.on('end', async collected => {
 			interaction.deleteReply();
 		});
-	}
-}
+	},
+};
