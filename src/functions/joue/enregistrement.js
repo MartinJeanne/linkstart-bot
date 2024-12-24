@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { useMainPlayer, QueryType } = require('discord-player');
-const { soundboxEmbedBuilder } = require('../../functions/sounboxEmbedBuilder.js');
+const { savedMusicsEmbedBuilder } = require('../savedMusicsEmbedBuilder.js');
 const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
 const getQueue = require('../../functions/queue/getQueue.js');
 
@@ -12,8 +12,7 @@ module.exports = async function (interaction) {
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
-    const embed = soundboxEmbedBuilder(files, page);
-    await interaction.editReply({ embeds: [embed] });
+    const embed = savedMusicsEmbedBuilder(files, page);
 
     const collectorFilter = m => m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
     const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 300_000 });
@@ -21,7 +20,7 @@ module.exports = async function (interaction) {
     collector.on('collect', async m => {
         const i = parseInt(m.content) - 1; // Song index
 
-        const result = await player.search(`soundbox-files/${files[i]}`, {
+        const result = await player.search(`music-files/${files[i]}`, {
             requestedBy: m.author,
             searchEngine: QueryType.FILE,
         });
@@ -38,4 +37,6 @@ module.exports = async function (interaction) {
     collector.on('end', async collected => {
         interaction.deleteReply();
     });
+
+    return embed;
 };

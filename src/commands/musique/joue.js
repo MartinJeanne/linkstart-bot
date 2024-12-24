@@ -18,7 +18,14 @@ module.exports = {
 	async execute(interaction, client) {
 		const subcommand = interaction.options.getSubcommand();
 
-		if (subcommand === 'deezer') await deezer(interaction);
-		else if (subcommand === 'enregistrement') await enregistrement(interaction);
+		if (subcommand === 'deezer') {
+			const toSearch = interaction.options.getString('musique');
+			const reply = await deezer(interaction, toSearch);
+			await interaction.editReply(reply);
+		}
+		else if (subcommand === 'enregistrement') {
+			const embed = await enregistrement(interaction);
+			await interaction.editReply({ embeds: [embed], content: 'Écris dans le channel le nombre associé à la musique que tu veux écouter' });
+		}
 	}
 };

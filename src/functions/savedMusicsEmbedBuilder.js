@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-exports.soundboxEmbedBuilder = function (files, page) {
+exports.savedMusicsEmbedBuilder = function (files, page) {
     let embedBody = '';
     for (let i = 0; i < files.length; i++) {
         embedBody += `**${i + 1}.** ${files[i].slice(0, -4)}\n`;
@@ -10,7 +10,7 @@ exports.soundboxEmbedBuilder = function (files, page) {
 
     return new EmbedBuilder()
         .setColor('#3b89c2')
-        .setTitle(`Soundbox`)
+        .setTitle(`Musiques enregistrées`)
         .setDescription(embedBody)
         //.setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
