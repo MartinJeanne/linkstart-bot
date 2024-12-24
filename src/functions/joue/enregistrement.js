@@ -11,7 +11,7 @@ module.exports = async function (interaction) {
     if (!queue) return;
 
     let page = 0;
-    const files = fs.readdirSync(`soundbox-files`).filter(file => file.endsWith('.mp3'));
+    const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
     const embed = soundboxEmbedBuilder(files, page);
     await interaction.editReply({ embeds: [embed] });
 
