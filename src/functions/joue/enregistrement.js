@@ -15,7 +15,7 @@ module.exports = async function (interaction) {
     const embed = savedMusicsEmbedBuilder(files, page);
 
     const collectorFilter = m => m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
-    const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 300_000 });
+    const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 30_000 });
 
     collector.on('collect', async m => {
         const i = parseInt(m.content) - 1; // Song index

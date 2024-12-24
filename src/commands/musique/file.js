@@ -16,7 +16,7 @@ module.exports = {
 		const row = queueRowBuilder(queue, page);
 		const message = await interaction.editReply({ embeds: [embed], components: row ? [row] : [] });
 
-		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120000 });
+		const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 120_000 });
 		collector.on('collect', async inter => {
 			switch (inter.customId) {
 				case 'left':
