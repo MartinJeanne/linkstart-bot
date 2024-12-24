@@ -41,4 +41,4 @@ jobs:
           docker container rm linkstart-bot
           docker image rm garwalle/linkstart-bot-image
           docker pull garwalle/linkstart-bot-image
-          docker run -d --net="linkstart" --restart=unless-stopped --name linkstart-bot garwalle/linkstart-bot-image
+          docker run -d --net="linkstart" --restart=unless-stopped -v musics:/usr/src/linkstart-bot/music-files --name linkstart-bot garwalle/linkstart-bot-image

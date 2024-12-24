@@ -13,8 +13,8 @@ COPY .env .
 # Code
 COPY src src
 
-# Soundnoard
-COPY soundbox-files soundbox-files
+# Musics saved
+COPY music-files music-files
 
 # Run the bot
 CMD ["npm", "start"]
