@@ -45,7 +45,7 @@ module.exports = async function (link, interaction) {
 		const response = await fetch(dataUrl);
 		if (!response.ok) throw new Error(`Erreur lors du téléchargement: ${response.statusText}`);
 
-		const writeStream = fs.createWriteStream(`./soundbox-files/${title}.mp3`);
+		const writeStream = fs.createWriteStream(`./music-files/${title}.mp3`);
 		await finished(Readable.fromWeb(response.body).pipe(writeStream));
 		console.log('Musique téléchargé !');
 		return title;

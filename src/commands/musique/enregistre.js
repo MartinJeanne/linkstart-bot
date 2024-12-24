@@ -4,6 +4,8 @@ const getQueue = require('../../functions/queue/getQueue.js');
 const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
 const onlymp3 = require('../../functions/ytConverters/onlymp3.js');
 
+// Some yt converters (found onlymp3 on this):
+// https://www.movavi.com/fr/learning-portal/meilleur-convertisseur-youtube-mp3.html
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,7 +34,7 @@ module.exports = {
 
         // Playing the downloaded file
         const player = useMainPlayer();
-        const result = await player.search(`soundbox-files/${downloadedFileName}.mp3`, {
+        const result = await player.search(`./music-files/${downloadedFileName}.mp3`, {
             requestedBy: interaction.user.id,
             searchEngine: QueryType.FILE,
         });
