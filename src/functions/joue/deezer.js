@@ -3,8 +3,7 @@ const { useMainPlayer } = require('discord-player');
 const getQueue = require('../../functions/queue/getQueue.js');
 const { addSongToQueue, addPlaylistToQueue } = require('../../functions/queue/addSongsToQueue.js');
 
-module.exports = async function (interaction) {
-    const toSearch = interaction.options.getString('musique');
+module.exports = async function (interaction, toSearch) {
     const player = useMainPlayer();
 
     const result = await player.search(toSearch, {
@@ -18,18 +17,18 @@ module.exports = async function (interaction) {
     try {
         const tracks = result.tracks;
         if (tracks.length === 0) {
-            return await interaction.editReply(':interrobang: Pas de résultat pour cette recherche');
+            return ':interrobang: Pas de résultat pour cette recherche';
         }
         else if (result.playlist) {
             const reply = addPlaylistToQueue(tracks, result.playlist, queue);
-            return await interaction.editReply(reply);
+            return reply;
         }
         else {
             const reply = addSongToQueue(tracks[0], queue);
-            return await interaction.editReply(reply);
+            return reply
         }
     } catch (error) {
         console.error(error);
-        await interaction.editReply('❌ Erreur lors de la lecture de la musique');
+        return '❌ Erreur lors de la lecture de la musique';
     }
 }
