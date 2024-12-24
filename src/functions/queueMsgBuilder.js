@@ -11,19 +11,36 @@ module.exports.queueEmbedBuilder = function (queue, page) {
     }
 
     const pageNb = Math.ceil(queue.getSize() / 10);
-    
+
     return new EmbedBuilder()
-        .setColor(0xd7667e)
+        .setColor('#3b89c2')
         .setTitle(`${queue.currentTrack.title}`)
         .setDescription(`*${progress.current.label} : ${progress.total.label}*\n\n` + queueString)
         .setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
         .setFooter({
-            text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}` ,
+            text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}`,
             iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128'
         });
 };
 
+module.exports.queueRowBuilder = function (queue, page) {
+    if (queue.getSize() < 10) return null;
+
+    function pageButtonBuilder(id, emoji) {
+        return new ButtonBuilder()
+            .setCustomId(id)
+            .setLabel(emoji)
+            .setStyle(ButtonStyle.Primary);
+    }
+
+    const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
+    const rigthBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
+
+    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
+    else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
+    else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
+};
 
 /* TODO to implement?
 module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {
@@ -52,21 +69,3 @@ module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {
 
 };
 */
-
-module.exports.queueRowBuilder = function (queue, page) {
-    if (queue.getSize() < 10) return null;
-
-    function pageButtonBuilder(id, emoji) {
-        return new ButtonBuilder()
-            .setCustomId(id)
-            .setLabel(emoji)
-            .setStyle(ButtonStyle.Primary);
-    }
-
-    const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
-    const rigthBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
-
-    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
-    else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
-    else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
-};

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { useMainPlayer, QueryType, Track, Playlist } = require('discord-player');
-const getQueue = require('../../functions/getQueue.js');
+const getQueue = require('../../functions/queue/getQueue.js');
 const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../endpoints/playlist.js');
 
 module.exports = {
