@@ -22,7 +22,7 @@ module.exports = async function (client, interaction) {
 	const c = await page.createCDPSession()
 	await c.send('Page.setDownloadBehavior', {
 		behavior: 'allow',
-		downloadPath: './soundbox-files',
+		downloadPath: 'C:/Users/marti/Music',
 	})
 
 	browser.on("targetcreated", async (target) => {
