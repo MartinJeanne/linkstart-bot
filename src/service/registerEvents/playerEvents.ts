@@ -1,4 +1,6 @@
-exports.playerOnError = async function (player) {
+import { Player } from "discord-player";
+
+export async function playerOnError(player: Player) {
     player.events.on('error', (queue, error) => {
         // Emitted when the player queue encounters error
         console.log(`General player error event: ${error.message}`);
@@ -12,7 +14,7 @@ exports.playerOnError = async function (player) {
     });
 }
 
-exports.playerOnDebug = async function (player) {
+export async function playerOnDebug(player: Player) {
     player.on('debug', async (message) => {
         // Emitted when the player sends debug info
         // Useful for seeing what dependencies, extractors, etc are loaded
@@ -26,7 +28,7 @@ exports.playerOnDebug = async function (player) {
     });
 }
 
-exports.playerCommonEvents = async function (player) {
+export async function playerCommonEvents(player: Player) {
     player.events.on('playerStart', (queue, track) => {
         // Emitted when the player starts to play a song
         queue.metadata.send(`▶️ Je joue : **${track.title}**`);
