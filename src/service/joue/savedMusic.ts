@@ -1,16 +1,16 @@
 import fs from 'node:fs';
 import getQueue from '../queue/getQueue';
 import { useMainPlayer, QueryType } from 'discord-player';
-import { ChatInputCommandInteraction, Message, TextChannel } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, Message, TextChannel } from 'discord.js';
 import { UnexpectedError } from '../../error/UnexpectedError';
-const { savedMusicsEmbedBuilder } = require('../savedMusicsEmbedBuilder');
-const { addSongToQueue } = require('../queue/addSongsToQueue');
+import savedMusicsEmbedBuilder from './savedMusicsEmbedBuilder';
+import { addSongToQueue } from '../queue/addSongsToQueue';
 
 
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function (interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const player = useMainPlayer();
     const queue = await getQueue(interaction);
-    if (!queue) return;
+    if (!queue) return new EmbedBuilder();
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));

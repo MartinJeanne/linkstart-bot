@@ -2,7 +2,8 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { QueryType } from 'discord-player';
 import { useMainPlayer } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
-const { addSongToQueue, addPlaylistToQueue } = require('../../service/queue/addSongsToQueue.js');
+import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue.js';
+
 
 export default async function (interaction: ChatInputCommandInteraction, toSearch: string): Promise<string> {
     const player = useMainPlayer();

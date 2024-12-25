@@ -2,7 +2,7 @@ import { GuildQueue } from 'discord-player';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageActionRowComponentBuilder, ComponentBuilder, AnyComponentBuilder } from 'discord.js';
 
 
-export function queueEmbedBuilder(queue: GuildQueue<unknown>, page: number): EmbedBuilder {
+export function queueEmbedBuilder(queue: GuildQueue, page: number): EmbedBuilder {
     if (!queue.currentTrack) return emptyEmbed();
 
     const progress = queue.node.getTimestamp();
@@ -29,7 +29,7 @@ export function queueEmbedBuilder(queue: GuildQueue<unknown>, page: number): Emb
         });
 };
 
-export function queueRowBuilder(queue: GuildQueue<unknown>, page: number): ActionRowBuilder<ButtonBuilder> | null{
+export function queueRowBuilder(queue: GuildQueue, page: number): ActionRowBuilder<ButtonBuilder> | null{
     if (queue.getSize() < 10) null;
 
     function pageButtonBuilder(id: string, emoji: string) {

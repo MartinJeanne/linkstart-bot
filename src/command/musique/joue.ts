@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import deezer from '../../service/joue/deezer';
 import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
-import enregistrement from '../../service/joue/enregistrement';
+import savedMusic from '../../service/joue/savedMusic';
 
 
 export default {
@@ -27,7 +27,7 @@ export default {
 			await interaction.editReply(reply);
 		}
 		else if (subcommand === 'enregistrement') {
-			const embed = await enregistrement(interaction);
+			const embed = await savedMusic(interaction);
 			await interaction.editReply({ embeds: [embed], content: 'Écris dans le channel le nombre associé à la musique que tu veux écouter' });
 		}
 	}
