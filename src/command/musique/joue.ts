@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import deezer from '../../service/joue/deezer';
 import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
-const enregistrement = require('../../service/joue/enregistrement');
+import enregistrement from '../../service/joue/enregistrement';
 
 
 export default {

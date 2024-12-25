@@ -30,7 +30,6 @@ const client = new ClientEx({
 // Information on commands that will be deployed to Discord API
 const commandsToDeploy: any = [];
 
-
 requireAll({
 	dirname: path.join(__dirname, './command'),
 	filter: /\w*.[tj]s/g,

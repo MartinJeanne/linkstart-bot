@@ -1,20 +1,26 @@
-const fs = require('node:fs');
-const { useMainPlayer, QueryType } = require('discord-player');
-const { savedMusicsEmbedBuilder } = require('../savedMusicsEmbedBuilder.js');
-const { addSongToQueue } = require('../queue/addSongsToQueue.js');
-const getQueue = require('../queue/getQueue');
+import fs from 'node:fs';
+import getQueue from '../queue/getQueue';
+import { useMainPlayer, QueryType } from 'discord-player';
+import { ChatInputCommandInteraction, Message, TextChannel } from 'discord.js';
+import { UnexpectedError } from '../../error/UnexpectedError';
+const { savedMusicsEmbedBuilder } = require('../savedMusicsEmbedBuilder');
+const { addSongToQueue } = require('../queue/addSongsToQueue');
 
 
-module.exports = async function (interaction) {
+export default async function (interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
-    const queue = await getQueue({ interaction: interaction, canCreate: true });
+    const queue = await getQueue(interaction);
     if (!queue) return;
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
     const embed = savedMusicsEmbedBuilder(files, page);
 
-    const collectorFilter = m => m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
+    const collectorFilter = (m: Message) =>
+        m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
+
+    if (!interaction.channel || !(interaction.channel instanceof TextChannel))
+        throw new UnexpectedError('no channel or not a text channel');
     const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 30_000 });
 
     collector.on('collect', async m => {
