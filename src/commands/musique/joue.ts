@@ -1,9 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
-const deezer = require('../../service/joue/deezer');
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import deezer from '../../service/joue/deezer';
+import { ClientEx } from '../../model/Client';
+import { NoOptionError } from '../../error/NoOptionError';
 const enregistrement = require('../../service/joue/enregistrement');
 
 
-module.exports = {
+export default {
 	data: new SlashCommandBuilder()
 		.setName('joue')
 		.setDescription('Joue de la musique')
@@ -15,11 +17,12 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand.setName('enregistrement')
 			.setDescription('Affiche le choix des musiques enregistrées sur le bot')),
 
-	async execute(interaction, client) {
+	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
 		const subcommand = interaction.options.getSubcommand();
 
 		if (subcommand === 'deezer') {
 			const toSearch = interaction.options.getString('musique');
+			if (!toSearch) throw new NoOptionError('musique');
 			const reply = await deezer(interaction, toSearch);
 			await interaction.editReply(reply);
 		}

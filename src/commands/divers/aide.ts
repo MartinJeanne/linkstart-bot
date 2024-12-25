@@ -1,12 +1,13 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const fs = require('node:fs');
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
+import fs from 'node:fs';
 
-module.exports = {
+
+export default {
 	data: new SlashCommandBuilder()
 		.setName('aide')
 		.setDescription('Obtient des informations sur mes commandes'),
 
-	async execute(interaction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const commands = [];
 
 		const commandFolders = fs.readdirSync("src/commands");
@@ -35,5 +36,6 @@ module.exports = {
 		}
 
 		await interaction.editReply({ embeds: [embed] });
-	},
+	}
 };
+

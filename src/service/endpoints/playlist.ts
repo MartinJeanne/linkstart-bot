@@ -1,6 +1,6 @@
 import { GuildMember } from "discord.js";
+import { playlists, members, get, post, del } from '../fetch-tools';
 
-import { playlists, members, get, post, del } from '../fetch-tools.js';
 
 export async function getUserPlaylists(user: GuildMember) {
     const response = await get(`${members}/${user.id}/${playlists}`)

@@ -2,6 +2,8 @@
 import { Client, Collection, GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
 // fs from node to navigate through commands files
 import fs from 'node:fs';
+// To require all commands
+import requireAll from 'require-all';
 // Player from discord-player to play music
 import { Player } from 'discord-player';
 const { SpotifyExtractor, AttachmentExtractor } = require('@discord-player/extractor');
@@ -11,6 +13,7 @@ const { YoutubeiExtractor } = require("discord-player-youtubei")
 // Register bot Discord events
 import registerEvents from './service/registerEvents/registerEvents';
 import { ClientEx } from './model/Client'
+import path, { dirname } from 'node:path';
 
 
 // Create a new client instance
@@ -25,11 +28,30 @@ const client = new ClientEx({
 });
 
 // Information on commands that will be deployed to Discord API
-const commandsToDeploy = [];
+const commandsToDeploy: any = [];
 
-const folders = fs.readdirSync("src/commands");
+
+requireAll({
+	dirname: path.join(__dirname, './commands'),
+	filter: /\w*.[tj]s/g,
+	recursive: true,
+	resolve: x => {
+		let command;
+		if (x.default) command = x.default;
+		else command = x;
+
+		// Put commands in collection with the key as the command name and the value as the exported module
+		client.commands.set(command.data.name, command);
+		// Put command data in list to deploy it to Discord API
+		commandsToDeploy.push(command.data.toJSON());
+	}
+})
+
+/*const folders = fs.readdirSync("src/commands");
 for (const folder of folders) {
-	const files = fs.readdirSync(`src/commands/${folder}`).filter((file: string) => file.endsWith('.js'));
+	const files = fs.readdirSync(`src/commands/${folder}`)
+		.filter((file: string) => file.endsWith('.js') || file.endsWith('.ts')); // todo remove js
+
 	for (const file of files) {
 		const command = require(`./commands/${folder}/${file}`);
 
@@ -38,7 +60,7 @@ for (const folder of folders) {
 		// Put command data in list to deploy it to Discord API
 		commandsToDeploy.push(command.data.toJSON());
 	}
-}
+}*/
 
 // Player to play music
 const player = new Player(client);

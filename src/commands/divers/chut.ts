@@ -1,7 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from 'discord.js';
+import { ClientEx } from '../../model/Client';
+import { NoOptionError } from '../../error/NoOptionError';
+import { NoClientUserError } from '../../error/ClientUserError';
 const { botCreatorId } = require('../../service/user-ids');
 
-module.exports = {
+
+export default {
 	isEphemeral: true,
 	data: new SlashCommandBuilder()
 		.setName('chut')
@@ -10,8 +14,10 @@ module.exports = {
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
 
-	async execute(interaction, client) {
+	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
 		const mentionnedUser = interaction.options.getUser('membre');
+		if (!mentionnedUser) throw new NoOptionError('membre');
+
 		const chutSentences = [
 			`TA GUEULE ${mentionnedUser}`,
 			`Ferme ton clapet ${mentionnedUser}.`,
@@ -26,11 +32,12 @@ module.exports = {
 			`Nan ? Sérieux ?! Bon tg maintenant ${mentionnedUser}.`
 		];
 
-		if (mentionnedUser === interaction.member.user.id) {
+		if (mentionnedUser.id === interaction.user.id) {
 			await interaction.editReply("Heu, t'es bizarre fréritot...");
 		}
 
-		else if (mentionnedUser == client.user.id) {
+		if (!client.user) throw new NoClientUserError();
+		else if (mentionnedUser.id == client.user.id) {
 			await interaction.editReply("Tu t'es pris pour qui ? J'vais te goumer.");
 		}
 
@@ -41,7 +48,8 @@ module.exports = {
 		else {
 			await interaction.editReply(`Je m'en occupe.`);
 			const random = Math.floor(Math.random() * chutSentences.length);
-			await interaction.channel.send(chutSentences[random]);
+			const c = interaction.channel as TextChannel
+			c.send(chutSentences[random]);
 		}
-	},
+	}
 }

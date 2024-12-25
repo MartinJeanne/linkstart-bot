@@ -1,9 +1,10 @@
-const { QueryType } = require('discord-player');
-const { useMainPlayer } = require('discord-player');
-const getQueue = require('../../service/queue/getQueue.js');
+import { ChatInputCommandInteraction } from "discord.js";
+import { QueryType } from 'discord-player';
+import { useMainPlayer } from 'discord-player';
+import getQueue from '../../service/queue/getQueue';
 const { addSongToQueue, addPlaylistToQueue } = require('../../service/queue/addSongsToQueue.js');
 
-module.exports = async function (interaction, toSearch) {
+export default async function (interaction: ChatInputCommandInteraction, toSearch: string) {
     const player = useMainPlayer();
 
     const result = await player.search(toSearch, {
@@ -11,7 +12,7 @@ module.exports = async function (interaction, toSearch) {
         //searchEngine: QueryType.SPOTIFY_SEARCH,
     });
 
-    const queue = await getQueue({ interaction: interaction, canCreate: true });
+    const queue = await getQueue(interaction);
     if (!queue) return;
 
     try {

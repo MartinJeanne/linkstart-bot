@@ -1,5 +1,5 @@
 import { Guild } from 'discord.js';
-import { guilds, get, post } from '../fetch-tools.js';
+import { guilds, get, post } from '../fetch-tools';
 
 
 export async function getGuilds() {

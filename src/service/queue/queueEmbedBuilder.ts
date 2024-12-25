@@ -1,7 +1,12 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+import { GuildQueue } from 'discord-player';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageActionRowComponentBuilder, ComponentBuilder, AnyComponentBuilder } from 'discord.js';
 
-module.exports.queueEmbedBuilder = function (queue, page) {
+
+export function queueEmbedBuilder(queue: GuildQueue<unknown>, page: number): EmbedBuilder {
+    if (!queue.currentTrack) return emptyEmbed();
+
     const progress = queue.node.getTimestamp();
+    if (!progress) return emptyEmbed();
 
     let queueString = '';
     const tracks = queue.tracks.toArray();
@@ -14,7 +19,7 @@ module.exports.queueEmbedBuilder = function (queue, page) {
 
     return new EmbedBuilder()
         .setColor('#3b89c2')
-        .setTitle(`${queue.currentTrack.title}`)
+        .setTitle(queue.currentTrack.title)
         .setDescription(`*${progress.current.label} : ${progress.total.label}*\n\n` + queueString)
         .setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
@@ -24,10 +29,10 @@ module.exports.queueEmbedBuilder = function (queue, page) {
         });
 };
 
-module.exports.queueRowBuilder = function (queue, page) {
-    if (queue.getSize() < 10) return null;
+export function queueRowBuilder(queue: GuildQueue<unknown>, page: number): ActionRowBuilder<ButtonBuilder> | null{
+    if (queue.getSize() < 10) null;
 
-    function pageButtonBuilder(id, emoji) {
+    function pageButtonBuilder(id: string, emoji: string) {
         return new ButtonBuilder()
             .setCustomId(id)
             .setLabel(emoji)
@@ -37,10 +42,22 @@ module.exports.queueRowBuilder = function (queue, page) {
     const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
     const rigthBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
 
-    if (leftBtn && rigthBtn) return new ActionRowBuilder().addComponents(leftBtn, rigthBtn);
-    else if (rigthBtn) return new ActionRowBuilder().addComponents(rigthBtn);
-    else if (leftBtn) return new ActionRowBuilder().addComponents(leftBtn);
+    if (leftBtn && rigthBtn) return new ActionRowBuilder({ components: [leftBtn, rigthBtn] });
+    else if (rigthBtn) return new ActionRowBuilder({ components: [rigthBtn] });
+    else if (leftBtn) return new ActionRowBuilder({ components: [leftBtn] });
+    else return null;
 };
+
+function emptyEmbed(): EmbedBuilder {
+    return new EmbedBuilder()
+        .setColor('#3b89c2')
+        .setTitle('Aucune musique')
+        .setDescription('')
+        .setFooter({
+            text: `\nPage : 1/1`,
+            iconURL: 'https://cdn.discordapp.com/avatars/784536536459771925/03a8dc68b874f740def806a36675633e.webp?size=128'
+        });
+}
 
 /* TODO to implement?
 module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {

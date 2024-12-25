@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, QueryType } = require('discord-player');
-const getQueue = require('../../service/queue/getQueue.js');
+const getQueue = require('../../service/queue/getQueue');
 const { addSongToQueue } = require('../../service/queue/addSongsToQueue.js');
 const onlymp3 = require('../../service/ytConverters/onlymp3.js');
 

@@ -1,11 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 
-module.exports = {
+
+export default {
 	data: new SlashCommandBuilder()
 		.setName('chucknorris')
 		.setDescription('Envoie une des "Chuck Norris facts"'),
 
-	async execute(interaction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const joke = await fetch('https://api.chucknorris.io/jokes/random')
 			.then(response => response.json())
 			.catch(error => console.error(error));

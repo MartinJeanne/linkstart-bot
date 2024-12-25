@@ -1,14 +1,15 @@
-const { SlashCommandBuilder, ComponentType } = require('discord.js');
-const { queueEmbedBuilder, queueRowBuilder } = require('../../service/queueMsgBuilder.js');
-const getQueue = require('../../service/queue/getQueue.js');
+import { SlashCommandBuilder, ComponentType, ChatInputCommandInteraction } from 'discord.js';
+import { ClientEx } from '../../model/Client';
+import { queueEmbedBuilder, queueRowBuilder } from '../../service/queue/queueEmbedBuilder';
+import getQueue from '../../service/queue/getQueue';
 
-module.exports = {
+export default {
 	data: new SlashCommandBuilder()
 		.setName('file')
 		.setDescription('Affiche la file des musiques'),
 
-	async execute(interaction, client) {
-		const queue = await getQueue({interaction: interaction, canCreate: false});
+	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 
 		let page = 0;
@@ -36,5 +37,5 @@ module.exports = {
 		});
 
 		collector.on('end', () => interaction.deleteReply());
-	},
+	}
 };

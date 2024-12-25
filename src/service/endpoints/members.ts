@@ -1,14 +1,22 @@
 import { GuildMember } from "discord.js";
 
-import { members, get, post, put, patch } from '../fetch-tools.js';
-const { getOrCreateGuild } = require('./guilds.js');
+import { members, get, post, put, patch } from '../fetch-tools';
+import { getOrCreateGuild } from './guilds';
 
 export interface MemberDto {
     id: string;
     tag: string;
     guildsId: string[];
     avatar: string;
-    birthday: Date;
+    birthday?: string;
+}
+
+export interface PatchMemberDto {
+    id?: string;
+    tag?: string;
+    guildsId?: string[];
+    avatar?: string;
+    birthday?: string;
 }
 
 export function isMemberDto(obj: any): obj is MemberDto {
@@ -79,7 +87,7 @@ export async function putMember(apiMember: MemberDto) {
         return await response.json();
 }
 
-export async function patchMember(id: number, modifiedProperties: MemberDto) {
+export async function patchMember(id: string, modifiedProperties: PatchMemberDto) {
     const response = await patch(`${members}/${id}`, modifiedProperties);
     if (response.status === 200)
         return await response.json();
