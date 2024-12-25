@@ -1,12 +1,13 @@
-import { Events, TextChannel } from 'discord.js';
+import { Events, GuildMember, TextChannel } from 'discord.js';
 import { useMainPlayer } from 'discord-player';
 import schedule from 'node-schedule';
 import { ClientEx } from '../../model/Client'
 import { playerOnError } from './playerEvents';
-const { messageCreate } = require('./messageEvents');
-const { getOrCreateMember } = require('../endpoints/members');
+import { messageCreate } from './messageEvents';
+import { getOrCreateMember } from '../endpoints/members';
 const { postGuild } = require('../endpoints/guilds');
-const birthdayAdvertiser = require('../birthdayAdvertiser');
+import birthdayAdvertiser from '../birthdayAdvertiser';
+import { UnexpectedError } from '../../error/UnexpectedError';
 
 
 export default async function (client: ClientEx) {
@@ -20,10 +21,15 @@ export default async function (client: ClientEx) {
         if (!command) return;
 
         try {
+            /** Defer reply */
             await interaction.deferReply({ ephemeral: command.isEphemeral });
+
+            /** Create member in DB if not exist */
+            if (!(interaction.member instanceof GuildMember)) throw new UnexpectedError('not a GuildMember');
             const member = await getOrCreateMember(interaction.member);
 
-            if (!interaction.guild) throw Error('Not in a guild, or no guild id found on interaction');
+            /** Provide context for discord-player, and execute cmd */
+            if (!interaction.guild) throw new UnexpectedError('guild is null');
             const pData = { guild: interaction.guild };
             await player.context.provide(pData, () => command.execute(interaction));
         } catch (error) {
@@ -33,7 +39,7 @@ export default async function (client: ClientEx) {
     });
 
     client.on(Events.GuildMemberAdd, member => {
-        // Adding "Nouveau" to new user when they join the server
+        /** Adding "Nouveau" to new user as they join the server */
         if (member.guild.id === '485000880114892821') member.roles.add('485021407529664526');
     });
 
