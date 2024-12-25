@@ -5,7 +5,7 @@ import { ClientEx } from '../../model/Client'
 import { playerOnError } from './playerEvents';
 import { messageCreate } from './messageEvents';
 import { getOrCreateMember } from '../endpoints/members';
-const { postGuild } = require('../endpoints/guilds');
+import { postGuild } from '../endpoints/guilds';
 import birthdayAdvertiser from '../birthdayAdvertiser';
 import { UnexpectedError } from '../../error/UnexpectedError';
 
