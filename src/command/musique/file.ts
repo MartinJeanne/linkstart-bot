@@ -38,4 +38,4 @@ export default {
 
 		collector.on('end', () => interaction.deleteReply());
 	}
-};
+}

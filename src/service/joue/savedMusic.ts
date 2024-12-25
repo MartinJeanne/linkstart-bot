@@ -45,4 +45,4 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
     });
 
     return embed;
-};
+}

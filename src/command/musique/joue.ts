@@ -31,4 +31,4 @@ export default {
 			await interaction.editReply({ embeds: [embed], content: 'Écris dans le channel le nombre associé à la musique que tu veux écouter' });
 		}
 	}
-};
+}
