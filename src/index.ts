@@ -32,7 +32,7 @@ const commandsToDeploy: any = [];
 
 
 requireAll({
-	dirname: path.join(__dirname, './commands'),
+	dirname: path.join(__dirname, './command'),
 	filter: /\w*.[tj]s/g,
 	recursive: true,
 	resolve: x => {
@@ -46,21 +46,6 @@ requireAll({
 		commandsToDeploy.push(command.data.toJSON());
 	}
 })
-
-/*const folders = fs.readdirSync("src/commands");
-for (const folder of folders) {
-	const files = fs.readdirSync(`src/commands/${folder}`)
-		.filter((file: string) => file.endsWith('.js') || file.endsWith('.ts')); // todo remove js
-
-	for (const file of files) {
-		const command = require(`./commands/${folder}/${file}`);
-
-		// Put commands in collection with the key as the command name and the value as the exported module
-		client.commands.set(command.data.name, command);
-		// Put command data in list to deploy it to Discord API
-		commandsToDeploy.push(command.data.toJSON());
-	}
-}*/
 
 // Player to play music
 const player = new Player(client);

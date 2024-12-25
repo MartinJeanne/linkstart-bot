@@ -1,3 +1,4 @@
+get maybe should not .reply()
 /joue enregistrement id fix: 3 6554 4 plays '3'
 /suivant in loop 1 music show next song title
 cooldown for /joue enregistrement (split into two cmds)

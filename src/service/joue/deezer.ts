@@ -4,7 +4,7 @@ import { useMainPlayer } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 const { addSongToQueue, addPlaylistToQueue } = require('../../service/queue/addSongsToQueue.js');
 
-export default async function (interaction: ChatInputCommandInteraction, toSearch: string) {
+export default async function (interaction: ChatInputCommandInteraction, toSearch: string): Promise<string> {
     const player = useMainPlayer();
 
     const result = await player.search(toSearch, {
@@ -13,7 +13,7 @@ export default async function (interaction: ChatInputCommandInteraction, toSearc
     });
 
     const queue = await getQueue(interaction);
-    if (!queue) return;
+    if (!queue) return 'todo fix';
 
     try {
         const tracks = result.tracks;
