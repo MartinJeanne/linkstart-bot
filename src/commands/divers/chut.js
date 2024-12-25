@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { botCreatorId } = require('../../functions/user-ids');
+const { botCreatorId } = require('../../service/user-ids');
 
 module.exports = {
 	isEphemeral: true,

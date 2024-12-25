@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionsBitField  } = require('discord.js');
-const { guildIdsFeur } = require('../../functions/registerEvents/messageEvents');
-const { botCreatorId } = require('../../functions/user-ids');
+const { guildIdsFeur } = require('../../service/registerEvents/messageEvents');
+const { botCreatorId } = require('../../service/user-ids');
 
 module.exports = {
 	data: new SlashCommandBuilder()

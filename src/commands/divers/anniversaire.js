@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getOrCreateMember, patchMember } = require('../../endpoints/members.js');
+const { getOrCreateMember, patchMember } = require('../../service/endpoints/members.js');
 
 module.exports = {
 	isEphemeral: true,

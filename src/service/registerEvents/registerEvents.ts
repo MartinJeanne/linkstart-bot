@@ -2,11 +2,11 @@ import { Events, TextChannel } from 'discord.js';
 import { useMainPlayer } from 'discord-player';
 import schedule from 'node-schedule';
 import { ClientEx } from '../../model/Client'
-import { playerOnError } from './playerEvents.js';
-const { messageCreate } = require('./messageEvents.js');
-const { getOrCreateMember } = require('../../endpoints/members.js');
-const { postGuild } = require('../../endpoints/guilds.js');
-const birthdayAdvertiser = require('../birthdayAdvertiser.js');
+import { playerOnError } from './playerEvents';
+const { messageCreate } = require('./messageEvents');
+const { getOrCreateMember } = require('../endpoints/members');
+const { postGuild } = require('../endpoints/guilds');
+const birthdayAdvertiser = require('../birthdayAdvertiser');
 
 
 export default async function (client: ClientEx) {

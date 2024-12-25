@@ -1,7 +1,7 @@
 const { QueryType } = require('discord-player');
 const { useMainPlayer } = require('discord-player');
-const getQueue = require('../../functions/queue/getQueue.js');
-const { addSongToQueue, addPlaylistToQueue } = require('../../functions/queue/addSongsToQueue.js');
+const getQueue = require('../../service/queue/getQueue.js');
+const { addSongToQueue, addPlaylistToQueue } = require('../../service/queue/addSongsToQueue.js');
 
 module.exports = async function (interaction, toSearch) {
     const player = useMainPlayer();

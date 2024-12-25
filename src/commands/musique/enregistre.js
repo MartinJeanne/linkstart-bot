@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, QueryType } = require('discord-player');
-const getQueue = require('../../functions/queue/getQueue.js');
-const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
-const onlymp3 = require('../../functions/ytConverters/onlymp3.js');
+const getQueue = require('../../service/queue/getQueue.js');
+const { addSongToQueue } = require('../../service/queue/addSongsToQueue.js');
+const onlymp3 = require('../../service/ytConverters/onlymp3.js');
 
 // Some yt converters (found onlymp3 on this):
 // https://www.movavi.com/fr/learning-portal/meilleur-convertisseur-youtube-mp3.html

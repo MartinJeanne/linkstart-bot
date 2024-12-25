@@ -1,4 +1,4 @@
-const { messages, get } = require('../functions/fetch-tools.js');
+const { messages, get } = require('../fetch-tools.js');
 
 module.exports.getMessages = async function () {
     return get(messages)

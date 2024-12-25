@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const deezer = require('../../functions/joue/deezer');
-const enregistrement = require('../../functions/joue/enregistrement');
+const deezer = require('../../service/joue/deezer');
+const enregistrement = require('../../service/joue/enregistrement');
 
 
 module.exports = {

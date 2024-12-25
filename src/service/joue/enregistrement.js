@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const { useMainPlayer, QueryType } = require('discord-player');
 const { savedMusicsEmbedBuilder } = require('../savedMusicsEmbedBuilder.js');
-const { addSongToQueue } = require('../../functions/queue/addSongsToQueue.js');
-const getQueue = require('../../functions/queue/getQueue.js');
+const { addSongToQueue } = require('../queue/addSongsToQueue.js');
+const getQueue = require('../queue/getQueue.js');
 
 
 module.exports = async function (interaction) {

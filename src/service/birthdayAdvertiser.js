@@ -1,5 +1,5 @@
-const { checkForBirthday } = require('../endpoints/members');
-const { getGuild } = require('../endpoints/guilds');
+const { checkForBirthday } = require('./endpoints/members');
+const { getGuild } = require('./endpoints/guilds');
 
 /** Wish happy birthday to users! */
 module.exports = async function (client) {

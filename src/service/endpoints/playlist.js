@@ -1,4 +1,4 @@
-const { playlists, members, get, post, del } = require('../functions/fetch-tools.js');
+const { playlists, members, get, post, del } = require('../fetch-tools.js');
 
 exports.getUserPlaylists = async function (user) {
     return get(`${members}/${user.id}/${playlists}`)
