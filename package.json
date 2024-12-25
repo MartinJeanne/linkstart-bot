@@ -4,7 +4,9 @@
   "description": "A discord bot wich play music and speak French",
   "main": "src/index.js",
   "scripts": {
-    "start": "node --env-file=.env src/index.js",
+    "dev": "node -r ts-node/register --env-file=.env src/index.ts",
+    "build": "npx tsc",
+    "start": "npx tsc && node dist/index.js",
     "test": "jest"
   },
   "jest": {
@@ -36,7 +38,11 @@
     "rcon-client": "^4.2.4"
   },
   "devDependencies": {
-    "eslint": "^8.14.0"
+    "@types/node": "^22.10.2",
+    "@types/node-schedule": "^2.1.7",
+    "eslint": "^8.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   },
   "repository": {
     "type": "git",

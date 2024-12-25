@@ -1,18 +1,20 @@
 // Require the necessary discord.js classes
-const { Client, Collection, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
+import { Client, Collection, GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
 // fs from node to navigate through commands files
-const fs = require('node:fs');
+import fs from 'node:fs';
 // Player from discord-player to play music
-const { Player } = require('discord-player');
+import { Player } from 'discord-player';
 const { SpotifyExtractor, AttachmentExtractor } = require('@discord-player/extractor');
 const { DeezerExtractor } = require("discord-player-deezer")
 const { YoutubeiExtractor } = require("discord-player-youtubei")
 
 // Register bot Discord events
-const registerEvents = require('./functions/registerEvents/registerEvents.js');
+import registerEvents from './service/registerEvents/registerEvents';
+import { ClientEx } from './model/Client'
+
 
 // Create a new client instance
-const client = new Client({
+const client = new ClientEx({
 	intents: [
 		GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages,
@@ -22,15 +24,12 @@ const client = new Client({
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
-// The collection of commands
-client.commands = new Collection();
-
 // Information on commands that will be deployed to Discord API
 const commandsToDeploy = [];
 
 const folders = fs.readdirSync("src/commands");
 for (const folder of folders) {
-	const files = fs.readdirSync(`src/commands/${folder}`).filter(file => file.endsWith('.js'));
+	const files = fs.readdirSync(`src/commands/${folder}`).filter((file: string) => file.endsWith('.js'));
 	for (const file of files) {
 		const command = require(`./commands/${folder}/${file}`);
 
@@ -45,6 +44,7 @@ for (const folder of folders) {
 const player = new Player(client);
 
 // Before deploying commands
+if (!process.env.DISCORD_TOKEN) throw new Error('The DISCORD_TOKEN environment variable is not defined.');
 const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
@@ -56,6 +56,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 	// Deploy commands
 	try {
+		if (!process.env.DISCORD_CLIENT_ID) throw new Error('The DISCORD_CLIENT_ID environment variable is not defined.');
 		await rest.put(
 			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
 			{ body: commandsToDeploy }

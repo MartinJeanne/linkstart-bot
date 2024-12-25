@@ -1,4 +1,4 @@
-const { members, get, post, put, patch } = require('../functions/fetch-tools.js');
+const { members, get, post, put, patch } = require('../service/fetch-tools.js');
 const { getOrCreateGuild } = require('./guilds.js');
 
 exports.getOrCreateMember = async function (member) {

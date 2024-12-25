@@ -1,4 +1,4 @@
-const { guilds, get, post } = require('../functions/fetch-tools.js');
+const { guilds, get, post } = require('../service/fetch-tools.js');
 
 
 module.exports.getGuilds = async function () {
