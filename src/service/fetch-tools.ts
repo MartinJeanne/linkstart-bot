@@ -1,4 +1,4 @@
-import { FetchAfterAuthError, DeleteError } from "../error/fetchError";
+import { DeleteError, FetchAfterAuthError } from "../error/FetchError";
 
 export interface fetchOptions {
     method: string;
