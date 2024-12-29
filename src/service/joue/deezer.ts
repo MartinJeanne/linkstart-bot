@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { QueryType } from 'discord-player';
 import { useMainPlayer } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
-import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue.js';
+import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue';
 
 
 export default async function (interaction: ChatInputCommandInteraction, toSearch: string): Promise<string> {
