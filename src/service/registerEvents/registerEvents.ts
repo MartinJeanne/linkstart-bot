@@ -1,10 +1,9 @@
-import { Events, GuildMember, TextChannel } from 'discord.js';
+import { Events, TextChannel } from 'discord.js';
 import { useMainPlayer } from 'discord-player';
 import schedule from 'node-schedule';
 import { ClientEx } from '../../model/Client'
 import { playerOnError } from './playerEvents';
 import { messageCreate } from './messageEvents';
-import { getOrCreateMember } from '../endpoints/members';
 import { postGuild } from '../endpoints/guilds';
 import birthdayAdvertiser from '../birthdayAdvertiser';
 import { UnexpectedError } from '../../error/UnexpectedError';
@@ -23,10 +22,6 @@ export default async function (client: ClientEx) {
         try {
             /** Defer reply */
             await interaction.deferReply({ ephemeral: command.isEphemeral });
-
-            /** Create member in DB if not exist */
-            if (!(interaction.member instanceof GuildMember)) throw new UnexpectedError('not a GuildMember');
-            const member = await getOrCreateMember(interaction.member);
 
             /** Provide context for discord-player, and execute cmd */
             if (!interaction.guild) throw new UnexpectedError('guild is null');
