@@ -1,9 +1,14 @@
-const { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { useMainPlayer, QueryType, Track, Playlist } = require('discord-player');
-const getQueue = require('../../service/queue/getQueue');
-const { getUserPlaylists, postPlaylist, deletePlaylist } = require('../../service/endpoints/playlist');
+import { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { useMainPlayer, QueryType, Track, Playlist } from 'discord-player';
+import getQueue from '../../service/queue/getQueue';
+import { getUserPlaylists, postPlaylist, deletePlaylist } from '../../service/endpoints/playlist';
+import { UnexpectedError } from '../../error/UnexpectedError';
+import { getOrCreateMember } from '../../service/endpoints/members';
+import { NoOptionError } from '../../error/NoOptionError';
+import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue';
 
-module.exports = {
+
+export default {
     data: new SlashCommandBuilder()
         .setName('playlist')
         .setDescription('Joue ou sauvegarde une playlist !')
@@ -16,13 +21,18 @@ module.exports = {
         .addSubcommand(subcommand => subcommand.setName('supp')
             .setDescription('Supprime une playlist')),
 
-    async execute(interaction, client, member) {
+    async execute(interaction: ChatInputCommandInteraction) {
         const player = useMainPlayer();
         const subcommand = interaction.options.getSubcommand();
         const maxPlaylists = 5;
 
+        /** Create member in DB if not exist */
+        if (!(interaction.member instanceof GuildMember)) throw new UnexpectedError('not a GuildMember');
+        const member = await getOrCreateMember(interaction.member);
+        if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
+
+
         if (subcommand == 'crée') {
-            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (Array.isArray(userPlaylists) && userPlaylists.length >= maxPlaylists)
@@ -30,6 +40,8 @@ module.exports = {
 
             const playlistName = interaction.options.getString('nom');
             const playlistUrl = interaction.options.getString('url');
+            if (!playlistName) throw new NoOptionError('nom');
+            if (!playlistUrl) throw new NoOptionError('url');
 
             const createdPlaylist = await postPlaylist(member, playlistName, playlistUrl);
             if (!createdPlaylist) return await interaction.editReply(`❌ Il y a eu un problème lors de la création de la playlist dans la base de donnée`);
@@ -39,13 +51,12 @@ module.exports = {
 
 
         else if (subcommand == 'joue') {
-            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists) || userPlaylists.length === 0)
-                return await interaction.editReply(`Tu n'as pas de playlist enregistrée`);
+                return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
 
-            const buttons = [];
+            const buttons: Array<ButtonBuilder> = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -54,38 +65,39 @@ module.exports = {
                         .setStyle(ButtonStyle.Primary)
                 );
             }
-            const row = new ActionRowBuilder().addComponents(...buttons);
+            const row: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder({ components: buttons });
             const message = await interaction.editReply({ content: 'Quelle playlist veux-tu jouer ?', components: [row] });
 
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
             collector.on('collect', async inter => {
                 await inter.deferUpdate();
-                const queue = await getQueue({ interaction: interaction, client: client, canCreate: true });
+                const queue = await getQueue(interaction, true);
                 if (!queue) return;
 
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);
+
 
                 const result = await player.search(playlist.url, {
                     requestedBy: inter.user,
                     searchEngine: QueryType.AUTO
                 });
 
-                queue.addTrack(result.tracks);
-                if (!queue.isPlaying()) await queue.node.play();
-                await inter.editReply({ content: `▶️ Je joue ta playlist : **${playlist.name}**`, components: [] });
+                let reply: string;
+                if (result.playlist) reply = addPlaylistToQueue(result.tracks, result.playlist, queue);
+                else reply = addSongToQueue(result.tracks[0], queue);
+                await inter.editReply(reply);
                 collector.stop();
             });
         }
 
 
         else if (subcommand == 'supp') {
-            if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
             const userPlaylists = await getUserPlaylists(member);
             if (!Array.isArray(userPlaylists)) return await interaction.editReply(`:interrobang: Tu n'as pas de playlist enregistrée`);
 
-            const buttons = [];
+            const buttons: Array<ButtonBuilder> = [];
             for (let i = 0; i < userPlaylists.length; i++) {
                 buttons.push(
                     new ButtonBuilder()
@@ -94,7 +106,7 @@ module.exports = {
                         .setStyle(ButtonStyle.Primary)
                 );
             }
-            const row = new ActionRowBuilder().addComponents(...buttons);
+            const row: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder({ components: [...buttons] });
             const message = await interaction.editReply({ content: 'Quelle playlist veux-tu supprimer ?', components: [row] });
 
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
@@ -106,8 +118,8 @@ module.exports = {
                 collector.stop();
             });
         }
-    },
-};
+    }
+}
 
 /*
 const track = new Track(player, {
