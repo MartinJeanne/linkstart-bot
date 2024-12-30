@@ -3,6 +3,7 @@ import getQueue from '../../service/queue/getQueue';
 import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
 
+
 export default {
     data: new SlashCommandBuilder()
         .setName('supp')
@@ -17,7 +18,7 @@ export default {
 
         const index = interaction.options.getInteger('position');
         if (!index) throw new NoOptionError('position');
-        
+
         const tracks = queue.tracks.toArray();
         const deletedSong = queue.node.remove(tracks[index - 1]);
         if (!deletedSong) await interaction.editReply(`:interrobang: Aucune musique à cette position\n**/file** pour avoir la liste des musiques`);
