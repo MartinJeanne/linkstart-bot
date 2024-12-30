@@ -1,6 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
-module.exports = {
+
+export default {
 	data: new SlashCommandBuilder()
 		.setName('roll')
 		.setDescription("Jette un dé !")
@@ -23,7 +24,7 @@ module.exports = {
 				.setDescription('Bonus ou malus')
 				.setRequired(false)),
 
-	async execute(interaction, client) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const action = interaction.options.getString('action');
 		const parameter = interaction.options.getInteger('nombre-face');
 		let nbDice = interaction.options.getInteger('nombre-dé');
@@ -52,5 +53,5 @@ module.exports = {
 		response += `\n🎲 **${result}**`;
 
 		await interaction.editReply({ content: response });
-	},
-};
+	}
+}

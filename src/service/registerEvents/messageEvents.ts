@@ -2,7 +2,7 @@ import { Events, ChannelType, TextChannel } from 'discord.js';
 import { ClientEx } from "../../model/Client";
 const { botCreatorId } = require('../user-ids');
 
-export const guildIdsFeur = [];
+export const guildIdsFeur: Array<string> = [];
 
 const feurResponses = [
     'Feur.',
