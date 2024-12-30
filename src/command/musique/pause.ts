@@ -1,5 +1,4 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
-import { ClientEx } from "../../model/Client";
 import getQueue from '../../service/queue/getQueue';
 
 
@@ -8,7 +7,7 @@ export default {
 		.setName('pause')
 		.setDescription('Pause ou relance la musique'),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 

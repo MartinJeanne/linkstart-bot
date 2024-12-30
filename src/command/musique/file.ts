@@ -1,5 +1,4 @@
 import { SlashCommandBuilder, ComponentType, ChatInputCommandInteraction } from 'discord.js';
-import { ClientEx } from '../../model/Client';
 import { queueEmbedBuilder, queueRowBuilder } from '../../service/queue/queueEmbedBuilder';
 import getQueue from '../../service/queue/getQueue';
 
@@ -8,7 +7,7 @@ export default {
 		.setName('file')
 		.setDescription('Affiche la file des musiques'),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 

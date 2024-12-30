@@ -1,5 +1,4 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from 'discord.js';
-import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
 import { NoClientUserError } from '../../error/ClientUserError';
 const { botCreatorId } = require('../../service/user-ids');
@@ -14,7 +13,7 @@ export default {
 			.setDescription('La personne qui doit se taire')
 			.setRequired(true)),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const mentionnedUser = interaction.options.getUser('membre');
 		if (!mentionnedUser) throw new NoOptionError('membre');
 
@@ -36,8 +35,8 @@ export default {
 			await interaction.editReply("Heu, t'es bizarre fréritot...");
 		}
 
-		if (!client.user) throw new NoClientUserError();
-		else if (mentionnedUser.id == client.user.id) {
+		if (!interaction.client.user) throw new NoClientUserError();
+		else if (mentionnedUser.id == interaction.client.user.id) {
 			await interaction.editReply("Tu t'es pris pour qui ? J'vais te goumer.");
 		}
 

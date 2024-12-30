@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { patchMember } from '../../service/endpoints/members';
-import { ClientEx } from '../../model/Client';
 
 
 export default {
@@ -19,7 +18,7 @@ export default {
 			.setMinValue(1)
 			.setMaxValue(12)),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.user.id) throw new Error('');
 		const dayRaw = interaction.options.getInteger('jour') as number;
 		const monthRaw = interaction.options.getInteger('mois') as number;

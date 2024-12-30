@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import getQueue from '../../service/queue/getQueue';
-import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
 
 
@@ -19,7 +18,7 @@ export default {
                 .setMinValue(1)
                 .setRequired(true)),
 
-    async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+    async execute(interaction: ChatInputCommandInteraction) {
         const queue = await getQueue(interaction,  false);
         if (!queue) return;
 

@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import getQueue from '../../service/queue/getQueue';
-import { ClientEx } from '../../model/Client';
 
 
 export default {
@@ -8,7 +7,7 @@ export default {
 		.setName('retour')
 		.setDescription('Rejoue la dernière musique'),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 

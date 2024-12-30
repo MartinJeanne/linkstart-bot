@@ -2,7 +2,6 @@ import { ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannel, Tex
 import { useMainPlayer, QueryType } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { addSongToQueue } from '../../service/queue/addSongsToQueue';
-import { ClientEx } from '../../model/Client';
 import onlymp3 from '../../service/ytConverters/onlymp3';
 import { NoOptionError } from '../../error/NoOptionError';
 
@@ -20,7 +19,7 @@ export default {
             .setDescription('Jouer la musique après son enregistrement ?')
             .setRequired(true)),
 
-    async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+    async execute(interaction: ChatInputCommandInteraction) {
         const link = interaction.options.getString('lien');
         const doPlay = interaction.options.getBoolean('jouer');
         if (!link) throw new NoOptionError('lien');

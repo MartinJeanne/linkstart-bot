@@ -1,7 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { QueueRepeatMode } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
-import { ClientEx } from '../../model/Client';
 
 
 export default {
@@ -17,7 +16,7 @@ export default {
 				{ name: 'File', value: QueueRepeatMode.QUEUE },
 			)),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 

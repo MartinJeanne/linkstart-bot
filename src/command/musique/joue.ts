@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import deezer from '../../service/joue/deezer';
-import { ClientEx } from '../../model/Client';
 import { NoOptionError } from '../../error/NoOptionError';
 import savedMusic from '../../service/joue/savedMusic';
 
@@ -17,7 +16,7 @@ export default {
 		.addSubcommand(subcommand => subcommand.setName('enregistrement')
 			.setDescription('Affiche le choix des musiques enregistrées sur le bot')),
 
-	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const subcommand = interaction.options.getSubcommand();
 
 		if (subcommand === 'deezer') {
