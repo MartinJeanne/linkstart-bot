@@ -13,7 +13,7 @@ export default async function (client: ClientEx) {
 		for (let y = 0; y < members[i].guildsId.length; y++) {	
 			const guild = await getGuild(members[i].guildsId[y]);
 			if (!guild.botChannelId) return;
-			const channel = await client.channels.cache.get(guild.botChannelId) as TextChannel | undefined;
+			const channel = client.channels.cache.get(guild.botChannelId) as TextChannel | undefined;
 			if (!channel) return;
 			channel.send(`Bon anniversaire <@${members[i].id}> ! 😎`);
 		}

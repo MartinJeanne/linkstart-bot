@@ -3,7 +3,8 @@ import { QueueRepeatMode } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { ClientEx } from '../../model/Client';
 
-module.exports = {
+
+export default {
 	data: new SlashCommandBuilder()
 		.setName('boucle')
 		.setDescription('Joue de la musique en boucle')
@@ -17,7 +18,7 @@ module.exports = {
 			)),
 
 	async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
-		const queue = await getQueue(interaction);
+		const queue = await getQueue(interaction, false);
 		if (!queue) return;
 
 		let loopMode = interaction.options.getInteger('mode');
@@ -33,17 +34,17 @@ module.exports = {
 
 			case QueueRepeatMode.TRACK:
 				response = '🔂 Musique mise en boucle';
-				break; 
-			
+				break;
+
 			case QueueRepeatMode.QUEUE:
 				response = '🔁 File mise en boucle';
 				break;
-			
+
 			default:
 				response = 'Erreur inattendue, type de boucle non reconnu';
 		}
 		queue.setRepeatMode(loopMode);
 		return await interaction.editReply(response);
 
-	},
-};
+	}
+}

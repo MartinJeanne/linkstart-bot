@@ -1,7 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
-const getQueue = require('../../service/queue/getQueue');
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import getQueue from '../../service/queue/getQueue';
+import { ClientEx } from '../../model/Client';
+import { NoOptionError } from '../../error/NoOptionError';
 
-module.exports = {
+
+export default {
     data: new SlashCommandBuilder()
         .setName('déplace')
         .setDescription('Déplace une musique à une certaine position')
@@ -16,12 +19,15 @@ module.exports = {
                 .setMinValue(1)
                 .setRequired(true)),
 
-    async execute(interaction, client) {
-        const queue = await getQueue({interaction: interaction, client: client, canCreate: false});
+    async execute(interaction: ChatInputCommandInteraction, client: ClientEx) {
+        const queue = await getQueue(interaction,  false);
         if (!queue) return;
 
-        const index = interaction.options.getInteger('musique') - 1;
-        const position = interaction.options.getInteger('position') - 1;
+        let index = interaction.options.getInteger('musique');
+        let position = interaction.options.getInteger('position');
+        if (!index || !position) throw new NoOptionError('musique or position');
+        index--;
+        position--;
 
         if (index > queue.getSize() - 1 || position > queue.getSize() - 1)
             return await interaction.editReply(`:interrobang: Musique ou position invalide, nombre de musique dans la file : **${queue.getSize()}**`);
@@ -34,5 +40,5 @@ module.exports = {
         queue.insertTrack(track, position);
 
         await interaction.editReply(':arrow_heading_down: Musique déplacé !');
-    },
-};
+    }
+}
