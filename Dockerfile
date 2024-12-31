@@ -1,6 +1,6 @@
 ## Build step
 FROM node:22.2 AS build
-WORKDIR /src
+WORKDIR /app
 
 # install packages
 COPY ["package.json", "package-lock.json", "./"]
@@ -14,7 +14,7 @@ RUN npm run build
 
 ## Where the app actually runs
 FROM node:22.2
-WORKDIR /src
+WORKDIR /app
 
 # install ffmpeg for audio processing
 RUN apt-get update && apt-get install -y ffmpeg
