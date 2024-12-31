@@ -1,0 +1,1 @@
+export const botCreatorId = '306129521990565888';

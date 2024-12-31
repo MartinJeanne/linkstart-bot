@@ -1,20 +1,29 @@
-FROM node:21.7
-WORKDIR /usr/src/linkstart-bot
+## Build step
+FROM node:22.2 AS build
+WORKDIR /app
 
-RUN apt-get update && apt-get install -y ffmpeg
-
-# Dependencies installation
-COPY ["package.json", "package-lock.json*", "./"]
+# install packages
+COPY ["package.json", "package-lock.json", "./"]
 RUN npm install
 
-# Environnement variables
-COPY .env .
-
-# Code
+# compile code to JS
+COPY tsconfig.json .
 COPY src src
+RUN npm run build
 
-# Musics saved
-COPY music-files music-files
 
-# Run the bot
-CMD ["npm", "start"]
+## Where the app actually runs
+FROM node:22.2
+WORKDIR /app
+
+# install ffmpeg for audio processing
+RUN apt-get update && apt-get install -y ffmpeg
+
+# Copy env var and code from build
+COPY .env .
+COPY --from=build /src/dist ./dist
+
+COPY ["package.json", "package-lock.json", "./"]
+RUN npm install --omit=dev
+
+CMD npm start
