@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y ffmpeg
 
 # Copy env var and code from build
 COPY .env .
-COPY --from=build /src/dist ./dist
+COPY --from=build /app/dist ./dist
 
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm install --omit=dev
 
-CMD npm start
+CMD ["npm", "start"]

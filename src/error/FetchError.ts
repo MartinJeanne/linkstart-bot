@@ -1,4 +1,5 @@
-import { fetchOptions } from "../service/fetch-tools";
+import fetchOptions from "../model/FetchOption";
+
 
 export class DeleteError extends Error {
     constructor(endpoint:string) {
