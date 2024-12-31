@@ -14,11 +14,11 @@ async function getQueue(interaction: ChatInputCommandInteraction, canCreate: boo
 
 	// if user is not in channel
 	if (!interaction.member.voice.channel)
-		throw new QueueAccessError(':interrobang: Tu dois être dans un salon vocal pour cela');
+		throw new QueueAccessError('Tu dois être dans un salon vocal pour cela');
 
 	// if bot is in channel AND user is not in the same channel
 	else if (lkBot && lkBot.voice.channelId && interaction.member.voice.channelId !== lkBot.voice.channelId)
-		throw new QueueAccessError(':interrobang: Tu dois être dans le même salon vocal que moi pour cela');
+		throw new QueueAccessError('Tu dois être dans le même salon vocal que moi pour cela');
 
 
 	const player = useMainPlayer();
@@ -26,7 +26,7 @@ async function getQueue(interaction: ChatInputCommandInteraction, canCreate: boo
 	if (queue) return queue;
 
 	if (!canCreate)
-		throw new QueueAccessError(':interrobang: Je ne joue pas de musique actuellement !');
+		throw new QueueAccessError('Je ne joue pas de musique actuellement !');
 
 	// Create the server queue with options
 	const newQueue = player.nodes.create(interaction.guild, {
