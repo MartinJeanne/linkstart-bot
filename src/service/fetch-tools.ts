@@ -1,17 +1,6 @@
 import { DeleteError, FetchAfterAuthError } from "../error/FetchError";
+import fetchOptions from "../model/FetchOption";
 
-export interface fetchOptions {
-    method: string;
-    body?: string;
-    headers: {
-        [key: string]: string; // Index signature pour des clés et valeurs dynamiques
-    };
-}
-
-interface Result {
-    response: Response,
-    data: any
-}
 
 const API_URL = process.env.API_URL + '/';
 const CLIENT_NAME = process.env.CLIENT_NAME;
