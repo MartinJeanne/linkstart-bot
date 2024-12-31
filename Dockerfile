@@ -19,6 +19,8 @@ WORKDIR /app
 # install ffmpeg for audio processing
 RUN apt-get update && apt-get install -y ffmpeg
 
+RUN mkdir /music-files
+
 # Copy env var and code from build
 COPY .env .
 COPY --from=build /app/dist ./dist
