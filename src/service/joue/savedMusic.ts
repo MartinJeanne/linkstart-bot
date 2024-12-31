@@ -14,6 +14,7 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
+    if (files.length === 0) throw new UnexpectedError('y\'a pas de musique frr');
     const embed = savedMusicsEmbedBuilder(files, page);
 
     const collectorFilter = (m: Message) =>
