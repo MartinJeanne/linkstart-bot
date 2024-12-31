@@ -14,7 +14,6 @@ export default async function (interaction: ChatInputCommandInteraction, toSearc
     });
 
     const queue = await getQueue(interaction);
-    if (!queue) return 'todo fix';
 
     try {
         const tracks = result.tracks;

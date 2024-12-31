@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionsBitField } from "discord.js";
 import { guildIdsFeur } from '../../service/registerEvents/messageEvents';
 import { botCreatorId } from '../../service/user-ids';
-import { UnexpectedError } from "../../error/UnexpectedError";
+import { UnexpectedError } from "../../error/generalError/GeneralError";
 
 
 export default {

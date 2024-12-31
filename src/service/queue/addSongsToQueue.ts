@@ -1,5 +1,5 @@
 import { GuildQueue, Playlist, Track } from "discord-player";
-import { NoOptionError } from "../../error/NoOptionError";
+import { NoOptionError } from "../../error/generalError/NoOptionError";
 
 
 export function addSongToQueue(track: Track, queue: GuildQueue) {

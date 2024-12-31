@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import getQueue from '../queue/getQueue';
 import { useMainPlayer, QueryType } from 'discord-player';
 import { ChatInputCommandInteraction, EmbedBuilder, Message, TextChannel } from 'discord.js';
-import { UnexpectedError } from '../../error/UnexpectedError';
+import { UnexpectedError } from '../../error/generalError/GeneralError';
 import savedMusicsEmbedBuilder from './savedMusicsEmbedBuilder';
 import { addSongToQueue } from '../queue/addSongsToQueue';
 

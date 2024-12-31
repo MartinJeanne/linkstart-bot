@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, PermissionsBitField, ChatInputCommandInteraction } from 'discord.js';
 import { botCreatorId } from '../../service/user-ids';
-import { UnexpectedError } from '../../error/UnexpectedError';
-import { NoOptionError } from '../../error/NoOptionError';
+import { UnexpectedError } from '../../error/generalError/GeneralError';
+import { NoOptionError } from '../../error/generalError/NoOptionError';
 
 export default {
 	isEphemeral: true,

@@ -1,4 +1,4 @@
-import { DeleteError, FetchAfterAuthError } from "../error/FetchError";
+import { DeleteError, FetchAfterAuthError } from "../error/generalError/FetchError";
 import fetchOptions from "../model/FetchOption";
 
 

@@ -2,9 +2,9 @@ import { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, Bu
 import { useMainPlayer, QueryType, Track, Playlist } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { getUserPlaylists, postPlaylist, deletePlaylist } from '../../service/endpoints/playlist';
-import { UnexpectedError } from '../../error/UnexpectedError';
+import { UnexpectedError } from '../../error/generalError/GeneralError';
 import { getOrCreateMember } from '../../service/endpoints/members';
-import { NoOptionError } from '../../error/NoOptionError';
+import { NoOptionError } from '../../error/generalError/NoOptionError';
 import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue';
 
 

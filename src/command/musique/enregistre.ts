@@ -3,7 +3,7 @@ import { useMainPlayer, QueryType } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { addSongToQueue } from '../../service/queue/addSongsToQueue';
 import onlymp3 from '../../service/ytConverters/onlymp3';
-import { NoOptionError } from '../../error/NoOptionError';
+import { NoOptionError } from '../../error/generalError/NoOptionError';
 
 // Some yt converters (found onlymp3 on this):
 // https://www.movavi.com/fr/learning-portal/meilleur-convertisseur-youtube-mp3.html
