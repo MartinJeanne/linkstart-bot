@@ -26,4 +26,4 @@ COPY --from=build /app/dist ./dist
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm install --omit=dev
 
-CMD npm start
+CMD ["npm", "start"]
