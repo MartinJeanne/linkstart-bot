@@ -4,7 +4,7 @@ import { useMainPlayer, QueryType } from 'discord-player';
 import { ChatInputCommandInteraction, EmbedBuilder, Message, TextChannel } from 'discord.js';
 import savedMusicsEmbedBuilder from './savedMusicsEmbedBuilder';
 import { addSongToQueue } from '../queue/addSongsToQueue';
-import { ChannelError } from '../../error/generalError/ChannelError';
+import { NoChannelError } from '../../error/generalError/ChannelError';
 import { NoData } from '../../error/botMisuseError/NoData';
 
 
@@ -21,7 +21,7 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
     const collectorFilter = (m: Message) =>
         m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
 
-    if (!interaction.channel || !(interaction.channel instanceof TextChannel)) throw new ChannelError();
+    if (!interaction.channel || !(interaction.channel instanceof TextChannel)) throw new NoChannelError();
     const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 30_000 });
 
     collector.on('collect', async m => {

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, PermissionsBitField, ChatInputCommandInteraction } from 'discord.js';
 import { botCreatorId } from '../../service/user-ids';
-import { UnexpectedError } from '../../error/generalError/GeneralError';
 import { NoOptionError } from '../../error/generalError/NoOptionError';
+import { NoChannelError } from '../../error/generalError/ChannelError';
 
 export default {
 	isEphemeral: true,
@@ -28,7 +28,7 @@ export default {
 		const nbToDelete = interaction.options.getInteger('nombre');
 		if (!nbToDelete) throw new NoOptionError('nombre');
 		const channel = interaction.channel;
-		if (!channel) throw new UnexpectedError('channel is null');
+		if (!channel) throw new NoChannelError();
 
 		channel.messages.fetch({ limit: nbToDelete, cache: false })
 			.then(messages => messages.each(msg => msg.delete()))
