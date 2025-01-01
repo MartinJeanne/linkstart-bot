@@ -1,5 +1,3 @@
-get queue, maybe should not .reply()
-refacto errors: expected, unexpected
 /joue enregistrement id fix: 3 6554 4 plays '3'
 POO
 /suivant in loop 1 music show next song title
