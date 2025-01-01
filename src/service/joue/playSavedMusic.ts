@@ -11,7 +11,6 @@ import { NoData } from '../../error/botMisuseError/NoData';
 export default async function (interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const player = useMainPlayer();
     const queue = await getQueue(interaction);
-    if (!queue) return new EmbedBuilder();
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
@@ -25,7 +24,9 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
     const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 30_000 });
 
     collector.on('collect', async m => {
-        const i = parseInt(m.content) - 1; // Song index
+        const i = Number(m.content) - 1; // Song index
+        if (!i || i < 0 || i >= files.length)
+            return await m.reply(':interrobang: identifiant invalide');
 
         const result = await player.search(`music-files/${files[i]}`, {
             requestedBy: m.author,
