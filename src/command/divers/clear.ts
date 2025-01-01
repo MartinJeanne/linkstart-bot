@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionsBitField, ChatInputCommandInteraction } from 'discord.js';
 import { botCreatorId } from '../../service/user-ids';
-import { NoOptionError } from '../../error/generalError/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 import { NoChannelError } from '../../error/generalError/ChannelError';
 
 export default {

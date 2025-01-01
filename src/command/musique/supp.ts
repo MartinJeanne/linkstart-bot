@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import getQueue from '../../service/queue/getQueue';
-import { NoOptionError } from '../../error/generalError/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 
 
 export default {

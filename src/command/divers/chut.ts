@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from 'discord.js';
-import { NoOptionError } from '../../error/generalError/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 import { NoClientUserError } from '../../error/generalError/ClientUserError';
 const { botCreatorId } = require('../../service/user-ids');
 

@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { QueueRepeatMode } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
+import { UnexpectedChoiceOptionError } from '../../error/generalError/OptionError';
 
 
 export default {
@@ -20,29 +21,27 @@ export default {
 		const queue = await getQueue(interaction, false);
 
 		let loopMode = interaction.options.getInteger('mode');
-		if (loopMode == null) {
+		if (loopMode == null)
 			loopMode = queue.repeatMode == QueueRepeatMode.OFF ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF;
-		}
 
-		let response;
+		let reply;
 		switch (loopMode) {
 			case QueueRepeatMode.OFF:
-				response = '⏹️ Boucle annulé';
+				reply = '⏹️ Boucle annulé';
 				break;
 
 			case QueueRepeatMode.TRACK:
-				response = '🔂 Musique mise en boucle';
+				reply = '🔂 Musique mise en boucle';
 				break;
 
 			case QueueRepeatMode.QUEUE:
-				response = '🔁 File mise en boucle';
+				reply = '🔁 File mise en boucle';
 				break;
 
 			default:
-				response = 'Erreur inattendue, type de boucle non reconnu';
+				throw new UnexpectedChoiceOptionError(loopMode);
 		}
 		queue.setRepeatMode(loopMode);
-		return await interaction.editReply(response);
-
+		return await interaction.editReply(reply);
 	}
 }

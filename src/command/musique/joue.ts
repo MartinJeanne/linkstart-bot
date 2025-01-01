@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { NoOptionError } from '../../error/generalError/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 import playDeezer from '../../service/joue/playDeezer';
 import playSavedMusic from '../../service/joue/playSavedMusic';
 
