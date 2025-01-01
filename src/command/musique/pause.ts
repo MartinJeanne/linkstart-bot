@@ -9,7 +9,6 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
 
 		if (queue.node.isPaused()) {
 			queue.node.resume();

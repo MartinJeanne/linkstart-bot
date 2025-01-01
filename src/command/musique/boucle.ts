@@ -18,7 +18,6 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
 
 		let loopMode = interaction.options.getInteger('mode');
 		if (loopMode == null) {

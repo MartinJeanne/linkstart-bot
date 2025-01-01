@@ -20,7 +20,6 @@ export default {
 
     async execute(interaction: ChatInputCommandInteraction) {
         const queue = await getQueue(interaction,  false);
-        if (!queue) return;
 
         let index = interaction.options.getInteger('musique');
         let position = interaction.options.getInteger('position');

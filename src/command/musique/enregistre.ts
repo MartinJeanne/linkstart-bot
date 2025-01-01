@@ -29,7 +29,6 @@ export default {
         if (!doPlay) return await interaction.editReply(`💾 Musique téléchargée avec succès !\nTitre : **${downloadedFileName}**`);
 
         const queue = await getQueue(interaction);
-        if (!queue) return;
 
         // Playing the downloaded file
         const player = useMainPlayer();

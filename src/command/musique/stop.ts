@@ -9,7 +9,6 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
 
 		queue.delete();
 		return await interaction.editReply('⏹️ Tschüss!');

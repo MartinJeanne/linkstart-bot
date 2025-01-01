@@ -72,7 +72,6 @@ export default {
             collector.on('collect', async inter => {
                 await inter.deferUpdate();
                 const queue = await getQueue(interaction, true);
-                if (!queue) return;
 
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);

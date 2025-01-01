@@ -8,7 +8,6 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
 
 		const nextSong = queue.history.nextTrack;
 		if (!nextSong || !nextSong.title) return await interaction.editReply(`⏩ Musique passée`);

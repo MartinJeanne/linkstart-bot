@@ -9,7 +9,6 @@ const { addSongToQueue } = require('../queue/addSongsToQueue.js');
 
 module.exports = async function (interaction) {
 	const queue = await getQueue({ interaction: interaction, canCreate: true });
-	if (!queue) return;
 
 	// Puppeteer navigation to get dowload link from YT to mp3 converter
 	const browser = await puppeteer.launch({ headless: false });

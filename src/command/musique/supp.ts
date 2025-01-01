@@ -13,7 +13,6 @@ export default {
 
     async execute(interaction: ChatInputCommandInteraction) {
         const queue = await getQueue(interaction, false);
-        if (!queue) return;
 
         const index = interaction.options.getInteger('position');
         if (!index) throw new NoOptionError('position');
