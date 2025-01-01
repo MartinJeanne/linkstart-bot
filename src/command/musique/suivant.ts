@@ -3,6 +3,7 @@ import { QueueRepeatMode } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { TrackLoopNotSkipableError } from '../../error/botMisuseError/SkipError';
 
+
 export default {
 	data: new SlashCommandBuilder()
 		.setName('suivant')
