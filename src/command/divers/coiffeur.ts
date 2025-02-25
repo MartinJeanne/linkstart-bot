@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionsBitField } from "discord.js";
 import { guildIdsFeur } from '../../service/registerEvents/messageEvents';
 import { botCreatorId } from '../../service/user-ids';
-import { UnexpectedError } from "../../error/UnexpectedError";
+import { NoGuildError } from "../../error/generalError/GuildError";
 
 
 export default {
@@ -22,7 +22,7 @@ export default {
 		}
 
 		const gId = interaction.guild?.id;
-		if (!gId) throw new UnexpectedError('guild id not there');
+		if (!gId) throw new NoGuildError();
 
 		if (guildIdsFeur.includes(gId)) {
 			const index = guildIdsFeur.indexOf(gId);

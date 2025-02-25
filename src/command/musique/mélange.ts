@@ -9,7 +9,6 @@ export default {
 
     async execute(interaction: ChatInputCommandInteraction) {
         const queue = await getQueue(interaction, false);
-        if (!queue) return;
 
         if (queue.getSize() < 2) return await interaction.editReply(`:interrobang: Pas assez de musique pour mélanger la file`);
         queue.tracks.shuffle();

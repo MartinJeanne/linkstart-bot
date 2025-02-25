@@ -22,9 +22,9 @@ RUN apt-get update && apt-get install -y ffmpeg
 # create empty folder to store musics
 RUN mkdir /app/music-files
 
-# copy env var and code from build
-COPY .env .
+# copy from build
 COPY --from=build /app/dist ./dist
+COPY .env .
 
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm install --omit=dev

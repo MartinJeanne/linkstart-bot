@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import getQueue from '../../service/queue/getQueue';
-import { NoOptionError } from '../../error/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 
 
 export default {
@@ -13,7 +13,6 @@ export default {
 
     async execute(interaction: ChatInputCommandInteraction) {
         const queue = await getQueue(interaction, false);
-        if (!queue) return;
 
         const index = interaction.options.getInteger('position');
         if (!index) throw new NoOptionError('position');

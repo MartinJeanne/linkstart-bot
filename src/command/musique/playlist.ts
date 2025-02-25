@@ -2,10 +2,10 @@ import { SlashCommandBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, Bu
 import { useMainPlayer, QueryType, Track, Playlist } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import { getUserPlaylists, postPlaylist, deletePlaylist } from '../../service/endpoints/playlist';
-import { UnexpectedError } from '../../error/UnexpectedError';
 import { getOrCreateMember } from '../../service/endpoints/members';
-import { NoOptionError } from '../../error/NoOptionError';
+import { NoOptionError } from '../../error/generalError/OptionError';
 import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue';
+import { NoMemberError } from '../../error/generalError/MemberError';
 
 
 export default {
@@ -27,7 +27,7 @@ export default {
         const maxPlaylists = 5;
 
         /** Create member in DB if not exist */
-        if (!(interaction.member instanceof GuildMember)) throw new UnexpectedError('not a GuildMember');
+        if (!(interaction.member instanceof GuildMember)) throw new NoMemberError();
         const member = await getOrCreateMember(interaction.member);
         if (!member) return await interaction.editReply(`❌ Il y a eu un problème lors de la récupération de l'utilisateur depuis la base de donnée`);
 
@@ -72,7 +72,6 @@ export default {
             collector.on('collect', async inter => {
                 await inter.deferUpdate();
                 const queue = await getQueue(interaction, true);
-                if (!queue) return;
 
                 const playlist = userPlaylists.find(playlist => playlist.id == inter.customId);
                 if (!playlist) return await inter.editReply(`❌ Il y a eu un problème lors de la récupération de ta playlist`);

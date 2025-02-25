@@ -2,30 +2,31 @@ import fs from 'node:fs';
 import getQueue from '../queue/getQueue';
 import { useMainPlayer, QueryType } from 'discord-player';
 import { ChatInputCommandInteraction, EmbedBuilder, Message, TextChannel } from 'discord.js';
-import { UnexpectedError } from '../../error/UnexpectedError';
 import savedMusicsEmbedBuilder from './savedMusicsEmbedBuilder';
 import { addSongToQueue } from '../queue/addSongsToQueue';
+import { NoChannelError } from '../../error/generalError/ChannelError';
+import { NoData } from '../../error/botMisuseError/NoData';
 
 
 export default async function (interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const player = useMainPlayer();
     const queue = await getQueue(interaction);
-    if (!queue) return new EmbedBuilder();
 
     let page = 0;
     const files = fs.readdirSync(`music-files`).filter(file => file.endsWith('.mp3'));
-    if (files.length === 0) throw new UnexpectedError('y\'a pas de musique frr');
+    if (files.length === 0) throw new NoData('Aucune musique enregistrée');
     const embed = savedMusicsEmbedBuilder(files, page);
 
     const collectorFilter = (m: Message) =>
         m.author.id === interaction.user.id && Number.isInteger(parseInt(m.content));
 
-    if (!interaction.channel || !(interaction.channel instanceof TextChannel))
-        throw new UnexpectedError('no channel or not a text channel');
+    if (!interaction.channel || !(interaction.channel instanceof TextChannel)) throw new NoChannelError();
     const collector = interaction.channel.createMessageCollector({ filter: collectorFilter, time: 30_000 });
 
     collector.on('collect', async m => {
-        const i = parseInt(m.content) - 1; // Song index
+        const i = Number(m.content) - 1; // Song index
+        if (!i || i < 0 || i >= files.length)
+            return await m.reply(':interrobang: identifiant invalide');
 
         const result = await player.search(`music-files/${files[i]}`, {
             requestedBy: m.author,

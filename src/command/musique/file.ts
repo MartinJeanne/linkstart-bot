@@ -9,8 +9,7 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
-
+		
 		let page = 0;
 		const embed = queueEmbedBuilder(queue, page);
 		const row = queueRowBuilder(queue, page);

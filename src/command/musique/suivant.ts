@@ -1,5 +1,8 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { QueueRepeatMode } from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
+import { TrackLoopNotSkipableError } from '../../error/botMisuseError/SkipError';
+
 
 export default {
 	data: new SlashCommandBuilder()
@@ -8,9 +11,9 @@ export default {
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		const queue = await getQueue(interaction, false);
-		if (!queue) return;
 
 		const nextSong = queue.history.nextTrack;
+		if (queue.repeatMode === QueueRepeatMode.TRACK) throw new TrackLoopNotSkipableError();
 		if (!nextSong || !nextSong.title) return await interaction.editReply(`⏩ Musique passée`);
 		queue.node.skip();
 		await interaction.editReply(`⏩ Musique passée, je joue : **${nextSong.title}**`);

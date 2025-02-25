@@ -1,7 +1,5 @@
 // Require the necessary discord.js classes
-import { Client, Collection, GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
-// fs from node to navigate through commands files
-import fs from 'node:fs';
+import {  GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
 // To require all commands
 import requireAll from 'require-all';
 // Player from discord-player to play music
@@ -13,7 +11,8 @@ const { YoutubeiExtractor } = require("discord-player-youtubei")
 // Register bot Discord events
 import registerEvents from './service/registerEvents/registerEvents';
 import { ClientEx } from './model/Client'
-import path, { dirname } from 'node:path';
+import path from 'node:path';
+import { NoEnvVarError } from './error/generalError/NoEnvVarError';
 
 
 // Create a new client instance
@@ -44,25 +43,24 @@ requireAll({
 		// Put command data in list to deploy it to Discord API
 		commandsToDeploy.push(command.data.toJSON());
 	}
-})
+});
 
 // Player to play music
 const player = new Player(client);
 
 // Before deploying commands
-if (!process.env.DISCORD_TOKEN) throw new Error('The DISCORD_TOKEN environment variable is not defined.');
+if (!process.env.DISCORD_TOKEN) throw new NoEnvVarError('DISCORD_TOKEN');
 const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
-	//const agent = new ProxyAgent('http://username:mdp@192.168.1.254:8080');
 	//await player.extractors.register(YoutubeiExtractor, { });
 	await player.extractors.loadMulti([SpotifyExtractor, AttachmentExtractor]);
 	await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
 	// Deploy commands
 	try {
-		if (!process.env.DISCORD_CLIENT_ID) throw new Error('The DISCORD_CLIENT_ID environment variable is not defined.');
+		if (!process.env.DISCORD_CLIENT_ID) throw new NoEnvVarError('DISCORD_CLIENT_ID');
 		await rest.put(
 			Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
 			{ body: commandsToDeploy }

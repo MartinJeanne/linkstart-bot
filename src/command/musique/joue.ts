@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import deezer from '../../service/joue/deezer';
-import { NoOptionError } from '../../error/NoOptionError';
-import savedMusic from '../../service/joue/savedMusic';
+import { NoOptionError } from '../../error/generalError/OptionError';
+import playDeezer from '../../service/joue/playDeezer';
+import playSavedMusic from '../../service/joue/playSavedMusic';
 
 
 export default {
@@ -22,11 +22,11 @@ export default {
 		if (subcommand === 'deezer') {
 			const toSearch = interaction.options.getString('musique');
 			if (!toSearch) throw new NoOptionError('musique');
-			const reply = await deezer(interaction, toSearch);
+			const reply = await playDeezer(interaction, toSearch);
 			await interaction.editReply(reply);
 		}
 		else if (subcommand === 'enregistrement') {
-			const embed = await savedMusic(interaction);
+			const embed = await playSavedMusic(interaction);
 			await interaction.editReply({ embeds: [embed], content: 'Écris dans le channel le nombre associé à la musique que tu veux écouter' });
 		}
 	}

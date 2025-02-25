@@ -1,8 +1,8 @@
 import { ActivityType } from 'discord.js';
 import { Rcon } from 'rcon-client';
-import { NoEnvVarError } from '../../error/NoEnvVarError';
+import { NoEnvVarError } from '../../error/generalError/NoEnvVarError';
 import { ClientEx } from '../../model/Client';
-import { NoClientUserError } from '../../error/ClientUserError';
+import { NoClientUserError } from '../../error/generalError/ClientUserError';
 
 async function connectRcon() {
     if (!process.env.RCON_HOST || !process.env.RCON_PORT || !process.env.RCON_PASSWORD)

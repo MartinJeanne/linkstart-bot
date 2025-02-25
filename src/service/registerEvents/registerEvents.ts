@@ -6,7 +6,9 @@ import { playerOnError } from './playerEvents';
 import { messageCreate } from './messageEvents';
 import { postGuild } from '../endpoints/guilds';
 import birthdayAdvertiser from '../birthdayAdvertiser';
-import { UnexpectedError } from '../../error/UnexpectedError';
+import { NoGuildError } from '../../error/generalError/GuildError';
+import BotMisuseError from '../../error/botMisuseError/BotMisuseError';
+import GeneralError from '../../error/generalError/GeneralError';
 
 
 export default async function (client: ClientEx) {
@@ -24,12 +26,21 @@ export default async function (client: ClientEx) {
             await interaction.deferReply({ ephemeral: command.isEphemeral });
 
             /** Provide context for discord-player, and execute cmd */
-            if (!interaction.guild) throw new UnexpectedError('guild is null');
+            if (!interaction.guild) throw new NoGuildError();
             const pData = { guild: interaction.guild };
             await player.context.provide(pData, () => command.execute(interaction));
+
         } catch (error) {
-            console.error(error);
-            await interaction.editReply("❌ Erreur lors de l'execution de cette commande");
+
+            if (error instanceof BotMisuseError) {
+                await interaction.editReply(error.message);
+            } else if (error instanceof GeneralError) {
+                console.error(error);
+                await interaction.editReply("❌ Erreur lors de l'execution de cette commande");
+            } else {
+                console.error(error);
+                await interaction.editReply("❌ Erreur inattendu lors de l'execution de cette commande");
+            }
         }
     });
 

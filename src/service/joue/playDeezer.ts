@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { QueryType } from 'discord-player';
 import { useMainPlayer } from 'discord-player';
-import getQueue from '../../service/queue/getQueue';
-import { addSongToQueue, addPlaylistToQueue } from '../../service/queue/addSongsToQueue';
+import getQueue from '../queue/getQueue';
+import { addSongToQueue, addPlaylistToQueue } from '../queue/addSongsToQueue';
 
 
 export default async function (interaction: ChatInputCommandInteraction, toSearch: string): Promise<string> {
@@ -14,7 +14,6 @@ export default async function (interaction: ChatInputCommandInteraction, toSearc
     });
 
     const queue = await getQueue(interaction);
-    if (!queue) return 'todo fix';
 
     try {
         const tracks = result.tracks;
