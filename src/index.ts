@@ -6,7 +6,6 @@ import requireAll from 'require-all';
 import { Player } from 'discord-player';
 const { SpotifyExtractor, AttachmentExtractor } = require('@discord-player/extractor');
 const { DeezerExtractor } = require("discord-player-deezer")
-const { YoutubeiExtractor } = require("discord-player-youtubei")
 
 // Register bot Discord events
 import registerEvents from './service/registerEvents/registerEvents';
