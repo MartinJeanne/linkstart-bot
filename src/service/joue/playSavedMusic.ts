@@ -26,6 +26,8 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
     collector.on('collect', async m => {
         try {
             const i = Number(m.content) - 1; // Song index
+            console.log(i);
+            
             if (!i || i < 0 || i >= files.length)
                 return await m.reply(':interrobang: identifiant invalide');
 
