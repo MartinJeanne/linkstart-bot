@@ -1,11 +1,10 @@
 // Require the necessary discord.js classes
-import {  GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
+import { GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
 // To require all commands
 import requireAll from 'require-all';
 // Player from discord-player to play music
 import { Player } from 'discord-player';
-const { SpotifyExtractor, AttachmentExtractor } = require('@discord-player/extractor');
-const { DeezerExtractor } = require("discord-player-deezer")
+import { AttachmentExtractor } from '@discord-player/extractor';
 
 // Register bot Discord events
 import registerEvents from './service/registerEvents/registerEvents';
@@ -53,9 +52,9 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
+	await player.extractors.loadMulti([AttachmentExtractor]);
 	//await player.extractors.register(YoutubeiExtractor, { });
-	await player.extractors.loadMulti([SpotifyExtractor, AttachmentExtractor]);
-	await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
+	//await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
 	// Deploy commands
 	try {
