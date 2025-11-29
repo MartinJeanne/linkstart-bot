@@ -1,7 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import playSavedMusic from '../../service/joue/playSavedMusic';
 
-
 export default {
 	data: new SlashCommandBuilder()
 		.setName('joue')

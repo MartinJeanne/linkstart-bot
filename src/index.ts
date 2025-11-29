@@ -52,8 +52,8 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	// Load all the extractors from the @discord-player/extractor package
-	//await player.extractors.register(YoutubeiExtractor, { });
 	await player.extractors.loadMulti([AttachmentExtractor]);
+	//await player.extractors.register(YoutubeiExtractor, { });
 	//await player.extractors.register(DeezerExtractor, { decryptionKey: process.env.DEEZER_DECRYPTION_KEY });
 
 	// Deploy commands
