@@ -4,7 +4,7 @@ WORKDIR /app
 
 # install packages
 COPY ["package.json", "package-lock.json", "./"]
-RUN npm install
+RUN npm ci
 
 # compile code to JS
 COPY tsconfig.json .
@@ -27,6 +27,6 @@ COPY --from=build /app/dist ./dist
 COPY .env .
 
 COPY ["package.json", "package-lock.json", "./"]
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 CMD ["npm", "start"]
