@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch src --exec node -r ts-node/register --env-file=.env src/index.ts",
     "build": "npx tsc",
-    "start": "node --env-file=.env dist/index.js",
+    "start": "node dist/index.js",
     "test": "jest"
   },
   "jest": {
