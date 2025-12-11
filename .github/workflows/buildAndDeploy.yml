@@ -34,4 +34,4 @@ jobs:
 
     - name: Run container
       run: |
-          docker run -d --net="linkstart" --restart=unless-stopped -v /home/martin/dev/lk-musics:/app/music-files --name linkstart-bot linkstart-bot-image
+          docker run -d --net="linkstart" --restart=unless-stopped -v ~/linkstart-bot-musics:/app/music-files --name linkstart-bot linkstart-bot-image

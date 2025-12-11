@@ -10,12 +10,14 @@ export default {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const commands = [];
 
-		const commandFolders = fs.readdirSync("src/commands");
+		const commandFolders = fs.readdirSync("src/command");
 		for (const folder of commandFolders) {
-			const commandFiles = fs.readdirSync(`src/commands/${folder}`).filter(file => file.endsWith('.js'));
+			const commandFiles = fs.readdirSync(`src/command/${folder}`)
+                .filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 			for (const file of commandFiles) {
-				const command = require(`../${folder}/${file}`);
-				commands.push({ fodler: folder, data: command.data });
+				let command = require(`../${folder}/${file}`);
+				command = command.default;
+				commands.push({ folder: folder, data: command.data });
 			}
 		}
 
@@ -27,8 +29,8 @@ export default {
 
 		let lastFolder = '';
 		for (let i = 0; i < commands.length; i++) {
-			if (commands[i].fodler != lastFolder) {
-				lastFolder = commands[i].fodler;
+			if (commands[i].folder != lastFolder) {
+				lastFolder = commands[i].folder;
 				const title = lastFolder.charAt(0).toUpperCase() + lastFolder.slice(1); // First letter uppercase
 				embed.addFields({ name: '\u200B', value: `__***${title} :***__` });
 			}
