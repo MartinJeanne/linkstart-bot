@@ -24,7 +24,6 @@ RUN mkdir /app/music-files
 
 # copy from build
 COPY --from=build /app/dist ./dist
-COPY .env .
 
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci --omit=dev

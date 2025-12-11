@@ -7,31 +7,49 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Create .env file
-      run: |
-        echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
-        echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
-        echo "API_URL=${{ secrets.API_URL }}" >> .env
-        echo "CLIENT_NAME=${{ secrets.CLIENT_NAME }}" >> .env
-        echo "CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}" >> .env
-        echo "RCON_HOST=${{ secrets.RCON_HOST }}" >> .env
-        echo "RCON_PORT=${{ secrets.RCON_PORT }}" >> .env
-        echo "RCON_PASSWORD=${{ secrets.RCON_PASSWORD }}" >> .env
-        echo "DEEZER_DECRYPTION_KEY=${{ secrets.DEEZER_DECRYPTION_KEY }}" >> .env
+      - uses: actions/checkout@v3
 
-    - name: Delete old Docker image & container
-      continue-on-error: true
-      run: |
-        docker stop linkstart-bot
-        docker container rm linkstart-bot
-        docker image rm linkstart-bot-image
+      - name: Create .env file
+        run: |
+          echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
+          echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
+          echo "API_URL=${{ secrets.API_URL }}" >> .env
+          echo "CLIENT_NAME=${{ secrets.CLIENT_NAME }}" >> .env
+          echo "CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}" >> .env
+          echo "RCON_HOST=${{ secrets.RCON_HOST }}" >> .env
+          echo "RCON_PORT=${{ secrets.RCON_PORT }}" >> .env
+          echo "RCON_PASSWORD=${{ secrets.RCON_PASSWORD }}" >> .env
+          echo "DEEZER_DECRYPTION_KEY=${{ secrets.DEEZER_DECRYPTION_KEY }}" >> .env
 
-    - name: Build Docker Image
-      run: |
-        docker build -t linkstart-bot-image .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Run container
-      run: |
-          docker run -d --net="linkstart" --restart=unless-stopped -v ~/linkstart-bot-musics:/app/music-files --name linkstart-bot linkstart-bot-image
+      - name: Build with cache
+        run: |
+          docker buildx build \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
+            -t linkstart-bot-image \
+            --load .
+
+      - name: Replace outdated Buildx cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Stop and remove old container
+        run: |
+          docker stop linkstart-bot || true
+          docker rm linkstart-bot || true
+
+      - name: Run new container
+        run: |
+          docker run -d \
+            --net="linkstart" \
+            --restart=unless-stopped \
+            -v ~/linkstart-bot-musics:/app/music-files \
+            --env-file .env \
+            --name linkstart-bot \
+            linkstart-bot-image
