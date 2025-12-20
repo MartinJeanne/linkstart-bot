@@ -18,22 +18,34 @@ jobs:
           echo "API_URL=${{ secrets.API_URL }}" >> .env
           echo "CLIENT_NAME=${{ secrets.CLIENT_NAME }}" >> .env
           echo "CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}" >> .env
-          echo "RCON_HOST=${{ secrets.RCON_HOST }}" >> .env
-          echo "RCON_PORT=${{ secrets.RCON_PORT }}" >> .env
-          echo "RCON_PASSWORD=${{ secrets.RCON_PASSWORD }}" >> .env
-          echo "DEEZER_DECRYPTION_KEY=${{ secrets.DEEZER_DECRYPTION_KEY }}" >> .env
-
-      - name: Delete old Docker image & container
-        continue-on-error: true
-        run: |
-          docker stop linkstart-bot
-          docker container rm linkstart-bot
-          docker image rm linkstart-bot-image
 
       - name: Build Docker Image
         run: |
           docker build -t linkstart-bot-image .
+          docker tag linkstart-bot-image ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
 
-      - name: Run container
+      - name: Push Docker Image
         run: |
-          docker run -d --net="linkstart" --restart=unless-stopped -v ~/linkstart-bot-musics:/app/music-files --name linkstart-bot linkstart-bot-image
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin 
+          docker push ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
+
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            docker stop linkstart-bot
+            docker container rm linkstart-bot
+            docker image rm ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
+            docker run -d \
+            --net="linkstart" \
+            --restart=unless-stopped \
+            -v ~/linkstart-bot-musics:/app/music-files \
+            --env-file .env \
+            --name linkstart-bot \
+            ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
