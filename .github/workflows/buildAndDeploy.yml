@@ -23,33 +23,17 @@ jobs:
           echo "RCON_PASSWORD=${{ secrets.RCON_PASSWORD }}" >> .env
           echo "DEEZER_DECRYPTION_KEY=${{ secrets.DEEZER_DECRYPTION_KEY }}" >> .env
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build with cache
+      - name: Delete old Docker image & container
+        continue-on-error: true
         run: |
-          docker buildx build \
-            --cache-from type=local,src=/tmp/.buildx-cache \
-            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
-            -t linkstart-bot-image \
-            --load .
+          docker stop linkstart-bot
+          docker container rm linkstart-bot
+          docker image rm linkstart-bot-image
 
-      - name: Replace outdated Buildx cache
+      - name: Build Docker Image
         run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          docker build -t linkstart-bot-image .
 
-      - name: Stop and remove old container
+      - name: Run container
         run: |
-          docker stop linkstart-bot || true
-          docker rm linkstart-bot || true
-
-      - name: Run new container
-        run: |
-          docker run -d \
-            --net="linkstart" \
-            --restart=unless-stopped \
-            -v ~/linkstart-bot-musics:/app/music-files \
-            --env-file .env \
-            --name linkstart-bot \
-            linkstart-bot-image
+          docker run -d --net="linkstart" --restart=unless-stopped -v ~/linkstart-bot-musics:/app/music-files --name linkstart-bot linkstart-bot-image

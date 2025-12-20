@@ -20,15 +20,14 @@ export default {
         const link = interaction.options.getString('lien');
         const doPlay = interaction.options.getBoolean('jouer');
         if (!link) throw new NoOptionError('lien');
-        if (!doPlay) throw new NoOptionError('jouer');
+        if (doPlay == null) throw new NoOptionError('jouer');
 
         const downloadedFileName = await ytDlp(link, doPlay);
-        if (!doPlay) return await interaction.editReply(`💾 Musique téléchargée avec succès !\nTitre : **${downloadedFileName}**`);
+        if (!doPlay) return await interaction.editReply(`💾 Musique en cours de téléchargement !`);
 
         const queue = await getQueue(interaction);
 
         // Playing the downloaded file
-        console.log(downloadedFileName);
         const player = useMainPlayer();
         const result = await player.search(`./music-files/${downloadedFileName}`, {
             requestedBy: interaction.user.id,

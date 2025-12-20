@@ -12,7 +12,6 @@ export default function (files: Array<string>, page: number): EmbedBuilder {
         .setColor('#3b89c2')
         .setTitle(`Musiques enregistrées`)
         .setDescription(embedBody)
-        //.setThumbnail(queue.currentTrack.thumbnail)
         .setTimestamp()
         .setFooter({
             text: `\nPage : ${page + 1}/${pageNb > 0 ? pageNb : 1}`,
