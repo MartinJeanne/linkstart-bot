@@ -11,14 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create .env file
-        run: |
-          echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
-          echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
-          echo "API_URL=${{ secrets.API_URL }}" >> .env
-          echo "CLIENT_NAME=${{ secrets.CLIENT_NAME }}" >> .env
-          echo "CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}" >> .env
-
       - name: Build Docker Image
         run: |
           docker build -t linkstart-bot-image .
@@ -43,9 +35,13 @@ jobs:
             docker image rm ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
             docker pull ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
             docker run -d \
+            -e DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
+            -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+            -e API_URL=${{ secrets.API_URL }}
+            -e CLIENT_NAME=${{ secrets.CLIENT_NAME }}
+            -e CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}
             --net="linkstart" \
             --restart=unless-stopped \
             -v ~/linkstart-bot-musics:/app/music-files \
-            --env-file .env \
             --name linkstart-bot \
             ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
