@@ -8,7 +8,6 @@ import { NoChannelError } from '../../error/generalError/ChannelError';
 import { NoData } from '../../error/botMisuseError/NoData';
 import BotMisuseError from '../../error/botMisuseError/BotMisuseError';
 
-
 export default async function (interaction: ChatInputCommandInteraction): Promise<EmbedBuilder> {
     const player = useMainPlayer();
 
@@ -27,7 +26,7 @@ export default async function (interaction: ChatInputCommandInteraction): Promis
         try {
             const i = Number(m.content) - 1; // Song index
             console.log(i);
-            
+
             if (i < 0 || i >= files.length)
                 return await m.reply(':interrobang: identifiant invalide');
 

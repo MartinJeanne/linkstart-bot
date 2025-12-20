@@ -1,6 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
 
-
 export default function (files: Array<string>, page: number): EmbedBuilder {
     let embedBody = '';
     for (let i = 0; i < files.length; i++) {
