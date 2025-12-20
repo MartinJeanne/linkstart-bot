@@ -20,9 +20,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y ffmpeg
 
 # Install yt-dlp to download music
-RUN sudo add-apt-repository ppa:tomtomtom/yt-dlp
-RUN sudo apt update
-RUN sudo apt install yt-dlp
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
+    -o /usr/local/bin/yt-dlp \
+ && chmod +x /usr/local/bin/yt-dlp
+
 
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
