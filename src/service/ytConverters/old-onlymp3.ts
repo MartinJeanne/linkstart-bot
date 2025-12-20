@@ -5,7 +5,7 @@ import puppeteer from 'puppeteer';
 import { ChatInputCommandInteraction } from 'discord.js';
 
 
-export default async function (link: string, interaction: ChatInputCommandInteraction): Promise<string | undefined> {
+export default async function (link: string): Promise<string | undefined> {
 
 	// Puppeteer navigation to get dowload link from YT to mp3 converter
 	const browser = await puppeteer.launch({ headless: false });

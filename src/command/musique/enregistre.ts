@@ -1,9 +1,9 @@
-import {ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannel, TextChannel} from 'discord.js';
+import {ChatInputCommandInteraction, SlashCommandBuilder, TextChannel} from 'discord.js';
 import {useMainPlayer, QueryType} from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
 import {addSongToQueue} from '../../service/queue/addSongsToQueue';
 import {NoOptionError} from '../../error/generalError/OptionError';
-import ytDlp from "../../service/ytConverters/yt-dlp";
+import downloadFromYT from "../../service/ytConverters/downloadFromYT";
 
 export default {
     data: new SlashCommandBuilder()
@@ -22,7 +22,7 @@ export default {
         if (!link) throw new NoOptionError('lien');
         if (doPlay == null) throw new NoOptionError('jouer');
 
-        const downloadedFileName = await ytDlp(link, doPlay);
+        const downloadedFileName = await downloadFromYT(link, doPlay);
         if (!doPlay) return await interaction.editReply(`💾 Musique en cours de téléchargement !`);
 
         const queue = await getQueue(interaction);

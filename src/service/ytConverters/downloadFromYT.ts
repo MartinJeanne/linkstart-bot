@@ -20,7 +20,6 @@ export default async function (link: string, wait: boolean): Promise<string | un
         console.error(`stderr: ${data}`);
     });
 
-
     if (!wait) return;
 
     return new Promise<string>((resolve, reject) => {
