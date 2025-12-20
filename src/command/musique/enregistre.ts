@@ -1,12 +1,9 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannel, TextChannel } from 'discord.js';
-import { useMainPlayer, QueryType } from 'discord-player';
+import {ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannel, TextChannel} from 'discord.js';
+import {useMainPlayer, QueryType} from 'discord-player';
 import getQueue from '../../service/queue/getQueue';
-import { addSongToQueue } from '../../service/queue/addSongsToQueue';
-import onlymp3 from '../../service/ytConverters/onlymp3';
-import { NoOptionError } from '../../error/generalError/OptionError';
-
-// Some yt converters (found onlymp3 on this):
-// https://www.movavi.com/fr/learning-portal/meilleur-convertisseur-youtube-mp3.html
+import {addSongToQueue} from '../../service/queue/addSongsToQueue';
+import {NoOptionError} from '../../error/generalError/OptionError';
+import ytDlp from "../../service/ytConverters/yt-dlp";
 
 export default {
     data: new SlashCommandBuilder()
@@ -23,16 +20,17 @@ export default {
         const link = interaction.options.getString('lien');
         const doPlay = interaction.options.getBoolean('jouer');
         if (!link) throw new NoOptionError('lien');
+        if (!doPlay) throw new NoOptionError('jouer');
 
-        const downloadedFileName = await onlymp3(link, interaction);
-        if (!downloadedFileName) return await interaction.editReply('❌ Erreur lors du téléchargement de la musique');
+        const downloadedFileName = await ytDlp(link, doPlay);
         if (!doPlay) return await interaction.editReply(`💾 Musique téléchargée avec succès !\nTitre : **${downloadedFileName}**`);
 
         const queue = await getQueue(interaction);
 
         // Playing the downloaded file
+        console.log(downloadedFileName);
         const player = useMainPlayer();
-        const result = await player.search(`./music-files/${downloadedFileName}.mp3`, {
+        const result = await player.search(`./music-files/${downloadedFileName}`, {
             requestedBy: interaction.user.id,
             searchEngine: QueryType.FILE,
         });
