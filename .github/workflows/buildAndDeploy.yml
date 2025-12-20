@@ -40,11 +40,11 @@ jobs:
             docker image rm ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
             docker pull ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image
             docker run -d \
-            -e DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
-            -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
-            -e API_URL=${{ secrets.API_URL }}
-            -e CLIENT_NAME=${{ secrets.CLIENT_NAME }}
-            -e CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }}
+            -e DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} \
+            -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} \
+            -e API_URL=${{ secrets.API_URL }} \
+            -e CLIENT_NAME=${{ secrets.CLIENT_NAME }} \
+            -e CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }} \
             --net="linkstart" \
             --restart=unless-stopped \
             -v ~/linkstart-bot-musics:/app/music-files \
