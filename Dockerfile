@@ -19,6 +19,11 @@ WORKDIR /app
 # Install ffmpeg for audio processing
 RUN apt-get update && apt-get install -y ffmpeg
 
+# Install yt-dlp to download music
+RUN sudo add-apt-repository ppa:tomtomtom/yt-dlp
+RUN sudo apt update
+RUN sudo apt install yt-dlp
+
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 

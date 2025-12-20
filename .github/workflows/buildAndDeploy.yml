@@ -24,6 +24,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/arm64
           tags: ${{ secrets.DOCKER_USERNAME }}/linkstart-bot-image:latest
 
       - name: Deploy to Production
