@@ -4,6 +4,7 @@ import getQueue from '../../service/queue/getQueue';
 import {addSongToQueue} from '../../service/queue/addSongsToQueue';
 import {NoOptionError} from '../../error/generalError/OptionError';
 import downloadFromYT from "../../service/ytConverters/downloadFromYT";
+import fs from "fs";
 
 export default {
     data: new SlashCommandBuilder()
@@ -22,6 +23,9 @@ export default {
         if (!link) throw new NoOptionError('lien');
         if (doPlay == null) throw new NoOptionError('jouer');
 
+        if (fs.readdirSync('./music-files').length >= 50) {
+            return await interaction.editReply('❌ Il y a déjà trop de musiques téléchargées');
+        }
         const downloadedFileName = await downloadFromYT(link, doPlay);
         if (!doPlay) return await interaction.editReply(`💾 Musique en cours de téléchargement !`);
 

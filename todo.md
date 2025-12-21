@@ -1,3 +1,4 @@
-cooldown for /joue enregistrement (split into two cmds)
-=Test covergage 80% (then TDD)
+/joue improve
+limit /enregistre, 50 file is the max?
+Test coverage 80% (then TDD)
 OOP

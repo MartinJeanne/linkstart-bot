@@ -40,10 +40,10 @@ export function queueRowBuilder(queue: GuildQueue, page: number): ActionRowBuild
     }
 
     const leftBtn = page <= 0 ? null : pageButtonBuilder('left', '⬅️');
-    const rigthBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
+    const rightBtn = page >= Math.ceil(queue.getSize() / 10) - 1 ? null : pageButtonBuilder('right', '➡️');
 
-    if (leftBtn && rigthBtn) return new ActionRowBuilder({ components: [leftBtn, rigthBtn] });
-    else if (rigthBtn) return new ActionRowBuilder({ components: [rigthBtn] });
+    if (leftBtn && rightBtn) return new ActionRowBuilder({ components: [leftBtn, rightBtn] });
+    else if (rightBtn) return new ActionRowBuilder({ components: [rightBtn] });
     else if (leftBtn) return new ActionRowBuilder({ components: [leftBtn] });
     else return null;
 };
@@ -70,9 +70,9 @@ module.exports.qEmbedBuilder = class qEmbedBuilder extends EmbedBuilder {
             if (i >= queue.getSize()) break;
             queueString += `**${i + 1}.** ${tracks[i].title}\n`;
         }
-    
+
         const pageNb = Math.ceil(queue.getSize() / 10);
-        
+
         this.setColor(0xd7667e);
         this.setTitle(`${queue.currentTrack.title}`);
         this.setDescription(`*${progress.currentTrack} : ${progress.end}*\n\n` + queueString);
