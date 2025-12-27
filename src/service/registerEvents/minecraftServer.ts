@@ -25,19 +25,20 @@ async function connectRcon() {
     return rcon;
 }
 
-let previousplayerCount = -1; // commence à -1, pour que la première execution change forcément le status
+let previousPlayersNb = -1; // commence à -1, pour que la première execution change forcément le status
 async function updateBotStatus(rcon: Rcon, client: ClientEx) {
 
     const response = await rcon.send('list');
-    const match = response.match(/There are (\d+) of a max of \d+ players online: (.*)/);
+    const match = response.match(/There are (\d+)\/(\d+) players online:(.*)/);
     if (!match) throw new Error('No match found while retrieving player count');
-    const playerCount = parseInt(match[1], 10);
-    const playerList = match[2] ? match[2].split(', ') : [];
+    const playersNb = parseInt(match[1], 10);
+    const maxPlayerNb = parseInt(match[2], 10);
+    const playerList = match[3] ? match[3].split(', ') : [];
 
-    if (playerCount !== previousplayerCount) {
+    if (playersNb !== previousPlayersNb) {
         if (!client.user) throw new NoClientUserError();
-        client.user.setActivity({ name: `server-mc : ${playerCount}/20`, type: ActivityType.Playing });
-        previousplayerCount = playerCount;
+        client.user.setActivity({ name: `serveur mc : ${playersNb}/${maxPlayerNb}`, type: ActivityType.Playing });
+        previousPlayersNb = playersNb;
     }
 }
 
