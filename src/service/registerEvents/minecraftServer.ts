@@ -36,7 +36,7 @@ async function updateBotStatus(rcon: Rcon, client: ClientEx) {
 
     if (playerCount !== previousplayerCount) {
         if (!client.user) throw new NoClientUserError();
-        client.user.setActivity({ name: `minecraft : ${playerCount}/20`, type: ActivityType.Playing });
+        client.user.setActivity({ name: `server-mc : ${playerCount}/20`, type: ActivityType.Playing });
         previousplayerCount = playerCount;
     }
 }
@@ -48,7 +48,7 @@ export async function matchBotStatusToMcPlayerNb(client: ClientEx) {
 
         updateBotStatus(rcon, client); // for bot startup
         setInterval(() => {
-            updateBotStatus(rcon, client); // then every 3 0 sec
+            updateBotStatus(rcon, client); // then every 30 sec
         }, 30000);
 
     } catch (error) {
