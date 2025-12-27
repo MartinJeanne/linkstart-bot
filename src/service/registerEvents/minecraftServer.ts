@@ -6,7 +6,7 @@ import { NoClientUserError } from '../../error/generalError/ClientUserError';
 
 async function connectRcon() {
     if (!process.env.RCON_HOST || !process.env.RCON_PORT || !process.env.RCON_PASSWORD)
-        throw new NoEnvVarError('RCON_HOST || RCON_HOST || RCON_PASSWORD');
+        throw new NoEnvVarError('RCON_HOST || RCON_PORT || RCON_PASSWORD');
 
     const rcon = new Rcon({
         host: process.env.RCON_HOST,

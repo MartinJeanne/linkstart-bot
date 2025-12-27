@@ -46,6 +46,9 @@ jobs:
             -e API_URL=${{ secrets.API_URL }} \
             -e CLIENT_NAME=${{ secrets.CLIENT_NAME }} \
             -e CLIENT_PASSWORD=${{ secrets.CLIENT_PASSWORD }} \
+            -e RCON_HOST=${{ secrets.RCON_HOST }} \
+            -e RCON_PORT=${{ secrets.RCON_PORT }} \
+            -e RCON_PASSWORD=${{ secrets.RCON_PASSWORD }} \
             --net="linkstart" \
             --restart=unless-stopped \
             -v ~/linkstart-bot-musics:/app/music-files \
