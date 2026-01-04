@@ -9,7 +9,7 @@ import birthdayAdvertiser from '../birthdayAdvertiser';
 import { NoGuildError } from '../../error/generalError/GuildError';
 import BotMisuseError from '../../error/botMisuseError/BotMisuseError';
 import GeneralError from '../../error/generalError/GeneralError';
-import {matchBotStatusToMcPlayerNb} from "./minecraftServer";
+import {setBotStatusToMcPlayerNb} from "./minecraftServer";
 
 export default async function (client: ClientEx) {
     const player = useMainPlayer();
@@ -74,7 +74,7 @@ export default async function (client: ClientEx) {
     /** Once bot is started */
     client.once(Events.ClientReady, async () => {
         //messages = await getMessages();
-        matchBotStatusToMcPlayerNb(client);
+        setBotStatusToMcPlayerNb(client);
 
         schedule.scheduleJob('30 8 * * *', () => { birthdayAdvertiser(client) });
         if (!client.user) throw Error('client.user is nul, bot didn\'t initialize correctly');

@@ -1,8 +1,8 @@
-import { ActivityType } from 'discord.js';
-import { Rcon } from 'rcon-client';
-import { NoEnvVarError } from '../../error/generalError/NoEnvVarError';
-import { ClientEx } from '../../model/Client';
-import { NoClientUserError } from '../../error/generalError/ClientUserError';
+import {ActivityType} from 'discord.js';
+import {Rcon} from 'rcon-client';
+import {NoEnvVarError} from '../../error/generalError/NoEnvVarError';
+import {ClientEx} from '../../model/Client';
+import {NoClientUserError} from '../../error/generalError/ClientUserError';
 
 async function connectRcon() {
     if (!process.env.RCON_HOST || !process.env.RCON_PORT || !process.env.RCON_PASSWORD)
@@ -37,22 +37,19 @@ async function updateBotStatus(rcon: Rcon, client: ClientEx) {
 
     if (playersNb !== previousPlayersNb) {
         if (!client.user) throw new NoClientUserError();
-        client.user.setActivity({ name: `serveur mc : ${playersNb}/${maxPlayerNb}`, type: ActivityType.Playing });
+        client.user.setActivity({name: `serveur mc : ${playersNb}/${maxPlayerNb}`, type: ActivityType.Playing});
         previousPlayersNb = playersNb;
     }
 }
 
-export async function matchBotStatusToMcPlayerNb(client: ClientEx) {
-    try {
-        const rcon = await connectRcon();
-        if (!rcon) throw new Error('No rcon connection');
-
-        updateBotStatus(rcon, client); // for bot startup
-        setInterval(() => {
-            updateBotStatus(rcon, client); // then every 30 sec
-        }, 30000);
-
-    } catch (error) {
-        console.error('Error fetching player list:', error);
-    }
+export async function setBotStatusToMcPlayerNb(client: ClientEx) {
+    setInterval(async () => {
+        try {
+            const rcon = await connectRcon();
+            if (!rcon) throw new Error('No rcon connection');
+            await updateBotStatus(rcon, client);
+        } catch (error) {
+            console.error('Error fetching player list:', error);
+        }
+    }, 30000); // 30 sec
 }
