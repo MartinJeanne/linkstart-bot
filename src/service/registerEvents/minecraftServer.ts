@@ -1,4 +1,4 @@
-import {ActivityType} from 'discord.js';
+import {ActivityType, TextBasedChannel, TextChannel} from 'discord.js';
 import {Rcon} from 'rcon-client';
 import {NoEnvVarError} from '../../error/generalError/NoEnvVarError';
 import {ClientEx} from '../../model/Client';
@@ -39,6 +39,13 @@ async function updateBotStatus(rcon: Rcon, client: ClientEx) {
         if (!client.user) throw new NoClientUserError();
         client.user.setActivity({name: `serveur mc : ${playersNb}/${maxPlayerNb}`, type: ActivityType.Playing});
         previousPlayersNb = playersNb;
+        if (playersNb > 0) {
+            const channel = await client.channels.fetch("788781047420420137") as TextChannel;
+            if (!channel || !channel.isTextBased()) return;
+            const log = "Player(s) connected: " + playerList;
+            await channel.send(log);
+            console.log(log);
+        }
     }
 }
 
