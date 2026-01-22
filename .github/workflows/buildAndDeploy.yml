@@ -49,6 +49,8 @@ jobs:
             -e RCON_HOST=${{ secrets.RCON_HOST }} \
             -e RCON_PORT=${{ secrets.RCON_PORT }} \
             -e RCON_PASSWORD=${{ secrets.RCON_PASSWORD }} \
+            -e HYTALE_WEB_SERVER_URL=${{ secrets.HYTALE_WEB_SERVER_URL }} \
+            -e HYTALE_WEB_SERVER_AUTH=${{ secrets.HYTALE_WEB_SERVER_AUTH }} \
             --net="linkstart" \
             --restart=unless-stopped \
             -v ~/linkstart-bot-musics:/app/music-files \
