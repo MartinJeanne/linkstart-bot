@@ -26,16 +26,16 @@ function isNitradoResponse(response: any): response is NitradoResponse {
 let previousPlayersNb = -1; // commence à -1, pour que la première execution change forcément le status
 async function updateBotStatus(client: ClientEx) {
 
-    const response = await fetch(process.env.HYTALE_WEB_SERVER_URL + "/Nitrado/Query", {
+    const result = await fetch(process.env.HYTALE_WEB_SERVER_URL + "/Nitrado/Query", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Authorization': process.env.HYTALE_WEB_SERVER_AUTH as string,
         }
-    });
+    }).then(r => r.json());
 
-    if (!isNitradoResponse(response)) throw new GeneralError("Not a NitradoResponse");
-    const playersNb = response.Players.length;
+    if (!isNitradoResponse(result)) throw new GeneralError("Not a NitradoResponse");
+    const playersNb = result.Players.length;
 
     if (playersNb !== previousPlayersNb) {
         if (!client.user) throw new NoClientUserError();
@@ -44,7 +44,7 @@ async function updateBotStatus(client: ClientEx) {
         if (playersNb > 0) {
             const channel = await client.channels.fetch("788781047420420137") as TextChannel;
             if (!channel || !channel.isTextBased()) throw new GeneralError("Channel not found");
-            const log = "Player(s) connected: " + response.Players;
+            const log = "Player(s) connected: " + result.Players;
             await channel.send(log);
         }
     }
