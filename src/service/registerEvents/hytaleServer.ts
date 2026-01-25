@@ -44,7 +44,7 @@ async function updateBotStatus(client: ClientEx) {
         if (playersNb > 0) {
             const channel = await client.channels.fetch("788781047420420137") as TextChannel;
             if (!channel || !channel.isTextBased()) throw new GeneralError("Channel not found");
-            const log = "Player(s) connected: " + result.Players;
+            const log = "Player(s) connected: " + result.Players.toString();
             await channel.send(log);
         }
     }
