@@ -15,9 +15,14 @@ export async function setBotStatusToHytalePlayerNb(client: ClientEx) {
 }
 
 interface NitradoResponse {
-    Players: string[];
+    Players: Player[];
 }
 
+interface Player {
+    Name: string,
+    UUID: string,
+    World: string
+}
 
 function isNitradoResponse(response: any): response is NitradoResponse {
     return typeof response === 'object' && Array.isArray(response.Players);
@@ -42,9 +47,13 @@ async function updateBotStatus(client: ClientEx) {
         client.user.setActivity({name: `Joueurs sur Hytale : ${playersNb}`, type: ActivityType.Playing});
         previousPlayersNb = playersNb;
         if (playersNb > 0) {
+            let playerList = "";
+            for (const player of result.Players) {
+                playerList += player.Name + " ";
+            }
             const channel = await client.channels.fetch("788781047420420137") as TextChannel;
             if (!channel || !channel.isTextBased()) throw new GeneralError("Channel not found");
-            const log = "Player(s) connected: " + result.Players.toString();
+            const log = "Joueurs Hytale : " + playerList;
             await channel.send(log);
         }
     }
